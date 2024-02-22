@@ -1,7 +1,104 @@
-import React from 'react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import CoverImage from '../assets/cover-image.jpg';
+import GoogleIcon from '../assets/google-icon.svg';
+import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 
 const Login = () => {
-  return <div></div>;
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  return (
+    <div className='w-full h-screen flex items-start'>
+      <div className='relative hidden lg:flex w-1/2 h-full flex-col'>
+        <div className='absolute top-[20%] left-[10%] flex flex-col'>
+          <h1 className='text-4xl text-[white] font-bold my-4'>
+            Transforming Words into Visual Magic
+          </h1>
+          <p className='text-xl text-white font-normal'>Get started for free</p>
+        </div>
+        <img
+          src={CoverImage}
+          alt='cover image'
+          className='w-full h-full object-cover'
+        />
+      </div>
+
+      <div className='w-full lg:w-1/2 h-full bg-white text-[#00df9a] flex flex-col p-20 justify-between items-center'>
+        <h1 className='w-full max-w-[500px] mx-auto text-3xl text-[#00df9a] font-semibold mr-auto'>
+          <Link to='/'> CreAIte</Link>
+        </h1>
+
+        <div className='w-full flex flex-col max-w-[500px]'>
+          <div className='w-full flex flex-col mb-2'>
+            <h3 className='text-3xl font-semibold mb-2'>Log In</h3>
+            <p className='text-base mb-2 text-black'>
+              Welcome back! Please enter your login details.
+            </p>
+          </div>
+
+          <div className='w-full flex flex-col'>
+            <input
+              type='email'
+              placeholder='Email'
+              className='w-full text-black py-2 my-2 bg-transparent border-b border-black outline-none focus:outline-none'
+            />
+            <div className='relative'>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                placeholder='Password'
+                className='w-full text-black py-2 my-2 bg-transparent border-b border-black outline-none focus:outline-none'
+              />
+              <div className='absolute top-[20px] right-[10px]'>
+                <button onClick={togglePasswordVisibility}>
+                  {showPassword ? (
+                    <FaRegEyeSlash size={20} className='text-gray-500' />
+                  ) : (
+                    <FaRegEye size={20} className='text-gray-500' />
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className='w-full flex flex-row-reverse'>
+            <p className='text-sm font-medium whitespace-nowrap cursor-pointer'>
+              Forgot password?
+            </p>
+          </div>
+          <div className='w-full flex flex-col my-4'>
+            <button className='w-full text-black my-2 font-semibold bg-[#00df9a] rounded-md p-4 text-center flex items-center justify-center'>
+              Log in
+            </button>
+          </div>
+
+          <div className='w-full flex items-center justify-center relative py-2'>
+            <div className='w-full h-[1px] bg-black'></div>
+            <p className='text-lg absolute  bg-white mb-1 px-2 '>or</p>
+          </div>
+          <div className='w-full text-black my-6 font-semibold bg-white border border-black rounded-md p-4 text-center flex items-center justify-center cursor-pointer'>
+            <img src={GoogleIcon} alt='Google icon' className='h-6 mr-2' />
+            Sign in with Google
+          </div>
+        </div>
+
+        <div className='w-full flex items-center justify-center'>
+          <p className='text-sm font-normal text-[#060606]'>
+            Don&apos;t have an account?{' '}
+            <Link
+              to='/signup'
+              className='font-semibold cursor-pointer text-[#00df9a]'
+            >
+              Sign up for free
+            </Link>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Login;

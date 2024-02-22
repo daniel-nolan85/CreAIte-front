@@ -11,7 +11,9 @@ const Navbar = () => {
 
   return (
     <div className='flex justify-between items-center h-24 max-w-[1240px] mx-auto px-4 text-white'>
-      <h1 className='w-full text-3xl font-bold text-[#00df9a]'>CreAIte</h1>
+      <h1 className='w-full text-3xl font-bold text-[#00df9a] cursor-pointer'>
+        CreAIte
+      </h1>
       <ul className='hidden md:flex uppercase'>
         <Link to='/about'>
           <li className='p-4 cursor-pointer'>About</li>
