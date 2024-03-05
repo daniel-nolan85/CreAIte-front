@@ -6,7 +6,7 @@ const Pricing = () => {
     <div className='w-full py-[10rem] px-4 bg-white'>
       <div className='max-w-[1240px] mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-8'>
         <div className='w-full shadow-xl flex flex-col p-4 my-4 rounded-lg hover:scale-105 duration-300'>
-          <MdMoneyOff className='mx-auto mt-[-3rem] text-[#00df9a]' size={80} />
+          <MdMoneyOff className='mx-auto mt-[-3rem] text-main' size={80} />
           <h2 className='text-3xl font-bold text-center pt-8'>Free</h2>
           <p className='text-gray-500 text-sm pt-2 pb-6 text-center'>
             Includes access to GPT-3.5 for text generation and basic image
@@ -29,15 +29,12 @@ const Pricing = () => {
           <p className='py-6 text-center'>
             Suitable for users with moderate text and image generation needs.
           </p>
-          <button className='bg-[#00df9a] w-[200px] rounded-md font-medium my-6 mx-auto py-3 text-black'>
+          <button className='bg-main w-[200px] rounded-md font-medium my-6 mx-auto py-3 text-black'>
             Get Started
           </button>
         </div>
         <div className='w-full shadow-xl bg-gray-100 flex flex-col p-4 my-8 md:my-0 rounded-lg hover:scale-105 duration-300'>
-          <IoIosPricetag
-            className='mx-auto mt-[-3rem] text-[#00df9a]'
-            size={80}
-          />
+          <IoIosPricetag className='mx-auto mt-[-3rem] text-main' size={80} />
           <h2 className='text-3xl font-bold text-center pt-8'>Deluxe</h2>
           <p className='text-gray-500 text-sm pt-2 pb-6 text-center'>
             Upgrades to GPT-4 for improved text quality and coherence.
@@ -59,15 +56,12 @@ const Pricing = () => {
           <p className='py-6 text-center'>
             Designed for users with higher text and image quality requirements.
           </p>
-          <button className='bg-black text-[#00df9a] w-[200px] rounded-md font-medium my-6 mx-auto py-3 '>
+          <button className='bg-black text-main w-[200px] rounded-md font-medium my-6 mx-auto py-3 '>
             Get Started
           </button>
         </div>
         <div className='w-full shadow-xl flex flex-col p-4 my-4 rounded-lg hover:scale-105 duration-300'>
-          <IoIosPricetags
-            className='mx-auto mt-[-3rem] text-[#00df9a]'
-            size={80}
-          />
+          <IoIosPricetags className='mx-auto mt-[-3rem] text-main' size={80} />
           <h2 className='text-3xl font-bold text-center pt-8'>Premium</h2>
           <p className='text-gray-500 text-sm pt-2 pb-6 text-center'>
             Offers access to GPT-4 Turbo for cutting-edge text generation
@@ -91,13 +85,13 @@ const Pricing = () => {
             Designed for power users and professionals who require the
             best-in-class text and image generation.
           </p>
-          <button className='bg-[#00df9a] w-[200px] rounded-md font-medium my-6 mx-auto py-3 text-black'>
+          <button className='bg-main w-[200px] rounded-md font-medium my-6 mx-auto py-3 text-black'>
             Get Started
           </button>
         </div>
         <div className='w-full shadow-xl flex flex-col p-4 my-4 rounded-lg hover:scale-105 duration-300'>
           <MdDashboardCustomize
-            className='mx-auto mt-[-3rem] text-[#00df9a]'
+            className='mx-auto mt-[-3rem] text-main'
             size={80}
           />
 
@@ -119,7 +113,7 @@ const Pricing = () => {
             Ideal for businesses or enterprises with unique requirements and
             larger-scale usage.
           </p>
-          <button className='bg-[#00df9a] w-[200px] rounded-md font-medium my-6 mx-auto py-3 text-black'>
+          <button className='bg-main w-[200px] rounded-md font-medium my-6 mx-auto py-3 text-black'>
             Contact Us
           </button>
         </div>

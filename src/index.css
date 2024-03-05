@@ -3,5 +3,9 @@
 @tailwind utilities;
 
 body {
-  background-color: #000300;
+  background-color: #f9fafe;
+}
+
+.slower {
+  animation-duration: 1.5s;
 }

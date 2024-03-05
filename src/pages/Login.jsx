@@ -1,14 +1,107 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+} from 'firebase/auth';
+import { app } from '../../firebase';
 import CoverImage from '../assets/cover-image.jpg';
 import GoogleIcon from '../assets/google-icon.svg';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
+import { loginUser, googleUser } from '../requests/auth';
+import LoaderWhite from '../components/LoaderWhite';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('danielnolan85@yahoo.com');
+  const [password, setPassword] = useState('Lennon1027');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const auth = getAuth();
+  const provider = new GoogleAuthProvider();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleLogin = async () => {
+    setIsLoading(true);
+    const emailRegex = /^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+      setIsLoading(false);
+      toast.error('Please enter a vaild email');
+      return;
+    }
+    if (
+      password.length < 6 ||
+      !/\d/.test(password) ||
+      !/[a-zA-Z]/.test(password)
+    ) {
+      toast.error(
+        'Password must be at least 6 characters and contain letters and numbers.'
+      );
+      setIsLoading(false);
+      return;
+    }
+
+    await signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        if (user.emailVerified) {
+          const idToken = user.accessToken;
+          loginUser(email)
+            .then((res) => {
+              console.log('res => ', res.data);
+              dispatch({
+                type: 'LOGGED_IN_USER',
+                payload: {
+                  token: idToken,
+                  _id: res.data._id,
+                  email: res.data.email,
+                  name: res.data.name,
+                },
+              });
+              navigate('/dashboard');
+            })
+            .catch((err) => console.error({ err }));
+        } else {
+          setIsLoading(false);
+        }
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        const errorCode = err.code;
+      });
+  };
+
+  const googleLogin = async () => {
+    await signInWithPopup(auth, provider).then((userCredential) => {
+      console.log({ userCredential });
+      const user = userCredential.user;
+      const idToken = user.accessToken;
+      googleUser(user.displayName, user.email)
+        .then((res) => {
+          console.log(res.data);
+          dispatch({
+            type: 'LOGGED_IN_USER',
+            payload: {
+              token: idToken,
+              _id: res.data._id,
+              email: res.data.email,
+              name: res.data.name,
+            },
+          });
+          navigate('/dashboard');
+        })
+        .catch((err) => console.error({ err }));
+    });
   };
 
   return (
@@ -27,8 +120,8 @@ const Login = () => {
         />
       </div>
 
-      <div className='w-full lg:w-1/2 h-full bg-white text-[#00df9a] flex flex-col p-20 justify-between items-center'>
-        <h1 className='w-full max-w-[500px] mx-auto text-3xl text-[#00df9a] font-semibold mr-auto'>
+      <div className='w-full lg:w-1/2 h-full bg-white text-main flex flex-col p-20 justify-between items-center'>
+        <h1 className='w-full max-w-[500px] mx-auto text-3xl text-main font-semibold mr-auto'>
           <Link to='/'> CreAIte</Link>
         </h1>
 
@@ -45,12 +138,16 @@ const Login = () => {
               type='email'
               placeholder='Email'
               className='w-full text-black py-2 my-2 bg-transparent border-b border-black outline-none focus:outline-none'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <div className='relative'>
               <input
                 type={showPassword ? 'text' : 'password'}
                 placeholder='Password'
                 className='w-full text-black py-2 my-2 bg-transparent border-b border-black outline-none focus:outline-none'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <div className='absolute top-[20px] right-[10px]'>
                 <button onClick={togglePasswordVisibility}>
@@ -70,8 +167,11 @@ const Login = () => {
             </p>
           </div>
           <div className='w-full flex flex-col my-4'>
-            <button className='w-full text-black my-2 font-semibold bg-[#00df9a] rounded-md p-4 text-center flex items-center justify-center'>
-              Log in
+            <button
+              onClick={handleLogin}
+              className='w-full text-black my-2 font-semibold bg-main rounded-md p-4 text-center flex items-center justify-center'
+            >
+              {isLoading ? <LoaderWhite /> : 'Log in'}
             </button>
           </div>
 
@@ -79,7 +179,10 @@ const Login = () => {
             <div className='w-full h-[1px] bg-black'></div>
             <p className='text-lg absolute  bg-white mb-1 px-2 '>or</p>
           </div>
-          <div className='w-full text-black my-6 font-semibold bg-white border border-black rounded-md p-4 text-center flex items-center justify-center cursor-pointer'>
+          <div
+            onClick={googleLogin}
+            className='w-full text-black my-6 font-semibold bg-white border border-black rounded-md p-4 text-center flex items-center justify-center cursor-pointer'
+          >
             <img src={GoogleIcon} alt='Google icon' className='h-6 mr-2' />
             Sign in with Google
           </div>
@@ -90,7 +193,7 @@ const Login = () => {
             Don&apos;t have an account?{' '}
             <Link
               to='/signup'
-              className='font-semibold cursor-pointer text-[#00df9a]'
+              className='font-semibold cursor-pointer text-main'
             >
               Sign up for free
             </Link>
