@@ -95,7 +95,7 @@ const Register = () => {
               name: res.data.name,
             },
           });
-          navigate('/dashboard');
+          navigate('/showcase');
         })
         .catch((err) => console.error({ err }));
     });

@@ -10,18 +10,18 @@ import { createImage, createCreation } from '../requests/creation';
 
 const Create = () => {
   const [form, setForm] = useState({
-    name: '',
+    createdBy: '',
     prompt: '',
     photo: '',
   });
   const [generatingImg, setGeneratingImg] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { token, name } = useSelector((state) => state.user);
+  const { token, _id } = useSelector((state) => state.user);
 
   useEffect(() => {
-    setForm({ ...form, name });
-  }, [name]);
+    setForm({ ...form, createdBy: _id });
+  }, [_id]);
 
   const navigate = useNavigate();
 
@@ -62,7 +62,7 @@ const Create = () => {
           .catch((error) => {
             alert(error);
           });
-        navigate('/dashboard');
+        navigate('/showcase');
       } catch (error) {
         alert(error);
       } finally {
@@ -88,12 +88,14 @@ const Create = () => {
       <section className='max-w-7xl mx-auto p-4'>
         <div>
           <h1 className='font-extrabold text-[32px]'>Create</h1>
-          <p className='mt-2 text-[#666e75] text-[16px] max-w-[500px]'>
-            Create imaginative and visually stunning images using AI and share
-            them with the community
+          <p className='mt-2 text-[#666e75] text-[16px]'>
+            Unleash your imagination and generate stunning visuals with our
+            AI-powered image creation tool, turning your ideas into reality at
+            the click of a button. Don't forget to share your masterpieces with
+            the community and inspire others with your creativity!
           </p>
         </div>
-        <form className='mt-16 max-w-3xl' onSubmit={handleSubmit}>
+        <form className='mt-16' onSubmit={handleSubmit}>
           <div className='flex flex-col gap-5'>
             <FormField
               labelName='Prompt'
@@ -142,7 +144,7 @@ const Create = () => {
             </p>
             <button
               type='submit'
-              className='mt-3 text-white bg-main font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center'
+              className='mt-3 text-black bg-main font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center'
             >
               {isLoading ? 'Sharing...' : 'Share with the community'}
             </button>

@@ -68,7 +68,7 @@ const Login = () => {
                   name: res.data.name,
                 },
               });
-              navigate('/dashboard');
+              navigate('/showcase');
             })
             .catch((err) => console.error({ err }));
         } else {
@@ -98,7 +98,7 @@ const Login = () => {
               name: res.data.name,
             },
           });
-          navigate('/dashboard');
+          navigate('/showcase');
         })
         .catch((err) => console.error({ err }));
     });

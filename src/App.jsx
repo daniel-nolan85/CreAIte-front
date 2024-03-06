@@ -11,8 +11,9 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
+import Showcase from './pages/Showcase';
 import Create from './pages/Create';
+import Profile from './pages/Profile';
 
 const App = () => {
   useEffect(() => {
@@ -50,8 +51,9 @@ const App = () => {
         <Route path='/contact' element={<Contact />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Register />} />
-        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/showcase' element={<Showcase />} />
         <Route path='/create' element={<Create />} />
+        <Route path='/profile/:userId' element={<Profile />} />
       </Routes>
     </BrowserRouter>
   );

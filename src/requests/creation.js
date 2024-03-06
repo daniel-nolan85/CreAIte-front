@@ -28,10 +28,18 @@ export const createCreation = async (authtoken, form) => {
   );
 };
 
-export const fetchCreations = async (authtoken) => {
-  return await axios.get(`${import.meta.env.VITE_API_URL}/fetch-creations`, {
-    headers: {
-      authtoken,
-    },
-  });
+export const fetchCreations = async () => {
+  return await axios.get(`${import.meta.env.VITE_API_URL}/fetch-creations`);
+};
+
+export const fetchUserCreations = async (authtoken, _id) => {
+  return await axios.post(
+    `${import.meta.env.VITE_API_URL}/fetch-user-creations`,
+    { _id },
+    {
+      headers: {
+        authtoken,
+      },
+    }
+  );
 };
