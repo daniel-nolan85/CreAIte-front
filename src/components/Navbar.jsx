@@ -112,7 +112,7 @@ const Navbar = () => {
                       user.profileImage ? user.profileImage.url : defaultProfile
                     }
                     alt={`${user.name}'s profile picture`}
-                    className='w-12'
+                    className='w-12 rounded-full'
                   />
                 </FlyoutLink>
               </div>

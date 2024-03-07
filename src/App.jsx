@@ -14,6 +14,7 @@ import Register from './pages/Register';
 import Showcase from './pages/Showcase';
 import Create from './pages/Create';
 import Profile from './pages/Profile';
+import UserProfile from './pages/UserProfile';
 
 const App = () => {
   useEffect(() => {
@@ -29,6 +30,9 @@ const App = () => {
               _id: res.data._id,
               email: res.data.email,
               name: res.data.name,
+              bio: res.data.bio,
+              profileImage: res.data.profileImage,
+              coverImage: res.data.coverImage,
             },
           }).catch((err) => console.error(err));
         });
@@ -54,6 +58,7 @@ const App = () => {
         <Route path='/showcase' element={<Showcase />} />
         <Route path='/create' element={<Create />} />
         <Route path='/profile/:userId' element={<Profile />} />
+        <Route path='/user-profile/:userId' element={<UserProfile />} />
       </Routes>
     </BrowserRouter>
   );

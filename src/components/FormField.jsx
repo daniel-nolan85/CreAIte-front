@@ -35,7 +35,6 @@ const FormField = ({
         placeholder={placeholder}
         value={value}
         onChange={handleChange}
-        required
       />
     </div>
   );

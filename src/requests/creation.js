@@ -3,9 +3,7 @@ import axios from 'axios';
 export const createImage = async (authtoken, prompt) => {
   return await axios.post(
     `${import.meta.env.VITE_API_URL}/create-image`,
-    {
-      prompt,
-    },
+    { prompt },
     {
       headers: {
         authtoken,
@@ -17,9 +15,7 @@ export const createImage = async (authtoken, prompt) => {
 export const createCreation = async (authtoken, form) => {
   return await axios.post(
     `${import.meta.env.VITE_API_URL}/create-creation`,
-    {
-      form,
-    },
+    { form },
     {
       headers: {
         authtoken,

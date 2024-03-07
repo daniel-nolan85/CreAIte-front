@@ -13,7 +13,7 @@ import CoverImage from '../assets/cover-image.jpg';
 import GoogleIcon from '../assets/google-icon.svg';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { createUser, googleUser } from '../requests/auth';
-import LoaderWhite from '../components/LoaderWhite';
+import LoaderBlack from '../components/LoaderBlack';
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -93,6 +93,9 @@ const Register = () => {
               _id: res.data._id,
               email: res.data.email,
               name: res.data.name,
+              bio: res.data.bio,
+              profileImage: res.data.profileImage,
+              coverImage: res.data.coverImage,
             },
           });
           navigate('/showcase');
@@ -180,7 +183,7 @@ const Register = () => {
               onClick={handleRegistration}
               className='w-full text-black my-2 font-semibold bg-main rounded-md p-4 text-center flex items-center justify-center'
             >
-              {isLoading ? <LoaderWhite /> : 'Sign up'}
+              {isLoading ? <LoaderBlack /> : 'Sign up'}
             </button>
           </div>
 
