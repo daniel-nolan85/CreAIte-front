@@ -25,7 +25,6 @@ const ImageCropper = ({ updateImage, aspectRatio, isImageLoading }) => {
     const reader = new FileReader();
     reader.addEventListener('load', () => {
       const imageUrl = reader.result?.toString() || '';
-      console.log({ imageUrl });
       setImgSrc(imageUrl);
     });
     reader.readAsDataURL(file);

@@ -58,7 +58,6 @@ const Login = () => {
           const idToken = user.accessToken;
           loginUser(email)
             .then((res) => {
-              console.log('res => ', res.data);
               dispatch({
                 type: 'LOGGED_IN_USER',
                 payload: {
@@ -86,12 +85,10 @@ const Login = () => {
 
   const googleLogin = async () => {
     await signInWithPopup(auth, provider).then((userCredential) => {
-      console.log({ userCredential });
       const user = userCredential.user;
       const idToken = user.accessToken;
       googleUser(user.displayName, user.email)
         .then((res) => {
-          console.log(res.data);
           dispatch({
             type: 'LOGGED_IN_USER',
             payload: {

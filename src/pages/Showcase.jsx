@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar';
 import FormField from '../components/FormField';
 import Loader from '../components/Loader';
 import Card from '../components/Card';
-import { fetchCreations } from '../requests/creation';
+import { fetchSharedCreations } from '../requests/creation';
 
 const RenderCards = ({ data, title }) => {
   if (data?.length > 0) {
@@ -21,18 +21,14 @@ const Showcase = () => {
   const [searchedResults, setSearchedResults] = useState(null);
   const [searchTimeout, setSearchTimeout] = useState(null);
 
-  console.log({ allCreations });
-
   useEffect(() => {
-    getCreations();
+    getSharedCreations();
   }, []);
 
-  const getCreations = async () => {
+  const getSharedCreations = async () => {
     setIsLoading(true);
-    await fetchCreations()
+    await fetchSharedCreations()
       .then((res) => {
-        console.log('res => ', res.data);
-        console.log('success');
         setAllCreations(res.data.reverse());
         setIsLoading(false);
       })
@@ -74,10 +70,10 @@ const Showcase = () => {
         </div>
         <div className='mt-16'>
           <FormField
-            labelName='Search creations'
+            labelName='Search CreAItions'
             type='text'
             name='text'
-            placeholder='Search creations'
+            placeholder='Search CreAItions'
             value={searchText}
             handleChange={handleSearchChange}
           />

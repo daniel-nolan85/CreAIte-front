@@ -6,6 +6,7 @@ export default {
       colors: {
         main: '#00df9a',
         mainDark: '#00c987',
+        red: '#ff6666',
       },
       screens: {
         xs: '480px',

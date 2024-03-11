@@ -38,7 +38,6 @@ const UserProfile = () => {
   const getUser = async () => {
     await fetchUser(token, userId)
       .then((res) => {
-        console.log('res.data => ', res.data);
         setThisUser(res.data);
       })
       .catch((error) => {

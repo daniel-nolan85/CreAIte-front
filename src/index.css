@@ -9,3 +9,16 @@ body {
 .slower {
   animation-duration: 1.5s;
 }
+
+#toggleCaption::after,
+#toggleKeywords::after,
+#toggleShare::after {
+  content: '';
+  @apply h-8 w-8 rounded-full bg-red absolute left-0 top-0 transform scale-110 transition duration-200;
+}
+
+#toggleCaption:checked::after,
+#toggleKeywords:checked::after,
+#toggleShare:checked::after {
+  @apply transform scale-110 translate-x-8 bg-main;
+}

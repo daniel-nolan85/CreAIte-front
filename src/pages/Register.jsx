@@ -56,7 +56,6 @@ const Register = () => {
 
     await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        console.log({ userCredential });
         sendEmailVerification(userCredential.user)
           .then(() => {
             toast.success(`A verification email has been sent to ${email}`);
@@ -80,12 +79,10 @@ const Register = () => {
 
   const googleLogin = async () => {
     await signInWithPopup(auth, provider).then((userCredential) => {
-      console.log({ userCredential });
       const user = userCredential.user;
       const idToken = user.accessToken;
       googleUser(user.displayName, user.email)
         .then((res) => {
-          console.log(res.data);
           dispatch({
             type: 'LOGGED_IN_USER',
             payload: {

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import Loader from '../components/Loader';
 import LoaderBlack from '../components/LoaderBlack';
@@ -21,17 +22,45 @@ import {
   destroyMediaFromCloudinary,
 } from '../requests/cloudinary';
 
+const tabs = ['Shared', 'Private'];
+
 const RenderCards = ({ data, title }) => {
   if (data?.length > 0) {
-    return data.map((creation) => <Card key={creation._id} {...creation} />);
+    return data.map((creation) => <Card {...creation} personalProfile />);
   }
   return (
     <h2 className='mt-5 font-bold text-main text-xl uppercase'>{title}</h2>
   );
 };
 
+const Chip = ({ text, selected, setSelected, setSearchText }) => {
+  return (
+    <button
+      onClick={() => {
+        setSelected(text);
+        setSearchText('');
+      }}
+      className={`${
+        selected
+          ? 'text-black'
+          : 'text-slate-300 hover:text-slate-200 hover:bg-slate-700'
+      } font-medium px-4 py-2 rounded-md relative`}
+    >
+      <span className='relative z-10'>{text}</span>
+      {selected && (
+        <motion.span
+          layoutId='pill-tab'
+          transition={{ type: 'spring', duration: 0.5 }}
+          className='absolute inset-0 z-0 bg-main rounded-md'
+        ></motion.span>
+      )}
+    </button>
+  );
+};
+
 const Profile = () => {
-  const [userCreations, setUserCreations] = useState(null);
+  const [sharedCreations, setSharedCreations] = useState(null);
+  const [privateCreations, setPrivateCreations] = useState(null);
   const [searchText, setSearchText] = useState('');
   const [searchedResults, setSearchedResults] = useState(null);
   const [searchTimeout, setSearchTimeout] = useState(null);
@@ -44,6 +73,8 @@ const Profile = () => {
   const [newBio, setNewBio] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isImageLoading, setIsImageLoading] = useState(false);
+  const [showShared, setShowShared] = useState(true);
+  const [selected, setSelected] = useState(tabs[0]);
 
   const { user } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
@@ -56,12 +87,23 @@ const Profile = () => {
     }
   }, [user]);
 
+  useEffect(() => {
+    if (selected === 'Shared') {
+      setShowShared(true);
+    } else {
+      setShowShared(false);
+    }
+  });
+
   const getUserCreations = async () => {
     await fetchUserCreations(user.token, user._id)
       .then((res) => {
-        console.log('res => ', res.data);
-        console.log('success');
-        setUserCreations(res.data);
+        setSharedCreations(
+          res.data.filter((creation) => creation.sharing === true)
+        );
+        setPrivateCreations(
+          res.data.filter((creation) => creation.sharing === false)
+        );
       })
       .catch((error) => {
         alert(error);
@@ -73,9 +115,14 @@ const Profile = () => {
     setSearchText(e.target.value);
     setSearchTimeout(
       setTimeout(() => {
-        const searchResults = userCreations.filter((item) =>
-          item.prompt.toLowerCase().includes(searchText.toLowerCase())
-        );
+        let searchResults;
+        showShared
+          ? (searchResults = sharedCreations.filter((item) =>
+              item.prompt.toLowerCase().includes(searchText.toLowerCase())
+            ))
+          : (searchResults = privateCreations.filter((item) =>
+              item.prompt.toLowerCase().includes(searchText.toLowerCase())
+            ));
         setSearchedResults(searchResults);
       }, 500)
     );
@@ -86,7 +133,6 @@ const Profile = () => {
     setIsLoading(true);
     await updateUserProfile(user.token, user._id, newName, newBio)
       .then((res) => {
-        console.log(res.data);
         dispatch({
           type: 'LOGGED_IN_USER',
           payload: {
@@ -107,9 +153,7 @@ const Profile = () => {
     imageType,
     setShowModal
   ) => {
-    console.log({ imageType });
     if (user[imageType]) {
-      console.log('destroying previous image => ', imageType);
       await destroyMediaFromCloudinary(user.token, user[imageType].public_id);
     }
     const byteCharacters = atob(imgSrc.split(',')[1]);
@@ -121,11 +165,9 @@ const Profile = () => {
     const blob = new Blob([byteArray], { type: 'image/png' });
     const formData = new FormData();
     formData.append('image', blob, 'image.jpg');
-    console.log({ formData });
     const { data } = await uploadMediaToCloudinary(formData);
     await updateFunction(user.token, user._id, data)
       .then((res) => {
-        console.log(res.data);
         dispatch({
           type: 'LOGGED_IN_USER',
           payload: {
@@ -163,7 +205,7 @@ const Profile = () => {
     );
   };
 
-  if (!user || !userCreations) {
+  if (!user || !sharedCreations || !privateCreations) {
     return <Loader />;
   }
 
@@ -172,7 +214,10 @@ const Profile = () => {
       <Navbar />
       <section className='max-w-7xl mx-auto p-4'>
         <div className='flex flex-col items-center justify-center py-4'>
-          <div className='container rounded shadow-lg bg-white'>
+          <div
+            className='container rounded shadow-lg bg-white'
+            style={{ overflow: 'hidden' }}
+          >
             {user.coverImage ? (
               <div className='relative'>
                 <img
@@ -232,16 +277,38 @@ const Profile = () => {
             <div className='bg-gray-400 my-2 mx-4' style={{ height: 1 }}></div>
             <div className='p-4'>
               <p className='text-gray-800'>
-                <b>{userCreations.length}</b> creations
+                <b>{sharedCreations.length + privateCreations.length}</b>{' '}
+                creations
               </p>
             </div>
           </div>
+
+          <div className='px-4 pt-14 flex items-center flex-wrap gap-2'>
+            {tabs.map((tab) => (
+              <Chip
+                text={tab}
+                selected={selected === tab}
+                setSelected={setSelected}
+                setSearchText={setSearchText}
+                key={tab}
+              />
+            ))}
+          </div>
+
           <div className='container w-full py-4 mt-8'>
             <FormField
-              labelName='Search creations'
+              labelName={`${
+                showShared
+                  ? 'Search your shared CreAItions'
+                  : 'Search your private CreAItions'
+              }`}
               type='text'
               name='text'
-              placeholder='Search creations'
+              placeholder={`${
+                showShared
+                  ? 'Search your shared CreAItions'
+                  : 'Search your private CreAItions'
+              }`}
               value={searchText}
               handleChange={handleSearchChange}
             />
@@ -253,6 +320,7 @@ const Profile = () => {
                 <span className='text-[#222328]'>{searchText}</span>
               </h2>
             )}
+
             <div className='grid lg:grid-cols-4 sm:grid-cols-3 xs:grid-cols-2 grid-cols-1 gap-3'>
               {searchText ? (
                 <RenderCards
@@ -260,7 +328,10 @@ const Profile = () => {
                   title='No search results found'
                 />
               ) : (
-                <RenderCards data={userCreations} title='No creations found' />
+                <RenderCards
+                  data={showShared ? sharedCreations : privateCreations}
+                  title='No creations found'
+                />
               )}
             </div>
           </div>

@@ -44,11 +44,9 @@ const App = () => {
   const { user } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
 
-  console.log({ user });
-
   return (
     <BrowserRouter>
-      <ToastContainer />
+      <ToastContainer position='top-center' />
       <Routes>
         <Route path='/' element={<Landing />} />
         <Route path='/about' element={<About />} />
