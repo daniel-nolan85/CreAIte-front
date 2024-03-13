@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 import Modal from './Modal';
+import Keywords from './Keywords';
 import like from '../assets/like.svg';
 import liked from '../assets/liked.svg';
 import download from '../assets/download.svg';
@@ -24,6 +25,9 @@ const Card = ({ creation, personalProfile, fetchCreations }) => {
     likes,
     downloads,
     sharing,
+    caption,
+    keywords,
+    imageSize,
   } = creation;
   const { token, _id: userId } = useSelector((state) => state.user) || {};
 
@@ -108,19 +112,37 @@ const Card = ({ creation, personalProfile, fetchCreations }) => {
         isVisible={showCardInfoModal}
         onClose={() => setShowCardInfoModal(false)}
       >
-        <div className='p-6 flex flex-col sm:flex-row  sm:mt-0 mt-6'>
+        <div className='p-6 flex flex-col mt-6'>
           <img
             src={photo}
             alt={prompt}
-            className='h-auto object-cover rounded-xl sm:w-1/2 w-full'
+            className='h-auto object-cover rounded-xl w-full'
           />
           <div className='flex-col'>
-            <div className='ml-4'>
+            <div className='ml-4 mt-4'>
               <p className='text-sm font-medium text-gray-900'>Prompt</p>
               <h3 className='text-md font-medium text-gray-400 mb-4'>
                 {prompt}
               </h3>
             </div>
+            {caption && (
+              <div className='ml-4'>
+                <p className='text-sm font-medium text-gray-900'>Caption</p>
+                <h3 className='text-md font-medium text-gray-400 mb-4'>
+                  {caption.slice(1, -1)}
+                </h3>
+              </div>
+            )}
+            {keywords && (
+              <div className='ml-4'>
+                <p className='text-sm font-medium text-gray-900 mb-2'>
+                  Keywords
+                </p>
+                <h3 className='text-md font-medium text-gray-400 mb-4'>
+                  <Keywords keywords={keywords} />
+                </h3>
+              </div>
+            )}
             <div className='ml-4'>
               <p className='text-sm font-medium text-gray-900'>CreAIted by</p>
               <Link to={`/user-profile/${createdBy._id}`}>
@@ -132,11 +154,11 @@ const Card = ({ creation, personalProfile, fetchCreations }) => {
             <div className='m-4'>
               <p className='text-sm font-medium text-gray-900'>Resolution</p>
               <h3 className='text-md font-medium text-gray-400 mb-4'>
-                1024x1024
+                {imageSize}
               </h3>
             </div>
             <div className='m-4'>
-              <p className='text-sm font-medium text-gray-900'>Created on</p>
+              <p className='text-sm font-medium text-gray-900'>CreAIted on</p>
               <h3 className='text-md font-medium text-gray-400 mb-4'>
                 {moment(createdAt).format('ddd, MMMM Do YYYY')}
               </h3>

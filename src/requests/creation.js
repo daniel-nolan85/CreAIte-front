@@ -1,10 +1,10 @@
 import axios from 'axios';
 import FileSaver from 'file-saver';
 
-export const createImage = async (authtoken, prompt) => {
+export const createImage = async (authtoken, prompt, imageSize) => {
   return await axios.post(
     `${import.meta.env.VITE_API_URL}/create-image`,
-    { prompt },
+    { prompt, imageSize },
     {
       headers: {
         authtoken,
@@ -37,10 +37,10 @@ export const createKeywords = async (authtoken, prompt) => {
   );
 };
 
-export const saveCreation = async (authtoken, form, sharing) => {
+export const saveCreation = async (authtoken, form, sharing, imageSize) => {
   return await axios.post(
     `${import.meta.env.VITE_API_URL}/save-creation`,
-    { form, sharing },
+    { form, sharing, imageSize },
     {
       headers: {
         authtoken,

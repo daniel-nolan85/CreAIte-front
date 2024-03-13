@@ -2,11 +2,10 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import Loader from '../components/Loader';
+import PageLoader from '../components/PageLoader';
 import FormField from '../components/FormField';
 import Card from '../components/Card';
 import defaultProfile from '../assets/profile.svg';
-import edit from '../assets/edit.svg';
 import { fetchUserCreations } from '../requests/creation';
 import { fetchUser } from '../requests/user';
 
@@ -72,7 +71,7 @@ const UserProfile = () => {
   };
 
   if (!thisUser || !userCreations) {
-    return <Loader />;
+    return <PageLoader />;
   }
 
   return (

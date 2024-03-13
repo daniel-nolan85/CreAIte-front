@@ -16,6 +16,8 @@ import Showcase from './pages/Showcase';
 import Create from './pages/Create';
 import Profile from './pages/Profile';
 import UserProfile from './pages/UserProfile';
+import Account from './pages/Account';
+import Subscription from './pages/Subscription';
 
 const App = () => {
   useEffect(() => {
@@ -60,6 +62,8 @@ const App = () => {
         <Route path='/create' element={<Create />} />
         <Route path='/profile/:userId' element={<Profile />} />
         <Route path='/user-profile/:userId' element={<UserProfile />} />
+        <Route path='/account/:userId' element={<Account />} />
+        <Route path='/subscription/:userId' element={<Subscription />} />
       </Routes>
     </BrowserRouter>
   );

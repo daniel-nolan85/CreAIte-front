@@ -7,6 +7,9 @@ import { getRandomPrompt } from '../utils';
 import FormField from '../components/FormField';
 import Loader from '../components/Loader';
 import Navbar from '../components/Navbar';
+import Modal from '../components/Modal';
+import Keywords from '../components/Keywords';
+import StaggeredDropDown from '../components/StaggeredDropdown';
 import {
   createImage,
   createCaption,
@@ -26,7 +29,13 @@ const Create = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [captionRequired, setCaptionRequired] = useState(false);
   const [keywordsRequired, setKeywordsRequired] = useState(false);
+  const [regenImageRequired, setRegenImageRequired] = useState(false);
+  const [regenCaptionRequired, setRegenCaptionRequired] = useState(false);
+  const [regenKeywordsRequired, setRegenKeywordsRequired] = useState(false);
+  const [imageSize, setImageSize] = useState('256x256');
   const [shareCreation, setShareCreation] = useState(true);
+  const [showRegenerateImageModal, setShowRegenerateImageModal] =
+    useState(false);
 
   const { token, _id } = useSelector((state) => state.user) || {};
 
@@ -44,7 +53,7 @@ const Create = () => {
 
     try {
       setGeneratingImg(true);
-      const res = await createImage(token, form.prompt);
+      const res = await createImage(token, form.prompt, imageSize);
       setForm((prevForm) => ({
         ...prevForm,
         photo: `data:image/jpeg;base64,${res.data.photo}`,
@@ -72,12 +81,51 @@ const Create = () => {
     }
   };
 
+  const regenerate = () => {
+    setShowRegenerateImageModal(true);
+  };
+
+  const regenerateImg = async () => {
+    setShowRegenerateImageModal(false);
+    try {
+      setGeneratingImg(true);
+
+      if (regenImageRequired) {
+        const res = await createImage(token, form.prompt, imageSize);
+        setForm((prevForm) => ({
+          ...prevForm,
+          photo: `data:image/jpeg;base64,${res.data.photo}`,
+        }));
+      }
+
+      if (regenCaptionRequired) {
+        const captionRes = await createCaption(token, form.prompt);
+        setForm((prevForm) => ({
+          ...prevForm,
+          caption: captionRes.data.caption,
+        }));
+      }
+
+      if (regenKeywordsRequired) {
+        const keywordsRes = await createKeywords(token, form.prompt);
+        setForm((prevForm) => ({
+          ...prevForm,
+          keywords: keywordsRes.data.keywords,
+        }));
+      }
+    } catch (error) {
+      toast.error(error);
+    } finally {
+      setGeneratingImg(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (form.prompt && form.photo) {
       setIsLoading(true);
       try {
-        await saveCreation(token, form, shareCreation)
+        await saveCreation(token, form, shareCreation, imageSize)
           .then((res) => {
             console.log('res => ', res.data);
           })
@@ -104,25 +152,6 @@ const Create = () => {
     setForm({ ...form, prompt: randomPrompt });
   };
 
-  const KeywordsComponent = ({ keywords }) => {
-    const keywordsArray = keywords
-      .split(',')
-      .filter((keyword) => keyword.trim() !== '');
-
-    return (
-      <div>
-        {keywordsArray.map((keyword, index) => (
-          <span
-            key={index}
-            className='inline-block mb-2 mr-2 text-black bg-main font-medium rounded-full text-sm px-5 py-2.5 text-center mx-2'
-          >
-            {keyword}
-          </span>
-        ))}
-      </div>
-    );
-  };
-
   return (
     <>
       <Navbar />
@@ -136,7 +165,6 @@ const Create = () => {
             the community and inspire others with your creativity!
           </p>
         </div>
-
         <form className='mt-16' onSubmit={handleSubmit}>
           <div className='flex flex-col gap-5'>
             <FormField
@@ -149,37 +177,45 @@ const Create = () => {
               isSurpriseMe
               handleSurpriseMe={handleSurpriseMe}
             />
-            <div className='flex items-center'>
-              <p className='w-40 block h-7 text-sm font-medium text-gray-900'>
-                Create a caption
-              </p>
-              <label htmlFor='toggleCaption'>
-                <input
-                  type='checkbox'
-                  id='toggleCaption'
-                  className='cursor-pointer h-8 w-16 rounded-full appearance-none bg-red bg-opacity-20 border-mainDark checked:bg-main checked:bg-opacity-20 transition duration-200 relative'
-                  checked={captionRequired}
-                  onChange={() => setCaptionRequired(!captionRequired)}
+            <div className='flex justify-between flex-col md:flex-row py-8'>
+              <div className='flex items-center mb-6 md:mb-0'>
+                <p className='w-40 block h-7 text-sm font-medium text-gray-900'>
+                  Create a caption
+                </p>
+                <label htmlFor='toggleCaption'>
+                  <input
+                    type='checkbox'
+                    id='toggleCaption'
+                    className='cursor-pointer h-8 w-16 rounded-full appearance-none bg-red bg-opacity-20 border-mainDark checked:bg-main checked:bg-opacity-20 transition duration-200 relative'
+                    checked={captionRequired}
+                    onChange={() => setCaptionRequired(!captionRequired)}
+                  />
+                  <span></span>
+                </label>
+              </div>
+              <div className='flex items-center mb-6 md:mb-0'>
+                <p className='w-40 block h-7 text-sm font-medium text-gray-900'>
+                  Create keywords
+                </p>
+                <label htmlFor='toggleKeywords'>
+                  <input
+                    type='checkbox'
+                    id='toggleKeywords'
+                    className='cursor-pointer h-8 w-16 rounded-full appearance-none bg-red bg-opacity-20 border-mainDark checked:bg-main checked:bg-opacity-20 transition duration-200 relative'
+                    checked={keywordsRequired}
+                    onChange={() => setKeywordsRequired(!keywordsRequired)}
+                  />
+                  <span></span>
+                </label>
+              </div>
+              <div className='flex items-center'>
+                <StaggeredDropDown
+                  imageSize={imageSize}
+                  setImageSize={setImageSize}
                 />
-                <span></span>
-              </label>
+              </div>
             </div>
-            <div className='flex items-center'>
-              <p className='w-40 block h-7  text-sm font-medium text-gray-900'>
-                Create keywords
-              </p>
-              <label htmlFor='toggleKeywords'>
-                <input
-                  type='checkbox'
-                  id='toggleKeywords'
-                  className='cursor-pointer h-8 w-16 rounded-full appearance-none bg-red bg-opacity-20 border-mainDark checked:bg-main checked:bg-opacity-20 transition duration-200 relative'
-                  checked={keywordsRequired}
-                  onChange={() => setKeywordsRequired(!keywordsRequired)}
-                />
-                <span></span>
-              </label>
-            </div>
-            <div className='flex'>
+            <div className='flex flex-col lg:flex-row'>
               <div className='relative bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-mainDark-500 focus:border-mainDark-500 w-64 p-3 h-64 flex justify-center items-center'>
                 {form.photo ? (
                   <img
@@ -200,7 +236,7 @@ const Create = () => {
                   </div>
                 )}
               </div>
-              <div className='flex-1 ml-4'>
+              <div className='flex-1 ml-0 lg:ml-4'>
                 {form.caption && (
                   <div>
                     <h2 className='font-extrabold text-[24px] text-black mb-2'>
@@ -214,7 +250,7 @@ const Create = () => {
                     <h2 className='font-extrabold text-[24px] text-black my-2'>
                       AI generated keywords
                     </h2>
-                    <KeywordsComponent keywords={form.keywords} />
+                    <Keywords keywords={form.keywords} />
                   </div>
                 )}
               </div>
@@ -223,10 +259,14 @@ const Create = () => {
           <div className='my-5 flex gap-5'>
             <button
               type='button'
-              onClick={generateImg}
+              onClick={!form.photo ? generateImg : regenerate}
               className='text-black bg-main font-medium rounded-md text-sm w-64 px-5 py-2.5 text-center'
             >
-              {generatingImg ? 'Generating...' : 'Generate'}
+              {generatingImg
+                ? 'Generating...'
+                : !form.photo
+                ? 'Generate CreAItion'
+                : 'Regenerate'}
             </button>
           </div>
           <div className='mt-10 flex items-center'>
@@ -261,6 +301,77 @@ const Create = () => {
             </button>
           </div>
         </form>
+        <Modal
+          isVisible={showRegenerateImageModal}
+          onClose={() => setShowRegenerateImageModal(false)}
+        >
+          <div className='p-6 flex'>
+            <div className='w-1/2 flex'>
+              <p className='w-40 block h-7 text-sm font-medium text-gray-900'>
+                Regenerate image
+              </p>
+              <label htmlFor='toggleRegenImage'>
+                <input
+                  type='checkbox'
+                  id='toggleRegenImage'
+                  className='cursor-pointer h-8 w-16 rounded-full appearance-none bg-red bg-opacity-20 border-mainDark checked:bg-main checked:bg-opacity-20 transition duration-200 relative'
+                  checked={regenImageRequired}
+                  onChange={() => setRegenImageRequired(!regenImageRequired)}
+                />
+                <span></span>
+              </label>
+            </div>
+            <div className='w-1/2 flex'>
+              <StaggeredDropDown
+                imageSize={imageSize}
+                setImageSize={setImageSize}
+              />
+            </div>
+          </div>
+          <div className='p-6 flex'>
+            <div className='w-1/2 flex'>
+              <p className='w-40 block h-7 text-sm font-medium text-gray-900'>
+                Regenerate caption
+              </p>
+              <label htmlFor='toggleRegenCaption'>
+                <input
+                  type='checkbox'
+                  id='toggleRegenCaption'
+                  className='cursor-pointer h-8 w-16 rounded-full appearance-none bg-red bg-opacity-20 border-mainDark checked:bg-main checked:bg-opacity-20 transition duration-200 relative'
+                  checked={regenCaptionRequired}
+                  onChange={() =>
+                    setRegenCaptionRequired(!regenCaptionRequired)
+                  }
+                />
+                <span></span>
+              </label>
+            </div>
+            <div className='w-1/2 flex'>
+              <p className='w-40 block h-7 text-sm font-medium text-gray-900'>
+                Regenerate keywords
+              </p>
+              <label htmlFor='toggleRegenKeywords'>
+                <input
+                  type='checkbox'
+                  id='toggleRegenKeywords'
+                  className='cursor-pointer h-8 w-16 rounded-full appearance-none bg-red bg-opacity-20 border-mainDark checked:bg-main checked:bg-opacity-20 transition duration-200 relative'
+                  checked={regenKeywordsRequired}
+                  onChange={() =>
+                    setRegenKeywordsRequired(!regenKeywordsRequired)
+                  }
+                />
+                <span></span>
+              </label>
+            </div>
+          </div>
+          <button
+            type='button'
+            onClick={regenerateImg}
+            className='text-black bg-main font-medium rounded-md text-sm w-64 px-5 py-2.5 my-4 text-center mx-auto block'
+          >
+            Regenerate CreAition
+          </button>
+        </Modal>
       </section>
     </>
   );

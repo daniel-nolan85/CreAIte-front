@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
-import Loader from '../components/Loader';
+import PageLoader from '../components/PageLoader';
 import LoaderBlack from '../components/LoaderBlack';
 import FormField from '../components/FormField';
 import Card from '../components/Card';
@@ -246,7 +246,7 @@ const Profile = () => {
   };
 
   if (!_id || !sharedCreations || !privateCreations) {
-    return <Loader />;
+    return <PageLoader />;
   }
 
   return (
