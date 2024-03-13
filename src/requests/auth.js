@@ -19,3 +19,15 @@ export const googleUser = async (name, email) => {
     email,
   });
 };
+
+export const currentUser = async (authtoken, email) => {
+  return await axios.post(
+    `${import.meta.env.VITE_API_URL}/current-user`,
+    { email },
+    {
+      headers: {
+        authtoken,
+      },
+    }
+  );
+};

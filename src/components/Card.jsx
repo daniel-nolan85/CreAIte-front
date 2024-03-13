@@ -12,21 +12,20 @@ import {
   handleUnlikeCreation,
 } from '../requests/creation';
 
-const Card = ({
-  _id,
-  createdBy,
-  prompt,
-  photo,
-  createdAt,
-  likes,
-  downloads,
-  sharing,
-  personalProfile,
-  fetchCreations,
-}) => {
+const Card = ({ creation, personalProfile, fetchCreations }) => {
   const [showCardInfoModal, setShowCardInfoModal] = useState(false);
 
-  const { user } = useSelector((state) => ({ ...state }));
+  const {
+    _id,
+    createdBy,
+    prompt,
+    photo,
+    createdAt,
+    likes,
+    downloads,
+    sharing,
+  } = creation;
+  const { token, _id: userId } = useSelector((state) => state.user) || {};
 
   const downloadCreation = async (creationId, photo) => {
     await handleDownloadCreation(creationId, photo).then((res) => {
@@ -51,14 +50,16 @@ const Card = ({
 
   return (
     <div className='rounded-xl group relative shadow-card hover:shadow-cardhover card'>
-      <div className='absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-50 transition-opacity duration-300 rounded-xl'></div>
+      <div
+        onClick={() => setShowCardInfoModal(true)}
+        className='absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-50 transition-opacity duration-300 rounded-xl cursor-pointer'
+      ></div>
       <img
         src={photo}
         alt={prompt}
-        className={`w-full h-auto object-cover rounded-xl cursor-pointer ${
+        className={`w-full h-auto object-cover rounded-xl ${
           !sharing && !personalProfile ? 'blur' : ''
         }`}
-        onClick={() => setShowCardInfoModal(true)}
       />
       <div className='group-hover:flex flex-col max-h-[94.5%] hidden absolute bottom-0 left-0 right-0 bg-[#10131f] m-2 p-4 rounded-md'>
         <p className='text-white text-sm sm:text-md overflow-y-auto prompt'>
@@ -78,13 +79,13 @@ const Card = ({
               />
             </button>
           )}
-          {user && user._id && (
+          {userId && (
             <button
               type='button'
               onClick={() => {
-                likes.some((like) => like === user._id)
-                  ? unlikeCreation(user.token, user._id, _id)
-                  : likeCreation(user.token, user._id, _id);
+                likes.some((like) => like === userId)
+                  ? unlikeCreation(token, userId, _id)
+                  : likeCreation(token, userId, _id);
               }}
               className='outline-none bg-transparent'
             >
@@ -92,7 +93,7 @@ const Card = ({
                 src={
                   likes &&
                   likes.length > 0 &&
-                  likes.some((like) => like === user._id)
+                  likes.some((like) => like === userId)
                     ? liked
                     : like
                 }

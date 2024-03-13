@@ -8,6 +8,7 @@ export const uploadMediaToCloudinary = async (formData) => {
 };
 
 export const destroyMediaFromCloudinary = async (authtoken, publicId) => {
+  console.log({ publicId });
   return await axios.post(
     `${import.meta.env.VITE_API_URL}/destroy-media`,
     { publicId },

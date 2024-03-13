@@ -28,7 +28,7 @@ const Create = () => {
   const [keywordsRequired, setKeywordsRequired] = useState(false);
   const [shareCreation, setShareCreation] = useState(true);
 
-  const { token, _id } = useSelector((state) => state.user);
+  const { token, _id } = useSelector((state) => state.user) || {};
 
   useEffect(() => {
     setForm({ ...form, createdBy: _id });

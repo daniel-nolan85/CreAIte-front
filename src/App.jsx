@@ -2,9 +2,10 @@ import { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { app } from '../firebase';
+import { currentUser } from './requests/auth';
 
 import Landing from './pages/Landing';
 import About from './pages/About';
@@ -22,26 +23,28 @@ const App = () => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user && user.emailVerified) {
         const idToken = await user.accessToken;
-        currentUser(idToken).then((res) => {
-          dispatch({
-            type: 'LOGGED_IN_USER',
-            payload: {
-              token: idToken,
-              _id: res.data._id,
-              email: res.data.email,
-              name: res.data.name,
-              bio: res.data.bio,
-              profileImage: res.data.profileImage,
-              coverImage: res.data.coverImage,
-            },
-          }).catch((err) => console.error(err));
-        });
+        const email = user.email;
+        currentUser(idToken, email)
+          .then((res) => {
+            dispatch({
+              type: 'LOGGED_IN_USER',
+              payload: {
+                token: idToken,
+                _id: res.data._id,
+                email: res.data.email,
+                name: res.data.name,
+                bio: res.data.bio,
+                profileImage: res.data.profileImage,
+                coverImage: res.data.coverImage,
+              },
+            });
+          })
+          .catch((err) => console.error(err));
       }
     });
     return () => unsubscribe();
   }, []);
 
-  const { user } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
 
   return (

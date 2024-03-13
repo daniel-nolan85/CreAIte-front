@@ -13,11 +13,7 @@ import { fetchUser } from '../requests/user';
 const RenderCards = ({ data, title, getUserCreations }) => {
   if (data?.length > 0) {
     return data.map((creation) => (
-      <Card
-        key={creation._id}
-        {...creation}
-        fetchCreations={getUserCreations}
-      />
+      <Card creation={creation} fetchCreations={getUserCreations} />
     ));
   }
   return (
@@ -32,7 +28,7 @@ const UserProfile = () => {
   const [searchedResults, setSearchedResults] = useState(null);
   const [searchTimeout, setSearchTimeout] = useState(null);
 
-  const { token } = useSelector((state) => state.user);
+  const { token } = useSelector((state) => state.user) || {};
 
   const { userId } = useParams();
 
@@ -44,6 +40,7 @@ const UserProfile = () => {
   const getUser = async () => {
     await fetchUser(token, userId)
       .then((res) => {
+        console.log(res.data);
         setThisUser(res.data);
       })
       .catch((error) => {
@@ -54,7 +51,7 @@ const UserProfile = () => {
   const getUserCreations = async () => {
     await fetchUserCreations(token, userId)
       .then((res) => {
-        setUserCreations(res.data);
+        setUserCreations(res.data.creations);
       })
       .catch((error) => {
         alert(error);
@@ -84,14 +81,14 @@ const UserProfile = () => {
       <section className='max-w-7xl mx-auto p-4'>
         <div className='flex flex-col items-center justify-center py-4'>
           <div className='container rounded shadow-lg bg-white'>
-            {thisUser.coverPhoto ? (
+            {thisUser.coverImage ? (
               <img
-                src={thisUser.coverPhoto.url}
+                src={thisUser.coverImage.url}
                 alt={`${thisUser.name}'s cover image`}
-                className='w-full h-32 rounded rounded-b-none'
+                className='w-full md:h-64 lg:h-96 xl:h-128 rounded rounded-b-none'
               />
             ) : (
-              <div className='w-full h-48 rounded rounded-b-none bg-main' />
+              <div className='w-full h-32 md:h-64 lg:h-96 xl:h-128 rounded rounded-b-none bg-main' />
             )}
             <div className='flex justify-between'>
               <div className='p-4'>
@@ -113,11 +110,6 @@ const UserProfile = () => {
                   </p>
                 </div>
               </div>
-              <img
-                src={edit}
-                alt='edit icon'
-                className='h-16 w-16 cursor-pointer'
-              />
             </div>
             <div className='bg-gray-400 my-2 mx-4' style={{ height: 1 }}></div>
             <div className='p-4'>

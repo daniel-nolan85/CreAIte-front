@@ -8,11 +8,7 @@ import { fetchSharedCreations } from '../requests/creation';
 const RenderCards = ({ data, title, getSharedCreations }) => {
   if (data?.length > 0) {
     return data.map((creation) => (
-      <Card
-        key={creation._id}
-        {...creation}
-        fetchCreations={getSharedCreations}
-      />
+      <Card creation={creation} fetchCreations={getSharedCreations} />
     ));
   }
   return (

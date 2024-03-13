@@ -10,7 +10,8 @@ import defaultProfile from '../assets/profile.svg';
 const Navbar = () => {
   const [nav, setNav] = useState(false);
 
-  const { user } = useSelector((state) => ({ ...state }));
+  const { _id, profileImage, name } = useSelector((state) => state.user) || {};
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -35,13 +36,13 @@ const Navbar = () => {
         <div className='mb-3 space-y-3 '>
           <h3 className='font-semibold'>User Settings</h3>
           <Link
-            to={`/profile/${user._id}`}
+            to={`/profile/${_id}`}
             className='block text-sm hover:underline'
           >
             Profile
           </Link>
           <Link
-            to={`/account/${user._id}`}
+            to={`/account/${_id}`}
             className='block text-sm hover:underline'
           >
             My Account
@@ -50,7 +51,7 @@ const Navbar = () => {
         <div className='mb-6 space-y-3 '>
           <h3 className='font-semibold'>Billing Settings</h3>
           <Link
-            to={`/subscription/${user._id}`}
+            to={`/subscription/${_id}`}
             className='block text-sm hover:underline'
           >
             Subscription
@@ -84,7 +85,7 @@ const Navbar = () => {
           <FlyoutLink href='/contact'>
             <li className='p-4 cursor-pointer'>Contact</li>
           </FlyoutLink>
-          {!user ? (
+          {!_id ? (
             <>
               <FlyoutLink href='/login'>
                 <li className='p-4 cursor-pointer'>Login</li>
@@ -102,14 +103,12 @@ const Navbar = () => {
               </FlyoutLink>
               <div className='ml-4 pt-1'>
                 <FlyoutLink
-                  href={`/profile/${user._id}`}
+                  href={`/profile/${_id}`}
                   FlyoutContent={profileContent}
                 >
                   <img
-                    src={
-                      user.profileImage ? user.profileImage.url : defaultProfile
-                    }
-                    alt={`${user.name}'s profile picture`}
+                    src={profileImage ? profileImage.url : defaultProfile}
+                    alt={`${name}'s profile picture`}
                     className='w-12 rounded-full'
                   />
                 </FlyoutLink>

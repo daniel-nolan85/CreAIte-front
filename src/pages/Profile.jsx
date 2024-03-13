@@ -22,12 +22,16 @@ import {
   destroyMediaFromCloudinary,
 } from '../requests/cloudinary';
 
-const tabs = ['Shared', 'Private'];
+const tabs = ['Shared', 'Private', 'Liked'];
 
 const RenderCards = ({ data, title, getUserCreations }) => {
   if (data?.length > 0) {
     return data.map((creation) => (
-      <Card {...creation} personalProfile fetchCreations={getUserCreations} />
+      <Card
+        creation={creation}
+        personalProfile
+        fetchCreations={getUserCreations}
+      />
     ));
   }
   return (
@@ -63,6 +67,7 @@ const Chip = ({ text, selected, setSelected, setSearchText }) => {
 const Profile = () => {
   const [sharedCreations, setSharedCreations] = useState(null);
   const [privateCreations, setPrivateCreations] = useState(null);
+  const [likedCreations, setLikedCreations] = useState(null);
   const [searchText, setSearchText] = useState('');
   const [searchedResults, setSearchedResults] = useState(null);
   const [searchTimeout, setSearchTimeout] = useState(null);
@@ -76,36 +81,49 @@ const Profile = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isImageLoading, setIsImageLoading] = useState(false);
   const [showShared, setShowShared] = useState(true);
+  const [showPrivate, setShowPrivate] = useState(true);
+  const [showLiked, setShowLiked] = useState(true);
   const [selected, setSelected] = useState(tabs[0]);
 
-  const { user } = useSelector((state) => ({ ...state }));
+  const { token, _id, name, bio, coverImage, profileImage } =
+    useSelector((state) => state.user) || {};
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (user) {
+    if (_id) {
       getUserCreations();
-      setNewName(user.name);
-      setNewBio(user.bio || '');
+      setNewName(name);
+      setNewBio(bio || '');
     }
-  }, [user]);
+  }, [_id]);
 
   useEffect(() => {
     if (selected === 'Shared') {
       setShowShared(true);
-    } else {
+      setShowPrivate(false);
+      setShowLiked(false);
+    } else if (selected === 'Private') {
+      setShowPrivate(true);
       setShowShared(false);
+      setShowLiked(false);
+    } else {
+      setShowLiked(true);
+      setShowShared(false);
+      setShowPrivate(false);
     }
   }, [selected]);
 
   const getUserCreations = async () => {
-    await fetchUserCreations(user.token, user._id)
+    await fetchUserCreations(token, _id)
       .then((res) => {
+        console.log(res.data);
         setSharedCreations(
-          res.data.filter((creation) => creation.sharing === true)
+          res.data.creations.filter((creation) => creation.sharing === true)
         );
         setPrivateCreations(
-          res.data.filter((creation) => creation.sharing === false)
+          res.data.creations.filter((creation) => creation.sharing === false)
         );
+        setLikedCreations(res.data.likedCreations);
       })
       .catch((error) => {
         alert(error);
@@ -118,13 +136,18 @@ const Profile = () => {
     setSearchTimeout(
       setTimeout(() => {
         let searchResults;
-        showShared
-          ? (searchResults = sharedCreations.filter((item) =>
-              item.prompt.toLowerCase().includes(searchText.toLowerCase())
-            ))
-          : (searchResults = privateCreations.filter((item) =>
-              item.prompt.toLowerCase().includes(searchText.toLowerCase())
-            ));
+        showShared &&
+          (searchResults = sharedCreations.filter((item) =>
+            item.prompt.toLowerCase().includes(searchText.toLowerCase())
+          ));
+        showPrivate &&
+          (searchResults = privateCreations.filter((item) =>
+            item.prompt.toLowerCase().includes(searchText.toLowerCase())
+          ));
+        showLiked &&
+          (searchResults = likedCreations.filter((item) =>
+            item.prompt.toLowerCase().includes(searchText.toLowerCase())
+          ));
         setSearchedResults(searchResults);
       }, 500)
     );
@@ -133,14 +156,20 @@ const Profile = () => {
   const updateProfile = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    await updateUserProfile(user.token, user._id, newName, newBio)
+    await updateUserProfile(token, _id, newName, newBio)
       .then((res) => {
         dispatch({
           type: 'LOGGED_IN_USER',
           payload: {
-            ...user,
             name: res.data.name,
             bio: res.data.bio,
+            token,
+            _id: res.data._id,
+            email: res.data.email,
+            name: res.data.name,
+            bio: res.data.bio,
+            profileImage: res.data.profileImage,
+            coverImage: res.data.coverImage,
           },
         });
         setIsLoading(false);
@@ -155,8 +184,9 @@ const Profile = () => {
     imageType,
     setShowModal
   ) => {
-    if (user[imageType]) {
-      await destroyMediaFromCloudinary(user.token, user[imageType].public_id);
+    console.log({ imageType });
+    if (imageType) {
+      await destroyMediaFromCloudinary(token, imageType.public_id);
     }
     const byteCharacters = atob(imgSrc.split(',')[1]);
     const byteNumbers = new Array(byteCharacters.length);
@@ -168,13 +198,21 @@ const Profile = () => {
     const formData = new FormData();
     formData.append('image', blob, 'image.jpg');
     const { data } = await uploadMediaToCloudinary(formData);
-    await updateFunction(user.token, user._id, data)
+    await updateFunction(token, _id, data)
       .then((res) => {
+        console.log(res.data);
         dispatch({
           type: 'LOGGED_IN_USER',
           payload: {
-            ...user,
-            [imageType]: res.data[imageType],
+            name: res.data.name,
+            bio: res.data.bio,
+            token,
+            _id: res.data._id,
+            email: res.data.email,
+            name: res.data.name,
+            bio: res.data.bio,
+            profileImage: res.data.profileImage,
+            coverImage: res.data.coverImage,
           },
         });
         setShowModal(false);
@@ -192,7 +230,7 @@ const Profile = () => {
     await updateImage(
       imgSrc,
       updateUserProfileImage,
-      'profileImage',
+      profileImage,
       setShowUpdateProfileImageModal
     );
   };
@@ -202,12 +240,12 @@ const Profile = () => {
     await updateImage(
       imgSrc,
       updateUserCoverImage,
-      'coverImage',
+      coverImage,
       setShowUpdateCoverImageModal
     );
   };
 
-  if (!user || !sharedCreations || !privateCreations) {
+  if (!_id || !sharedCreations || !privateCreations) {
     return <Loader />;
   }
 
@@ -220,11 +258,11 @@ const Profile = () => {
             className='container rounded shadow-lg bg-white'
             style={{ overflow: 'hidden' }}
           >
-            {user.coverImage ? (
+            {coverImage ? (
               <div className='relative'>
                 <img
-                  src={user.coverImage.url}
-                  alt={`${user.name}'s cover image`}
+                  src={coverImage.url}
+                  alt={`${name}'s cover image`}
                   className='w-full md:h-64 lg:h-96 xl:h-128 rounded rounded-b-none'
                 />
                 <img
@@ -236,7 +274,7 @@ const Profile = () => {
               </div>
             ) : (
               <div className='relative'>
-                <div className='w-full md:h-64 lg:h-96 xl:h-128 rounded rounded-b-none bg-main' />
+                <div className='w-full h-32 md:h-64 lg:h-96 xl:h-128 rounded rounded-b-none bg-main' />
                 <img
                   onClick={() => setShowUpdateCoverImageModal(true)}
                   src={editGrey}
@@ -249,10 +287,8 @@ const Profile = () => {
               <div className='p-4'>
                 <div className='relative w-32'>
                   <img
-                    src={
-                      user.profileImage ? user.profileImage.url : defaultProfile
-                    }
-                    alt={`${user.name}'s profile picture`}
+                    src={profileImage ? profileImage.url : defaultProfile}
+                    alt={`${name}'s profile picture`}
                     className='w-32 h-32 rounded-full border-4 border-white mr-8 -mt-16 mb-2 bg-white'
                   />
                   <img
@@ -263,10 +299,8 @@ const Profile = () => {
                   />
                 </div>
                 <div>
-                  <h1 className='text-xl font-bold text-gray-800'>
-                    {user.name}
-                  </h1>
-                  <p className='text-gray-500'>{user.bio}</p>
+                  <h1 className='text-xl font-bold text-gray-800'>{name}</h1>
+                  <p className='text-gray-500'>{bio}</p>
                 </div>
               </div>
               <img
@@ -302,14 +336,18 @@ const Profile = () => {
               labelName={`${
                 showShared
                   ? 'Search your shared CreAItions'
-                  : 'Search your private CreAItions'
+                  : showPrivate
+                  ? 'Search your private CreAItions'
+                  : showLiked && 'Search your liked CreAItions'
               }`}
               type='text'
               name='text'
               placeholder={`${
                 showShared
                   ? 'Search your shared CreAItions'
-                  : 'Search your private CreAItions'
+                  : showPrivate
+                  ? 'Search your private CreAItions'
+                  : showLiked && 'Search your liked CreAItions'
               }`}
               value={searchText}
               handleChange={handleSearchChange}
@@ -332,7 +370,13 @@ const Profile = () => {
                 />
               ) : (
                 <RenderCards
-                  data={showShared ? sharedCreations : privateCreations}
+                  data={
+                    showShared
+                      ? sharedCreations
+                      : showPrivate
+                      ? privateCreations
+                      : likedCreations
+                  }
                   title='No creations found'
                   getUserCreations={getUserCreations}
                 />
