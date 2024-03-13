@@ -5,9 +5,15 @@ import Loader from '../components/Loader';
 import Card from '../components/Card';
 import { fetchSharedCreations } from '../requests/creation';
 
-const RenderCards = ({ data, title }) => {
+const RenderCards = ({ data, title, getSharedCreations }) => {
   if (data?.length > 0) {
-    return data.map((creation) => <Card key={creation._id} {...creation} />);
+    return data.map((creation) => (
+      <Card
+        key={creation._id}
+        {...creation}
+        fetchCreations={getSharedCreations}
+      />
+    ));
   }
   return (
     <h2 className='mt-5 font-bold text-main text-xl uppercase'>{title}</h2>
@@ -16,7 +22,7 @@ const RenderCards = ({ data, title }) => {
 
 const Showcase = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [allCreations, setAllCreations] = useState(null);
+  const [sharedCreations, setSharedCreations] = useState(null);
   const [searchText, setSearchText] = useState('');
   const [searchedResults, setSearchedResults] = useState(null);
   const [searchTimeout, setSearchTimeout] = useState(null);
@@ -29,7 +35,7 @@ const Showcase = () => {
     setIsLoading(true);
     await fetchSharedCreations()
       .then((res) => {
-        setAllCreations(res.data.reverse());
+        setSharedCreations(res.data.reverse());
         setIsLoading(false);
       })
       .catch((error) => {
@@ -43,7 +49,7 @@ const Showcase = () => {
     setSearchText(e.target.value);
     setSearchTimeout(
       setTimeout(() => {
-        const searchResults = allCreations.filter(
+        const searchResults = sharedCreations.filter(
           (item) =>
             item.createdBy.name
               .toLowerCase()
@@ -96,9 +102,14 @@ const Showcase = () => {
                   <RenderCards
                     data={searchedResults}
                     title='No search results found'
+                    getSharedCreations={getSharedCreations}
                   />
                 ) : (
-                  <RenderCards data={allCreations} title='No creations found' />
+                  <RenderCards
+                    data={sharedCreations}
+                    title='No creations found'
+                    getSharedCreations={getSharedCreations}
+                  />
                 )}
               </div>
             </>

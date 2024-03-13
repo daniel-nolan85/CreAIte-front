@@ -193,7 +193,7 @@ const Register = () => {
             className='w-full text-black my-6 font-semibold bg-white border border-black rounded-md p-4 text-center flex items-center justify-center cursor-pointer'
           >
             <img src={GoogleIcon} alt='Google icon' className='h-6 mr-2' />
-            Sign in with Google
+            Continue with Google
           </div>
         </div>
 

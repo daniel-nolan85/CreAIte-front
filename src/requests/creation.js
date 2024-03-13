@@ -1,4 +1,5 @@
 import axios from 'axios';
+import FileSaver from 'file-saver';
 
 export const createImage = async (authtoken, prompt) => {
   return await axios.post(
@@ -58,6 +59,37 @@ export const fetchUserCreations = async (authtoken, _id) => {
   return await axios.post(
     `${import.meta.env.VITE_API_URL}/fetch-user-creations`,
     { _id },
+    {
+      headers: {
+        authtoken,
+      },
+    }
+  );
+};
+
+export const handleDownloadCreation = async (_id, photo) => {
+  FileSaver.saveAs(photo, `download-${_id}.jpg`);
+  return await axios.put(`${import.meta.env.VITE_API_URL}/download-creation`, {
+    _id,
+  });
+};
+
+export const handleLikeCreation = async (authtoken, userId, _id) => {
+  return await axios.put(
+    `${import.meta.env.VITE_API_URL}/like-creation`,
+    { userId, _id },
+    {
+      headers: {
+        authtoken,
+      },
+    }
+  );
+};
+
+export const handleUnlikeCreation = async (authtoken, userId, _id) => {
+  return await axios.put(
+    `${import.meta.env.VITE_API_URL}/unlike-creation`,
+    { userId, _id },
     {
       headers: {
         authtoken,

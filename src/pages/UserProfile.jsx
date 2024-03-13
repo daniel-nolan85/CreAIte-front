@@ -10,9 +10,15 @@ import edit from '../assets/edit.svg';
 import { fetchUserCreations } from '../requests/creation';
 import { fetchUser } from '../requests/user';
 
-const RenderCards = ({ data, title }) => {
+const RenderCards = ({ data, title, getUserCreations }) => {
   if (data?.length > 0) {
-    return data.map((creation) => <Card key={creation._id} {...creation} />);
+    return data.map((creation) => (
+      <Card
+        key={creation._id}
+        {...creation}
+        fetchCreations={getUserCreations}
+      />
+    ));
   }
   return (
     <h2 className='mt-5 font-bold text-main text-xl uppercase'>{title}</h2>
@@ -142,9 +148,14 @@ const UserProfile = () => {
                 <RenderCards
                   data={searchedResults}
                   title='No search results found'
+                  getUserCreations={getUserCreations}
                 />
               ) : (
-                <RenderCards data={userCreations} title='No creations found' />
+                <RenderCards
+                  data={userCreations}
+                  title='No creations found'
+                  getUserCreations={getUserCreations}
+                />
               )}
             </div>
           </div>

@@ -24,9 +24,11 @@ import {
 
 const tabs = ['Shared', 'Private'];
 
-const RenderCards = ({ data, title }) => {
+const RenderCards = ({ data, title, getUserCreations }) => {
   if (data?.length > 0) {
-    return data.map((creation) => <Card {...creation} personalProfile />);
+    return data.map((creation) => (
+      <Card {...creation} personalProfile fetchCreations={getUserCreations} />
+    ));
   }
   return (
     <h2 className='mt-5 font-bold text-main text-xl uppercase'>{title}</h2>
@@ -93,7 +95,7 @@ const Profile = () => {
     } else {
       setShowShared(false);
     }
-  });
+  }, [selected]);
 
   const getUserCreations = async () => {
     await fetchUserCreations(user.token, user._id)
@@ -326,11 +328,13 @@ const Profile = () => {
                 <RenderCards
                   data={searchedResults}
                   title='No search results found'
+                  getUserCreations={getUserCreations}
                 />
               ) : (
                 <RenderCards
                   data={showShared ? sharedCreations : privateCreations}
                   title='No creations found'
+                  getUserCreations={getUserCreations}
                 />
               )}
             </div>

@@ -1,6 +1,19 @@
+import { useEffect } from 'react';
 import { IoIosCloseCircleOutline } from 'react-icons/io';
 
 const Modal = ({ isVisible, onClose, children }) => {
+  useEffect(() => {
+    const body = document.body;
+    if (isVisible) {
+      body.style.overflow = 'hidden';
+    } else {
+      body.style.overflow = 'auto';
+    }
+    return () => {
+      body.style.overflow = 'auto';
+    };
+  }, [isVisible]);
+
   if (!isVisible) return null;
 
   const handleClose = (e) => {
@@ -11,7 +24,7 @@ const Modal = ({ isVisible, onClose, children }) => {
     <div
       onClick={handleClose}
       id='wrapper'
-      className='fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center'
+      className='fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center z-50 overflow-y-auto'
     >
       <div className='md:w-[600px] w-[90%] mx-auto flex flex-col'>
         <button onClick={onClose} className='text-white text-xl place-self-end'>
