@@ -7,6 +7,7 @@ export default {
         main: '#00df9a',
         mainDark: '#00c987',
         red: '#ff6666',
+        redDark: '#cc3333',
       },
       screens: {
         xs: '480px',

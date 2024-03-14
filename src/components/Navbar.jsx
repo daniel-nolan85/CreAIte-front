@@ -102,10 +102,7 @@ const Navbar = () => {
                 </li>
               </FlyoutLink>
               <div className='ml-4 pt-1'>
-                <FlyoutLink
-                  href={`/profile/${_id}`}
-                  FlyoutContent={profileContent}
-                >
+                <FlyoutLink href='#' FlyoutContent={profileContent}>
                   <img
                     src={profileImage ? profileImage.url : defaultProfile}
                     alt={`${name}'s profile picture`}

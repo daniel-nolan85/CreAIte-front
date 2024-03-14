@@ -31,3 +31,15 @@ export const currentUser = async (authtoken, email) => {
     }
   );
 };
+
+export const confirmUserEmail = async (authtoken, _id, email) => {
+  return await axios.put(
+    `${import.meta.env.VITE_API_URL}/confirm-user-email`,
+    { _id, email },
+    {
+      headers: {
+        authtoken,
+      },
+    }
+  );
+};
