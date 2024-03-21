@@ -39,21 +39,18 @@ const Card = ({ creation, personalProfile, fetchCreations }) => {
 
   const downloadCreation = async (creationId, photo) => {
     await handleDownloadCreation(creationId, photo).then((res) => {
-      console.log(res.data);
       fetchCreations();
     });
   };
 
   const likeCreation = async (token, userId, creationId) => {
     await handleLikeCreation(token, userId, creationId).then((res) => {
-      console.log(res.data);
       fetchCreations();
     });
   };
 
   const unlikeCreation = async (token, userId, creationId) => {
     await handleUnlikeCreation(token, userId, creationId).then((res) => {
-      console.log(res.data);
       fetchCreations();
     });
   };

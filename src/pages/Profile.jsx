@@ -116,7 +116,6 @@ const Profile = () => {
   const getUserCreations = async () => {
     await fetchUserCreations(token, _id)
       .then((res) => {
-        console.log(res.data);
         setSharedCreations(
           res.data.creations.filter((creation) => creation.sharing === true)
         );
@@ -185,7 +184,6 @@ const Profile = () => {
     imageType,
     setShowModal
   ) => {
-    console.log({ imageType });
     if (imageType) {
       await destroyMediaFromCloudinary(token, imageType.public_id);
     }
@@ -201,7 +199,6 @@ const Profile = () => {
     const { data } = await uploadMediaToCloudinary(formData);
     await updateFunction(token, _id, data)
       .then((res) => {
-        console.log(res.data);
         dispatch({
           type: 'LOGGED_IN_USER',
           payload: {

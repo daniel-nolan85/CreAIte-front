@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+import { toast } from 'react-toastify';
 import moment from 'moment';
 import Navbar from '../components/Navbar';
 import PageLoader from '../components/PageLoader';
@@ -12,6 +13,8 @@ import CustomCard from '../components/CustomCard';
 import Modal from '../components/Modal';
 import PaymentForm from '../components/PaymentForm';
 import CreditCard from '../components/CreditCard';
+import LoaderBlack from '../components/LoaderBlack';
+import { cancelStripeSubscription } from '../requests/stripe';
 
 const Subscription = () => {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
@@ -19,9 +22,12 @@ const Subscription = () => {
   const [showStripeModal, setShowStripeModal] = useState(false);
   const [showPaymentCompletionModal, setShowPaymentCompletionModal] =
     useState(false);
+  const [showCancelSubscriptionModal, setShowCancelSubscriptionModal] =
+    useState(false);
   const [amount, setAmount] = useState();
   const [stripePromise, setStripePromise] = useState(null);
   const [card, setCard] = useState({});
+  const [isCancelling, setIsCancelling] = useState(false);
 
   useEffect(() => {
     setStripePromise(loadStripe(`${import.meta.env.VITE_STRIPE_PUB_KEY}`));
@@ -29,6 +35,7 @@ const Subscription = () => {
 
   const { token, _id, name, email, subscription } =
     useSelector((state) => state.user) || {};
+  const dispatch = useDispatch();
 
   const upgradeMembership = (amount) => {
     setAmount(amount);
@@ -36,7 +43,37 @@ const Subscription = () => {
     setShowStripeModal(true);
   };
 
-  const { plan, imagesRemaining, expiry } = subscription;
+  const cancelPopup = () => {
+    setShowCancelSubscriptionModal(true);
+  };
+
+  const cancelSubscription = async () => {
+    setIsCancelling(true);
+    await cancelStripeSubscription(token, _id, subscriptionId)
+      .then((res) => {
+        console.log(res.data);
+        dispatch({
+          type: 'LOGGED_IN_USER',
+          payload: {
+            token,
+            _id: res.data._id,
+            email: res.data.email,
+            name: res.data.name,
+            bio: res.data.bio,
+            profileImage: res.data.profileImage,
+            coverImage: res.data.coverImage,
+            subscription: res.data.subscription,
+          },
+        });
+        setShowCancelSubscriptionModal(false);
+        toast.error('Your subscription has now been cancelled.');
+      })
+      .catch((err) => console.error(err))
+      .finally(() => setIsCancelling(false));
+  };
+
+  const { plan, imagesRemaining, expiry, subscriptionId, cancelled } =
+    subscription || {};
 
   if (!_id) {
     return <PageLoader />;
@@ -64,7 +101,8 @@ const Subscription = () => {
         </p>
         {plan !== 'free' && (
           <p className='mt-2 text-[#666e75] text-[16px] flex items-center'>
-            Your current subscription is set to renew on{' '}
+            Your current subscription is{' '}
+            {cancelled ? 'coming to an end' : 'set to renew'} on{' '}
             <span className='font-bold text-main text-[24px] mx-1'>
               {moment(expiry).format('ddd, MMMM Do YYYY')}.
             </span>
@@ -92,6 +130,8 @@ const Subscription = () => {
               }
               emphasize={false}
               action={() => setShowUpgradeModal(true)}
+              cancelled={cancelled}
+              cancelPopup={cancelPopup}
             />
           )}
           {subscription && plan === 'premium' && (
@@ -103,6 +143,8 @@ const Subscription = () => {
                   : `${imagesRemaining} image generations`
               }
               action={() => setShowContactModal(true)}
+              cancelled={cancelled}
+              cancelPopup={cancelPopup}
             />
           )}
           {subscription && plan === 'custom' && (
@@ -114,6 +156,8 @@ const Subscription = () => {
                   : `${imagesRemaining} image generations`
               }
               action={() => setShowContactModal(true)}
+              cancelled={cancelled}
+              cancelPopup={cancelPopup}
             />
           )}
         </div>
@@ -205,7 +249,7 @@ const Subscription = () => {
             <h1 className='font-extrabold text-[32px]'>Payment successful!</h1>
             <p className='mt-2 text-[#666e75] text-[16px] flex items-center'>
               Thank you for your purchase. Your subscription is now active, and
-              the payment has been processed successfully.
+              this month's payment has been processed successfully.
             </p>
           </div>
           <div className='m-8'>
@@ -217,6 +261,30 @@ const Subscription = () => {
             free to contact our support team. Thank you for choosing our
             service!
           </p>
+        </Modal>
+        <Modal
+          isVisible={showCancelSubscriptionModal}
+          onClose={() => setShowCancelSubscriptionModal(false)}
+        >
+          <div className='p-6 lg:px-8 text-left'>
+            <h1 className='font-extrabold text-[32px]'>
+              Are you sure you want to cancel your subscription?
+            </h1>
+            <p className='mt-2 text-[#666e75] text-[16px] flex items-center'>
+              You will continue to have access to {plan} features until{' '}
+              {moment(expiry).format('ddd, MMMM Do YYYY')}. After that, your
+              account will automatically revert to the free plan, and you will
+              lose access to {plan} features.
+            </p>
+          </div>
+          <div className='text-center mb-4'>
+            <button
+              onClick={cancelSubscription}
+              className='bg-red hover:bg-redDark w-[200px] rounded-md font-medium my-3 mx-auto py-3 text-black'
+            >
+              {isCancelling ? <LoaderBlack /> : 'Yes, cancel'}
+            </button>
+          </div>
         </Modal>
       </section>
     </>

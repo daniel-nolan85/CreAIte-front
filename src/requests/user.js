@@ -48,10 +48,15 @@ export const updateUserCoverImage = async (authtoken, _id, coverImage) => {
   );
 };
 
-export const updateUserSubscription = async (authtoken, _id, amount) => {
+export const updateUserSubscription = async (
+  authtoken,
+  _id,
+  amount,
+  subscriptionId
+) => {
   return await axios.put(
     `${import.meta.env.VITE_API_URL}/update-subscription`,
-    { _id, amount },
+    { _id, amount, subscriptionId },
     {
       headers: {
         authtoken,

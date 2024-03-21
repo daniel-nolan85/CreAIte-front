@@ -23,7 +23,7 @@ const Info = () => {
             Me&apos; prompts for instant creative sparks. Let CreAIte be your
             partner in turning imagination into reality, one pixel at a time.
           </p>
-          <button className='bg-black text-main w-[200px] rounded-md font-medium my-6 mx-auto md:mx-0 py-3'>
+          <button className='bg-black hover:bg-[#1a1a1a] text-main w-[200px] rounded-md font-medium my-6 mx-auto md:mx-0 py-3'>
             Get Started
           </button>
         </div>

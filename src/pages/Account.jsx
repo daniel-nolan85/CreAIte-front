@@ -52,7 +52,6 @@ const Account = () => {
       await confirmUserEmail(token, _id, normalizedEmail).then(async (res) => {
         if (res.data.success) {
           const fbUser = auth.currentUser;
-          console.log({ fbUser });
           await updatePassword(fbUser, password)
             .then(() => {
               setIsLoading(false);

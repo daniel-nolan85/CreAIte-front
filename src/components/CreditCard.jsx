@@ -9,7 +9,6 @@ import visa from '../assets/visa.svg';
 import chip from '../assets/chip.svg';
 
 const CreditCard = ({ card, name }) => {
-  console.log({ card });
   const { last4, exp_month, exp_year, brand } = card;
   return (
     <div className='flex justify-center items-center'>

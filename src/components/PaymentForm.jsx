@@ -13,14 +13,14 @@ const PaymentForm = ({
 }) => {
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const { token, _id, name, email, subscription } =
-    useSelector((state) => state.user) || {};
+  const { token, _id, name, email } = useSelector((state) => state.user) || {};
   const dispatch = useDispatch();
   const stripe = useStripe();
   const elements = useElements();
 
   const createSubscription = async (e) => {
     e.preventDefault();
+    setIsProcessing(true);
     try {
       const paymentMethod = await stripe.createPaymentMethod({
         card: elements.getElement('card'),
@@ -28,23 +28,26 @@ const PaymentForm = ({
       });
       setCard(paymentMethod.paymentMethod.card);
       const paymentMethodId = paymentMethod.paymentMethod.id;
-      console.log({ paymentMethod });
       await createStripeSubscription(
         token,
+        _id,
         name,
         email,
         amount,
         paymentMethodId
       )
         .then(async (res) => {
-          console.log(res.data);
           const confirm = await stripe.confirmCardPayment(
             res.data.clientSecret
           );
           if (confirm.error) return toast.error('Payment unsuccessful!');
-          await updateUserSubscription(token, _id, amount)
+          await updateUserSubscription(
+            token,
+            _id,
+            amount,
+            res.data.subscriptionId
+          )
             .then((res) => {
-              console.log(res.data);
               dispatch({
                 type: 'LOGGED_IN_USER',
                 payload: {
@@ -63,10 +66,12 @@ const PaymentForm = ({
             })
             .catch((err) => console.error(err));
         })
-        .catch((err) => console.error(err));
+        .catch((err) => console.error(err))
+        .finally(() => setIsProcessing(false));
     } catch (err) {
       console.error(err);
-      alert('Payment failed! ' + err.message);
+      toast.error('Payment failed! ' + err.message);
+      setIsProcessing(false);
     }
   };
 

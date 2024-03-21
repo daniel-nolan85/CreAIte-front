@@ -25,7 +25,7 @@ const FreeCard = ({ text, imagesNum, action }) => (
     </p>
     <button
       onClick={action}
-      className='bg-main w-[200px] rounded-md font-medium my-6 mx-auto py-3 text-black'
+      className='bg-main hover:bg-mainDark w-[200px] rounded-md font-medium my-6 mx-auto py-3 text-black'
     >
       {text}
     </button>

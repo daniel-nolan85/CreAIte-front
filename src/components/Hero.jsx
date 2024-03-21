@@ -32,7 +32,7 @@ const Hero = () => {
         <p className='md-text-2xl text-xl font-bold text-gray-500'>
           Let&apos;s turn your words into magic
         </p>
-        <button className='bg-main w-[200px] rounded-md font-medium my-6 mx-auto py-3 text-black'>
+        <button className='bg-main hover:bg-mainDark w-[200px] rounded-md font-medium my-6 mx-auto py-3 text-black'>
           Get Started
         </button>
       </div>
