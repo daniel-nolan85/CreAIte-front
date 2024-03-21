@@ -113,7 +113,7 @@ const UserProfile = () => {
             <div className='bg-gray-400 my-2 mx-4' style={{ height: 1 }}></div>
             <div className='p-4'>
               <p className='text-gray-800'>
-                <b>{userCreations.length}</b> creations
+                <b>{userCreations.length}</b> CreAItions
               </p>
             </div>
           </div>

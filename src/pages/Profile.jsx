@@ -170,6 +170,7 @@ const Profile = () => {
             bio: res.data.bio,
             profileImage: res.data.profileImage,
             coverImage: res.data.coverImage,
+            subscription: res.data.subscription,
           },
         });
         setIsLoading(false);
@@ -213,6 +214,7 @@ const Profile = () => {
             bio: res.data.bio,
             profileImage: res.data.profileImage,
             coverImage: res.data.coverImage,
+            subscription: res.data.subscription,
           },
         });
         setShowModal(false);
@@ -314,7 +316,7 @@ const Profile = () => {
             <div className='p-4'>
               <p className='text-gray-800'>
                 <b>{sharedCreations.length + privateCreations.length}</b>{' '}
-                creations
+                CreAItions
               </p>
             </div>
           </div>

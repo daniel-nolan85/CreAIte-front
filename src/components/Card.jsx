@@ -12,6 +12,7 @@ import {
   handleLikeCreation,
   handleUnlikeCreation,
 } from '../requests/creation';
+import defaultProfile from '../assets/profile.svg';
 
 const Card = ({ creation, personalProfile, fetchCreations }) => {
   const [showCardInfoModal, setShowCardInfoModal] = useState(false);
@@ -29,7 +30,12 @@ const Card = ({ creation, personalProfile, fetchCreations }) => {
     keywords,
     imageSize,
   } = creation;
-  const { token, _id: userId } = useSelector((state) => state.user) || {};
+  const {
+    token,
+    _id: userId,
+    profileImage,
+    name,
+  } = useSelector((state) => state.user) || {};
 
   const downloadCreation = async (creationId, photo) => {
     await handleDownloadCreation(creationId, photo).then((res) => {
@@ -145,8 +151,16 @@ const Card = ({ creation, personalProfile, fetchCreations }) => {
             )}
             <div className='ml-4'>
               <p className='text-sm font-medium text-gray-900'>CreAIted by</p>
-              <Link to={`/user-profile/${createdBy._id}`}>
-                <p className='text-md font-medium text-gray-400'>
+              <Link
+                to={`/user-profile/${createdBy._id}`}
+                className='flex items-center mt-2'
+              >
+                <img
+                  src={profileImage ? profileImage.url : defaultProfile}
+                  alt={`${name}'s profile picture`}
+                  className='w-12 rounded-full'
+                />
+                <p className='text-md font-medium text-gray-400 ml-2'>
                   {createdBy.name}
                 </p>
               </Link>

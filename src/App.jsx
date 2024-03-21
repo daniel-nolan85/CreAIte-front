@@ -38,6 +38,7 @@ const App = () => {
                 bio: res.data.bio,
                 profileImage: res.data.profileImage,
                 coverImage: res.data.coverImage,
+                subscription: res.data.subscription,
               },
             });
           })

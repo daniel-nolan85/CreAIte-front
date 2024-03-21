@@ -47,3 +47,15 @@ export const updateUserCoverImage = async (authtoken, _id, coverImage) => {
     }
   );
 };
+
+export const updateUserSubscription = async (authtoken, _id, amount) => {
+  return await axios.put(
+    `${import.meta.env.VITE_API_URL}/update-subscription`,
+    { _id, amount },
+    {
+      headers: {
+        authtoken,
+      },
+    }
+  );
+};
