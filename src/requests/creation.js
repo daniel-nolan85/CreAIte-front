@@ -1,6 +1,18 @@
 import axios from 'axios';
 import FileSaver from 'file-saver';
 
+export const createPrompt = async (authtoken, plan) => {
+  return await axios.post(
+    `${import.meta.env.VITE_API_URL}/create-prompt`,
+    { plan },
+    {
+      headers: {
+        authtoken,
+      },
+    }
+  );
+};
+
 export const createImage = async (
   authtoken,
   _id,

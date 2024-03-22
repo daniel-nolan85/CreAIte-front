@@ -1,3 +1,5 @@
+import LoaderBlack from './LoaderBlack';
+
 const FormField = ({
   labelName,
   type,
@@ -7,6 +9,7 @@ const FormField = ({
   handleChange,
   isSurpriseMe,
   handleSurpriseMe,
+  generatingPrompt,
 }) => {
   return (
     <div>
@@ -18,13 +21,22 @@ const FormField = ({
           {labelName}
         </label>
         {isSurpriseMe && (
-          <button
-            type='button'
-            onClick={handleSurpriseMe}
-            className='font-semibold text-xs bg-main py-1 px-2 rounded-[5px] text-black'
-          >
-            Surprise me
-          </button>
+          <div className='relative'>
+            <button
+              type='button'
+              onClick={handleSurpriseMe}
+              className='font-semibold text-sm bg-main hover:bg-mainDark py-1 px-2 rounded-[5px] text-black w-full'
+            >
+              <span className={generatingPrompt ? 'text-main' : ''}>
+                Surprise me
+              </span>
+            </button>
+            {generatingPrompt && (
+              <span className='absolute inset-0 flex justify-center items-center'>
+                <LoaderBlack />
+              </span>
+            )}
+          </div>
         )}
       </div>
       <input

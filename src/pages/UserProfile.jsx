@@ -133,7 +133,7 @@ const UserProfile = () => {
                 <span className='text-[#222328]'>{searchText}</span>
               </h2>
             )}
-            <div className='grid lg:grid-cols-4 sm:grid-cols-3 xs:grid-cols-2 grid-cols-1 gap-3'>
+            <div className='columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-3'>
               {searchText ? (
                 <RenderCards
                   data={searchedResults}

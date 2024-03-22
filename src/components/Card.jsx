@@ -57,7 +57,7 @@ const Card = ({ creation, personalProfile, fetchCreations }) => {
   };
 
   return (
-    <div className='rounded-xl group relative shadow-card hover:shadow-cardhover card'>
+    <div className='rounded-xl group relative shadow-card hover:shadow-cardhover card mb-3'>
       <div
         onClick={() => setShowCardInfoModal(true)}
         className='absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-50 transition-opacity duration-300 rounded-xl cursor-pointer'

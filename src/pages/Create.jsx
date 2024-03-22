@@ -3,14 +3,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import preview from '../assets/preview.png';
-import { getRandomPrompt } from '../utils';
 import FormField from '../components/FormField';
 import Loader from '../components/Loader';
+import LoaderBlack from '../components/LoaderBlack';
 import Navbar from '../components/Navbar';
 import Modal from '../components/Modal';
 import Keywords from '../components/Keywords';
 import StaggeredDropDown from '../components/StaggeredDropdown';
 import {
+  createPrompt,
   createImage,
   createCaption,
   createKeywords,
@@ -25,6 +26,7 @@ const Create = () => {
     caption: '',
     keywords: '',
   });
+  const [generatingPrompt, setGeneratingPrompt] = useState(false);
   const [generatingImg, setGeneratingImg] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [captionRequired, setCaptionRequired] = useState(false);
@@ -37,6 +39,7 @@ const Create = () => {
   const [showRegenerateImageModal, setShowRegenerateImageModal] =
     useState(false);
   const [showUpgradePlanModal, setShowUpgradePlanModal] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   const { token, _id, subscription } = useSelector((state) => state.user) || {};
   const { plan, imagesRemaining } = subscription || {};
@@ -109,6 +112,10 @@ const Create = () => {
     } finally {
       setGeneratingImg(false);
     }
+  };
+
+  const toggleExpand = () => {
+    setExpanded(!expanded);
   };
 
   const regenerate = () => {
@@ -201,9 +208,14 @@ const Create = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSurpriseMe = () => {
-    const randomPrompt = getRandomPrompt(form.prompt);
-    setForm({ ...form, prompt: randomPrompt });
+  const handleSurpriseMe = async () => {
+    setGeneratingPrompt(true);
+    const promptRes = await createPrompt(plan);
+    setForm((prevForm) => ({
+      ...prevForm,
+      prompt: promptRes.data.prompt,
+    }));
+    setGeneratingPrompt(false);
   };
 
   return (
@@ -230,6 +242,7 @@ const Create = () => {
               handleChange={handleChange}
               isSurpriseMe
               handleSurpriseMe={handleSurpriseMe}
+              generatingPrompt={generatingPrompt}
             />
             <div className='flex justify-between flex-col md:flex-row py-8'>
               <div className='flex items-center mb-6 md:mb-0'>
@@ -273,11 +286,30 @@ const Create = () => {
             <div className='flex flex-col lg:flex-row'>
               <div className='relative bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-mainDark-500 focus:border-mainDark-500 w-64 p-3 h-64 flex justify-center items-center'>
                 {form.photo ? (
-                  <img
-                    src={form.photo}
-                    alt={form.prompt}
-                    className='w-full h-full object-contain'
-                  />
+                  <>
+                    <img
+                      src={form.photo}
+                      alt={form.prompt}
+                      className={`w-full h-full object-contain cursor-pointer ${
+                        expanded
+                          ? 'absolute top-0 left-0 z-10 w-full h-full object-cover'
+                          : ''
+                      }`}
+                      onClick={toggleExpand}
+                    />
+                    {expanded && (
+                      <div
+                        className='fixed top-0 left-0 z-20 flex items-center justify-center w-full h-full bg-black bg-opacity-50'
+                        onClick={toggleExpand}
+                      >
+                        <img
+                          src={form.photo}
+                          alt={form.prompt}
+                          className='max-w-full max-h-full'
+                        />
+                      </div>
+                    )}
+                  </>
                 ) : (
                   <img
                     src={preview}
@@ -319,7 +351,7 @@ const Create = () => {
                   ? generateImg
                   : regenerate
               }
-              className='text-black bg-main font-medium rounded-md text-sm w-64 px-5 py-2.5 text-center'
+              className='text-black bg-main hover:bg-mainDark font-medium rounded-md text-sm w-64 px-5 py-2.5 text-center'
             >
               {generatingImg
                 ? 'Generating...'
@@ -352,11 +384,13 @@ const Create = () => {
             <button
               type='submit'
               className={`mt-3 text-black font-medium rounded-md text-sm w-64 px-5 py-2.5 text-center ${
-                !form.photo ? 'bg-gray-300 cursor-not-allowed' : 'bg-main'
+                !form.photo
+                  ? 'bg-gray-300 cursor-not-allowed'
+                  : 'bg-main hover:bg-mainDark'
               }`}
               disabled={!form.photo}
             >
-              {isLoading ? 'Saving...' : 'Save this CreAItion'}
+              {isLoading ? <LoaderBlack /> : 'Save this CreAItion'}
             </button>
           </div>
         </form>
