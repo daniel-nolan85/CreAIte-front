@@ -1,6 +1,12 @@
 import { IoIosPricetags } from 'react-icons/io';
 
-const PremiumCard = ({ text, action, cancelled, cancelPopup }) => (
+const PremiumCard = ({
+  text,
+  action,
+  cancelled,
+  cancelPopup,
+  subscription,
+}) => (
   <div className='w-full shadow-xl flex flex-col p-4 my-4 rounded-lg hover:scale-105 duration-300'>
     <IoIosPricetags className='mx-auto mt-[-3rem] text-main' size={80} />
     <h2 className='text-3xl font-bold text-center pt-8'>Premium</h2>
@@ -30,7 +36,7 @@ const PremiumCard = ({ text, action, cancelled, cancelPopup }) => (
     >
       {text}
     </button>
-    {!cancelled && (
+    {!cancelled && subscription && (
       <button
         onClick={cancelPopup}
         className='bg-red hover:bg-redDark w-[200px] rounded-md font-medium my-3 mx-auto py-3 text-black'

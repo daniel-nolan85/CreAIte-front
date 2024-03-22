@@ -29,6 +29,7 @@ const Card = ({ creation, personalProfile, fetchCreations }) => {
     caption,
     keywords,
     imageSize,
+    model,
   } = creation;
   const {
     token,
@@ -161,6 +162,12 @@ const Card = ({ creation, personalProfile, fetchCreations }) => {
                   {createdBy.name}
                 </p>
               </Link>
+            </div>
+            <div className='m-4'>
+              <p className='text-sm font-medium text-gray-900'>Model</p>
+              <h3 className='text-md font-medium text-gray-400 mb-4'>
+                {model}
+              </h3>
             </div>
             <div className='m-4'>
               <p className='text-sm font-medium text-gray-900'>Resolution</p>

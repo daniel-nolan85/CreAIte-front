@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { FiChevronDown } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 
-const StaggeredDropDown = ({ imageSize, setImageSize }) => {
+const StaggeredDropDown = ({ imageSize, setImageSize, plan }) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -31,17 +31,17 @@ const StaggeredDropDown = ({ imageSize, setImageSize }) => {
           <Option
             setOpen={setOpen}
             setImageSize={setImageSize}
-            text='256x256'
+            text={plan === 'free' ? '256x256' : '1024x1024'}
           />
           <Option
             setOpen={setOpen}
             setImageSize={setImageSize}
-            text='512x512'
+            text={plan === 'free' ? '512x512' : '1792x1024'}
           />
           <Option
             setOpen={setOpen}
             setImageSize={setImageSize}
-            text='1024x1024'
+            text={plan === 'free' ? '1024x1024' : '1024x1792'}
           />
         </motion.ul>
       </motion.div>

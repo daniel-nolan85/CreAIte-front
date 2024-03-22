@@ -1,6 +1,13 @@
 import { IoIosPricetag } from 'react-icons/io';
 
-const DeluxeCard = ({ text, emphasize, action, cancelled, cancelPopup }) => (
+const DeluxeCard = ({
+  text,
+  emphasize,
+  action,
+  cancelled,
+  cancelPopup,
+  subscription,
+}) => (
   <div
     className={`w-full shadow-xl flex flex-col p-4 rounded-lg hover:scale-105 duration-300 ${
       emphasize ? 'bg-gray-100 my-8 md:my-0' : 'my-4'
@@ -36,7 +43,7 @@ const DeluxeCard = ({ text, emphasize, action, cancelled, cancelPopup }) => (
     >
       {text}
     </button>
-    {!cancelled && (
+    {!cancelled && subscription && (
       <button
         onClick={cancelPopup}
         className='bg-red hover:bg-redDark w-[200px] rounded-md font-medium my-3 mx-auto py-3 text-black'

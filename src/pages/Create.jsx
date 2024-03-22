@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import preview from '../assets/preview.png';
@@ -32,15 +32,20 @@ const Create = () => {
   const [regenImageRequired, setRegenImageRequired] = useState(false);
   const [regenCaptionRequired, setRegenCaptionRequired] = useState(false);
   const [regenKeywordsRequired, setRegenKeywordsRequired] = useState(false);
-  const [imageSize, setImageSize] = useState('256x256');
+  const [imageSize, setImageSize] = useState('');
   const [shareCreation, setShareCreation] = useState(true);
   const [showRegenerateImageModal, setShowRegenerateImageModal] =
     useState(false);
+  const [showUpgradePlanModal, setShowUpgradePlanModal] = useState(false);
 
-  const { token, _id } = useSelector((state) => state.user) || {};
+  const { token, _id, subscription } = useSelector((state) => state.user) || {};
+  const { plan, imagesRemaining } = subscription || {};
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setForm({ ...form, createdBy: _id });
+    if (plan === 'free') setImageSize('256x256');
+    else setImageSize('1024x1024');
   }, [_id]);
 
   const navigate = useNavigate();
@@ -53,14 +58,39 @@ const Create = () => {
 
     try {
       setGeneratingImg(true);
-      const res = await createImage(token, form.prompt, imageSize);
-      setForm((prevForm) => ({
-        ...prevForm,
-        photo: `data:image/jpeg;base64,${res.data.photo}`,
-      }));
+      const res = await createImage(
+        token,
+        _id,
+        form.prompt,
+        imageSize,
+        plan,
+        imagesRemaining
+      );
+      console.log(res);
+      if (res.data.photo) {
+        dispatch({
+          type: 'LOGGED_IN_USER',
+          payload: {
+            token,
+            _id: res.data.user._id,
+            email: res.data.user.email,
+            name: res.data.user.name,
+            bio: res.data.user.bio,
+            profileImage: res.data.user.profileImage,
+            coverImage: res.data.user.coverImage,
+            subscription: res.data.user.subscription,
+          },
+        });
+        setForm((prevForm) => ({
+          ...prevForm,
+          photo: `data:image/jpeg;base64,${res.data.photo}`,
+        }));
+      } else {
+        setShowUpgradePlanModal(true);
+      }
 
       if (captionRequired) {
-        const captionRes = await createCaption(token, form.prompt);
+        const captionRes = await createCaption(token, form.prompt, plan);
         setForm((prevForm) => ({
           ...prevForm,
           caption: captionRes.data.caption,
@@ -68,7 +98,7 @@ const Create = () => {
       }
 
       if (keywordsRequired) {
-        const keywordsRes = await createKeywords(token, form.prompt);
+        const keywordsRes = await createKeywords(token, form.prompt, plan);
         setForm((prevForm) => ({
           ...prevForm,
           keywords: keywordsRes.data.keywords,
@@ -91,15 +121,39 @@ const Create = () => {
       setGeneratingImg(true);
 
       if (regenImageRequired) {
-        const res = await createImage(token, form.prompt, imageSize);
-        setForm((prevForm) => ({
-          ...prevForm,
-          photo: `data:image/jpeg;base64,${res.data.photo}`,
-        }));
+        const res = await createImage(
+          token,
+          _id,
+          form.prompt,
+          imageSize,
+          plan,
+          imagesRemaining
+        );
+        if (res.data.photo) {
+          dispatch({
+            type: 'LOGGED_IN_USER',
+            payload: {
+              token,
+              _id: res.data.user._id,
+              email: res.data.user.email,
+              name: res.data.user.name,
+              bio: res.data.user.bio,
+              profileImage: res.data.user.profileImage,
+              coverImage: res.data.user.coverImage,
+              subscription: res.data.user.subscription,
+            },
+          });
+          setForm((prevForm) => ({
+            ...prevForm,
+            photo: `data:image/jpeg;base64,${res.data.photo}`,
+          }));
+        } else {
+          setShowUpgradePlanModal(true);
+        }
       }
 
       if (regenCaptionRequired) {
-        const captionRes = await createCaption(token, form.prompt);
+        const captionRes = await createCaption(token, form.prompt, plan);
         setForm((prevForm) => ({
           ...prevForm,
           caption: captionRes.data.caption,
@@ -107,7 +161,7 @@ const Create = () => {
       }
 
       if (regenKeywordsRequired) {
-        const keywordsRes = await createKeywords(token, form.prompt);
+        const keywordsRes = await createKeywords(token, form.prompt, plan);
         setForm((prevForm) => ({
           ...prevForm,
           keywords: keywordsRes.data.keywords,
@@ -125,7 +179,7 @@ const Create = () => {
     if (form.prompt && form.photo) {
       setIsLoading(true);
       try {
-        await saveCreation(token, form, shareCreation, imageSize)
+        await saveCreation(token, form, shareCreation, imageSize, plan)
           .then((res) => {
             console.log('res => ', res.data);
           })
@@ -212,6 +266,7 @@ const Create = () => {
                 <StaggeredDropDown
                   imageSize={imageSize}
                   setImageSize={setImageSize}
+                  plan={plan}
                 />
               </div>
             </div>
@@ -259,12 +314,16 @@ const Create = () => {
           <div className='my-5 flex gap-5'>
             <button
               type='button'
-              onClick={!form.photo ? generateImg : regenerate}
+              onClick={
+                !form.photo && !form.caption && !form.keywords
+                  ? generateImg
+                  : regenerate
+              }
               className='text-black bg-main font-medium rounded-md text-sm w-64 px-5 py-2.5 text-center'
             >
               {generatingImg
                 ? 'Generating...'
-                : !form.photo
+                : !form.photo && !form.caption && !form.keywords
                 ? 'Generate CreAItion'
                 : 'Regenerate'}
             </button>
@@ -367,10 +426,30 @@ const Create = () => {
           <button
             type='button'
             onClick={regenerateImg}
-            className='text-black bg-main font-medium rounded-md text-sm w-64 px-5 py-2.5 my-4 text-center mx-auto block'
+            className='text-black bg-main hover:bg-mainDark font-medium rounded-md text-sm w-64 px-5 py-2.5 my-4 text-center mx-auto block'
           >
             Regenerate CreAition
           </button>
+        </Modal>
+        <Modal
+          isVisible={showUpgradePlanModal}
+          onClose={() => setShowUpgradePlanModal(false)}
+        >
+          <div className='p-6 lg:px-8 text-left'>
+            <h1 className='font-extrabold text-[32px]'>Oops!</h1>
+            <p className='mt-2 text-[#666e75] text-[16px] flex items-center'>
+              Looks like you've run out of image generations on your current
+              plan. Upgrade your plan to create more stunning CreAItions!
+            </p>
+          </div>
+          <div className='text-center mb-4'>
+            <button
+              onClick={() => navigate(`/subscription/${_id}`)}
+              className='bg-main hover:bg-mainDark w-[200px] rounded-md font-medium my-3 mx-auto py-3 text-black'
+            >
+              Upgrade now
+            </button>
+          </div>
         </Modal>
       </section>
     </>

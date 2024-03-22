@@ -132,6 +132,7 @@ const Subscription = () => {
               action={() => setShowUpgradeModal(true)}
               cancelled={cancelled}
               cancelPopup={cancelPopup}
+              subscription={true}
             />
           )}
           {subscription && plan === 'premium' && (
@@ -145,6 +146,7 @@ const Subscription = () => {
               action={() => setShowContactModal(true)}
               cancelled={cancelled}
               cancelPopup={cancelPopup}
+              subscription={true}
             />
           )}
           {subscription && plan === 'custom' && (
@@ -158,6 +160,7 @@ const Subscription = () => {
               action={() => setShowContactModal(true)}
               cancelled={cancelled}
               cancelPopup={cancelPopup}
+              subscription={true}
             />
           )}
         </div>

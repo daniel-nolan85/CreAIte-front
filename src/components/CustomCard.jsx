@@ -1,6 +1,6 @@
 import { MdDashboardCustomize } from 'react-icons/md';
 
-const CustomCard = ({ text, action, cancelled, cancelPopup }) => (
+const CustomCard = ({ text, action, cancelled, cancelPopup, subscription }) => (
   <div className='w-full shadow-xl flex flex-col p-4 my-4 rounded-lg hover:scale-105 duration-300'>
     <MdDashboardCustomize className='mx-auto mt-[-3rem] text-main' size={80} />
 
@@ -26,7 +26,7 @@ const CustomCard = ({ text, action, cancelled, cancelPopup }) => (
     >
       {text}
     </button>
-    {!cancelled && (
+    {!cancelled && subscription && (
       <button
         onClick={cancelPopup}
         className='bg-red hover:bg-redDark w-[200px] rounded-md font-medium my-3 mx-auto py-3 text-black'
