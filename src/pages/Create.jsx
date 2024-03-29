@@ -69,13 +69,13 @@ const Create = () => {
         plan,
         imagesRemaining
       );
-      console.log(res);
       if (res.data.photo) {
         dispatch({
           type: 'LOGGED_IN_USER',
           payload: {
             token,
             _id: res.data.user._id,
+            role: res.data.role,
             email: res.data.user.email,
             name: res.data.user.name,
             bio: res.data.user.bio,
@@ -142,6 +142,7 @@ const Create = () => {
             payload: {
               token,
               _id: res.data.user._id,
+              role: res.data.role,
               email: res.data.user.email,
               name: res.data.user.name,
               bio: res.data.user.bio,

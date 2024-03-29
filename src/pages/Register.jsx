@@ -88,6 +88,7 @@ const Register = () => {
             payload: {
               token: idToken,
               _id: res.data._id,
+              role: res.data.role,
               email: res.data.email,
               name: res.data.name,
               bio: res.data.bio,

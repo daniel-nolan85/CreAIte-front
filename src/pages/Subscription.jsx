@@ -51,12 +51,12 @@ const Subscription = () => {
     setIsCancelling(true);
     await cancelStripeSubscription(token, _id, subscriptionId)
       .then((res) => {
-        console.log(res.data);
         dispatch({
           type: 'LOGGED_IN_USER',
           payload: {
             token,
             _id: res.data._id,
+            role: res.data.role,
             email: res.data.email,
             name: res.data.name,
             bio: res.data.bio,

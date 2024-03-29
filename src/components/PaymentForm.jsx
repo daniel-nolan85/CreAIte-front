@@ -53,6 +53,7 @@ const PaymentForm = ({
                 payload: {
                   token,
                   _id: res.data._id,
+                  role: res.data.role,
                   email: res.data.email,
                   name: res.data.name,
                   bio: res.data.bio,

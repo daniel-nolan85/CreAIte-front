@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { app } from '../firebase';
 import { currentUser } from './requests/auth';
@@ -18,6 +18,7 @@ import Profile from './pages/Profile';
 import UserProfile from './pages/UserProfile';
 import Account from './pages/Account';
 import Subscription from './pages/Subscription';
+import ChatSupport from './pages/ChatSupport';
 
 const App = () => {
   useEffect(() => {
@@ -33,6 +34,7 @@ const App = () => {
               payload: {
                 token: idToken,
                 _id: res.data._id,
+                role: res.data.role,
                 email: res.data.email,
                 name: res.data.name,
                 bio: res.data.bio,
@@ -65,6 +67,7 @@ const App = () => {
         <Route path='/user-profile/:userId' element={<UserProfile />} />
         <Route path='/account/:userId' element={<Account />} />
         <Route path='/subscription/:userId' element={<Subscription />} />
+        <Route path='/chat-support' element={<ChatSupport />} />
       </Routes>
     </BrowserRouter>
   );

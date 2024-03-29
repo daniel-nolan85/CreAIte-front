@@ -96,6 +96,9 @@ const Navbar = () => {
             </>
           ) : (
             <>
+              <FlyoutLink href='/chat-support'>
+                <li className='p-4 cursor-pointer'>Support</li>
+              </FlyoutLink>
               <FlyoutLink href='/create'>
                 <li className='font-medium bg-main hover:bg-mainDark text-black px-4 py-2 mt-2 rounded-md cursor-pointer'>
                   Create
