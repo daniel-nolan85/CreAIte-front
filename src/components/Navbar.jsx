@@ -10,7 +10,8 @@ import defaultProfile from '../assets/profile.svg';
 const Navbar = () => {
   const [nav, setNav] = useState(false);
 
-  const { _id, profileImage, name } = useSelector((state) => state.user) || {};
+  const { _id, profileImage, name, role } =
+    useSelector((state) => state.user) || {};
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -57,6 +58,17 @@ const Navbar = () => {
             Subscription
           </Link>
         </div>
+        {role === 'admin' && (
+          <div className='mb-6 space-y-3 '>
+            <h3 className='font-semibold'>Admin Settings</h3>
+            <Link
+              to='/admin-dashboard'
+              className='block text-sm hover:underline'
+            >
+              Dashboard
+            </Link>
+          </div>
+        )}
         <button
           onClick={logout}
           className='w-full rounded-lg border-2 border-main px-4 py-2 font-semibold transition-colors hover:bg-main hover:text-black'

@@ -19,6 +19,7 @@ import UserProfile from './pages/UserProfile';
 import Account from './pages/Account';
 import Subscription from './pages/Subscription';
 import ChatSupport from './pages/ChatSupport';
+import AdminDashboard from './pages/admin/AdminDashboard';
 
 const App = () => {
   useEffect(() => {
@@ -68,6 +69,7 @@ const App = () => {
         <Route path='/account/:userId' element={<Account />} />
         <Route path='/subscription/:userId' element={<Subscription />} />
         <Route path='/chat-support' element={<ChatSupport />} />
+        <Route path='/admin-dashboard' element={<AdminDashboard />} />
       </Routes>
     </BrowserRouter>
   );
