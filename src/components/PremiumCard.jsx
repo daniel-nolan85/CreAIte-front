@@ -15,7 +15,7 @@ const PremiumCard = ({
       capabilities.
     </p>
     <p className='text-center text-4xl font-bold'>
-      $34.99{' '}
+      $44.99{' '}
       <span className='text-gray-500 text-[18px] ml-[-5px] font-normal'>
         /mo
       </span>

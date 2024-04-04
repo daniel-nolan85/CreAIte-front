@@ -2,7 +2,13 @@ import { useState } from 'react';
 import { FiChevronDown } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 
-const StaggeredDropDown = ({ imageSize, setImageSize, plan }) => {
+const StaggeredDropdown = ({
+  header,
+  option,
+  setOption,
+  dalleVersion,
+  options,
+}) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -13,7 +19,7 @@ const StaggeredDropDown = ({ imageSize, setImageSize, plan }) => {
           onClick={() => setOpen(!open)}
           className='flex items-center gap-2 px-8 py-2 rounded-md text-black bg-main hover:bg-mainDark'
         >
-          <span className='font-medium text-sm'>{imageSize}</span>
+          <span className='font-medium text-sm'>{option}</span>
           <motion.span variants={iconVariants}>
             <FiChevronDown />
           </motion.span>
@@ -25,36 +31,67 @@ const StaggeredDropDown = ({ imageSize, setImageSize, plan }) => {
           style={{ originY: 'top', translateX: '-50%' }}
           className='z-50 flex flex-col gap-2 p-2 rounded-lg bg-white shadow-xl absolute top-[120%] left-[50%] w-48 overflow-hidden'
         >
-          <p className='pl-4 text-sm font-medium text-gray-900'>
-            Select image size
-          </p>
-          <Option
-            setOpen={setOpen}
-            setImageSize={setImageSize}
-            text={plan === 'free' ? '256x256' : '1024x1024'}
-          />
-          <Option
-            setOpen={setOpen}
-            setImageSize={setImageSize}
-            text={plan === 'free' ? '512x512' : '1792x1024'}
-          />
-          <Option
-            setOpen={setOpen}
-            setImageSize={setImageSize}
-            text={plan === 'free' ? '1024x1024' : '1024x1792'}
-          />
+          <p className='pl-4 text-sm font-medium text-gray-900'>{header}</p>
+          {dalleVersion ? (
+            <>
+              <Option
+                setOpen={setOpen}
+                setOption={setOption}
+                text={dalleVersion === 'Dall-E-2' ? '256x256' : '1024x1024'}
+              />
+              <Option
+                setOpen={setOpen}
+                setOption={setOption}
+                text={dalleVersion === 'Dall-E-2' ? '512x512' : '1792x1024'}
+              />
+              <Option
+                setOpen={setOpen}
+                setOption={setOption}
+                text={dalleVersion === 'Dall-E-2' ? '1024x1024' : '1024x1792'}
+              />
+            </>
+          ) : options === 'dalle' ? (
+            <>
+              <Option setOpen={setOpen} setOption={setOption} text='Dall-E-2' />
+              <Option setOpen={setOpen} setOption={setOption} text='Dall-E-3' />
+            </>
+          ) : options === 'gpt' ? (
+            <>
+              <Option setOpen={setOpen} setOption={setOption} text='GPT-3.5' />
+              <Option
+                setOpen={setOpen}
+                setOption={setOption}
+                text='GPT-4 Turbo'
+              />
+            </>
+          ) : (
+            options === 'support' && (
+              <>
+                <Option
+                  setOpen={setOpen}
+                  setOption={setOption}
+                  text='Standard'
+                />
+                <Option
+                  setOpen={setOpen}
+                  setOption={setOption}
+                  text='Priority'
+                />
+              </>
+            )
+          )}
         </motion.ul>
       </motion.div>
     </div>
   );
 };
 
-const Option = ({ text, setOpen, setImageSize }) => {
+const Option = ({ text, setOpen, setOption }) => {
   return (
     <motion.li
       variants={itemVariants}
       onClick={() => {
-        setImageSize(text);
+        setOption(text);
         setOpen(false);
       }}
       className='flex items-center gap-2 w-full p-2 text-sm font-medium whitespace-nowrap rounded-md hover:bg-main text-black hover:text-black cursor-pointer'
@@ -65,7 +102,7 @@ const Option = ({ text, setOpen, setImageSize }) => {
   );
 };
 
-export default StaggeredDropDown;
+export default StaggeredDropdown;
 
 const wrapperVariants = {
   open: {

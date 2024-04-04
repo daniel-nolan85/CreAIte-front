@@ -14,11 +14,13 @@ import Modal from '../components/Modal';
 import PaymentForm from '../components/PaymentForm';
 import CreditCard from '../components/CreditCard';
 import LoaderBlack from '../components/LoaderBlack';
+import StaggeredDropdown from '../components/StaggeredDropdown';
+import FormField from '../components/FormField';
 import { cancelStripeSubscription } from '../requests/stripe';
 
 const Subscription = () => {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
-  const [showContactModal, setShowContactModal] = useState(false);
+  const [showPersonalizeModal, setShowPersonalizeModal] = useState(false);
   const [showStripeModal, setShowStripeModal] = useState(false);
   const [showPaymentCompletionModal, setShowPaymentCompletionModal] =
     useState(false);
@@ -27,15 +29,22 @@ const Subscription = () => {
   const [amount, setAmount] = useState();
   const [stripePromise, setStripePromise] = useState(null);
   const [card, setCard] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
-
-  useEffect(() => {
-    setStripePromise(loadStripe(`${import.meta.env.VITE_STRIPE_PUB_KEY}`));
-  }, []);
+  const [customOptions, setCustomOptions] = useState({
+    dallEVersion: 'Select',
+    gptVersion: 'Select',
+    customerSupport: 'Select',
+    numCreAItions: null,
+  });
 
   const { token, _id, name, email, subscription } =
     useSelector((state) => state.user) || {};
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    setStripePromise(loadStripe(`${import.meta.env.VITE_STRIPE_PUB_KEY}`));
+  }, []);
 
   const upgradeMembership = (amount) => {
     setAmount(amount);
@@ -72,8 +81,43 @@ const Subscription = () => {
       .finally(() => setIsCancelling(false));
   };
 
-  const { plan, imagesRemaining, expiry, subscriptionId, cancelled } =
-    subscription || {};
+  const calculateCustomAmount = async (e) => {
+    e.preventDefault();
+    if (!customOptions.numCreAItions) {
+      toast.error(
+        'Please enter the number of CreAItions you want to receive per month'
+      );
+      return;
+    }
+
+    let fee = 0;
+
+    if (customOptions.dallEVersion === 'Dall-E-2') {
+      fee += customOptions.numCreAItions * 5;
+    } else if (customOptions.dallEVersion === 'Dall-E-3') {
+      fee += customOptions.numCreAItions * 15;
+    }
+    if (customOptions.gptVersion === 'GPT-4 Turbo') {
+      fee += 1000;
+    }
+    if (customOptions.customerSupport === 'Priority') {
+      fee += 499;
+    }
+    setShowPersonalizeModal(false);
+    upgradeMembership(fee);
+  };
+
+  const {
+    plan,
+    cost,
+    imagesRemaining,
+    expiry,
+    subscriptionId,
+    cancelled,
+    dalleVersion,
+    gptVersion,
+    customerSupport,
+  } = subscription || {};
 
   if (!_id) {
     return <PageLoader />;
@@ -143,7 +187,7 @@ const Subscription = () => {
                   ? `${imagesRemaining} image generation`
                   : `${imagesRemaining} image generations`
               }
-              action={() => setShowContactModal(true)}
+              action={() => setShowPersonalizeModal(true)}
               cancelled={cancelled}
               cancelPopup={cancelPopup}
               subscription={true}
@@ -151,13 +195,17 @@ const Subscription = () => {
           )}
           {subscription && plan === 'custom' && (
             <CustomCard
-              text='Contact Us'
+              text='Personalize'
+              cost={cost}
               imagesNum={
                 imagesRemaining === 1
                   ? `${imagesRemaining} image generation`
                   : `${imagesRemaining} image generations`
               }
-              action={() => setShowContactModal(true)}
+              dalleVersion={dalleVersion}
+              gptVersion={gptVersion}
+              customerSupport={customerSupport}
+              action={() => setShowPersonalizeModal(true)}
               cancelled={cancelled}
               cancelPopup={cancelPopup}
               subscription={true}
@@ -183,12 +231,12 @@ const Subscription = () => {
                   text='Select'
                   imagesNum='100 image generations'
                   emphasize={false}
-                  action={() => upgradeMembership(1499)}
+                  action={() => upgradeMembership(1999)}
                 />
                 <PremiumCard
                   text='Select'
                   imagesNum='200 image generations'
-                  action={() => upgradeMembership(3499)}
+                  action={() => upgradeMembership(4499)}
                 />
               </div>
             )}
@@ -197,25 +245,79 @@ const Subscription = () => {
                 <PremiumCard
                   text='Select'
                   imagesNum='200 image generations'
-                  action={() => upgradeMembership(3499)}
+                  action={() => upgradeMembership(4499)}
                 />
               </div>
             )}
           </div>
         </Modal>
         <Modal
-          isVisible={showContactModal}
-          onClose={() => setShowContactModal(false)}
+          isVisible={showPersonalizeModal}
+          onClose={() => setShowPersonalizeModal(false)}
         >
           <div className='p-6 lg:px-8 text-left'>
             <h1 className='font-extrabold text-[32px]'>
               Let's tailor your plan
             </h1>
             <p className='mt-2 text-[#666e75] text-[16px] flex items-center'>
-              Please complete the form below to provide details on your
-              requirements. This will help us understand your needs better and
-              tailor a plan that suits you best.
+              Please select from the options below to customize your plan.
             </p>
+            <form className='mt-8' onSubmit={calculateCustomAmount}>
+              <div className='flex justify-between items-center mb-4'>
+                <StaggeredDropdown
+                  header='Choose Dall-E version'
+                  option={customOptions.dallEVersion}
+                  setOption={(value) =>
+                    setCustomOptions((prevState) => ({
+                      ...prevState,
+                      dallEVersion: value,
+                    }))
+                  }
+                  options='dalle'
+                />
+                <StaggeredDropdown
+                  header='Choose GPT version'
+                  option={customOptions.gptVersion}
+                  setOption={(value) =>
+                    setCustomOptions((prevState) => ({
+                      ...prevState,
+                      gptVersion: value,
+                    }))
+                  }
+                  options='gpt'
+                />
+                <StaggeredDropdown
+                  header='Choose customer support level'
+                  option={customOptions.customerSupport}
+                  setOption={(value) =>
+                    setCustomOptions((prevState) => ({
+                      ...prevState,
+                      customerSupport: value,
+                    }))
+                  }
+                  options='support'
+                />
+              </div>
+              <FormField
+                labelName='Number of CreAItions'
+                type='number'
+                name='numCreAItions'
+                placeholder='Enter the number of CreAItions needed per month'
+                value={customOptions.numCreAItions}
+                handleChange={(e) => {
+                  setCustomOptions({
+                    ...customOptions,
+                    [e.target.name]: e.target.value,
+                  });
+                }}
+              />
+              <button
+                type='submit'
+                className='w-40 mt-4 text-black bg-main hover:bg-mainDark font-medium rounded-md text-sm px-5 py-2.5 text-center'
+              >
+                {isLoading ? <LoaderBlack /> : 'Submit'}
+              </button>
+            </form>
           </div>
         </Modal>
         <Modal
@@ -236,6 +338,8 @@ const Subscription = () => {
               <Elements stripe={stripePromise}>
                 <PaymentForm
                   amount={amount}
+                  customOptions={customOptions}
+                  setCustomOptions={setCustomOptions}
                   setShowStripeModal={setShowStripeModal}
                   setShowPaymentCompletionModal={setShowPaymentCompletionModal}
                   setCard={setCard}

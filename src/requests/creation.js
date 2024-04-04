@@ -1,10 +1,10 @@
 import axios from 'axios';
 import FileSaver from 'file-saver';
 
-export const createPrompt = async (authtoken, plan) => {
+export const createPrompt = async (authtoken, gptVersion) => {
   return await axios.post(
     `${import.meta.env.VITE_API_URL}/create-prompt`,
-    { plan },
+    { gptVersion },
     {
       headers: {
         authtoken,
@@ -18,12 +18,12 @@ export const createImage = async (
   _id,
   prompt,
   imageSize,
-  plan,
+  dalleVersion,
   imagesRemaining
 ) => {
   return await axios.post(
     `${import.meta.env.VITE_API_URL}/create-image`,
-    { _id, prompt, imageSize, plan, imagesRemaining },
+    { _id, prompt, imageSize, dalleVersion, imagesRemaining },
     {
       headers: {
         authtoken,
@@ -32,10 +32,10 @@ export const createImage = async (
   );
 };
 
-export const createCaption = async (authtoken, prompt, plan) => {
+export const createCaption = async (authtoken, prompt, gptVersion) => {
   return await axios.post(
     `${import.meta.env.VITE_API_URL}/create-caption`,
-    { prompt, plan },
+    { prompt, gptVersion },
     {
       headers: {
         authtoken,
@@ -44,10 +44,10 @@ export const createCaption = async (authtoken, prompt, plan) => {
   );
 };
 
-export const createKeywords = async (authtoken, prompt, plan) => {
+export const createKeywords = async (authtoken, prompt, gptVersion) => {
   return await axios.post(
     `${import.meta.env.VITE_API_URL}/create-keywords`,
-    { prompt, plan },
+    { prompt, gptVersion },
     {
       headers: {
         authtoken,
@@ -61,11 +61,11 @@ export const saveCreation = async (
   form,
   sharing,
   imageSize,
-  plan
+  dalleVersion
 ) => {
   return await axios.post(
     `${import.meta.env.VITE_API_URL}/save-creation`,
-    { form, sharing, imageSize, plan },
+    { form, sharing, imageSize, dalleVersion },
     {
       headers: {
         authtoken,

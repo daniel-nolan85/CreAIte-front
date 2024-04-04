@@ -172,8 +172,14 @@ const Register = () => {
             <div className='w-full flex items-center'>
               <input type='checkbox' className='w-4 h-4 mr-2' />
               <p className='text-sm text-black'>
-                I agree to <span className='font-bold text-main'>Terms</span>{' '}
-                and <span className='font-bold text-main'>Privacy Policy</span>
+                I agree to{' '}
+                <span className='font-bold text-main cursor-pointer'>
+                  Terms
+                </span>{' '}
+                and{' '}
+                <span className='font-bold text-main cursor-pointer'>
+                  Privacy Policy
+                </span>
               </p>
             </div>
           </div>

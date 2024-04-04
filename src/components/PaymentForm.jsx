@@ -7,6 +7,8 @@ import { updateUserSubscription } from '../requests/user';
 
 const PaymentForm = ({
   amount,
+  customOptions,
+  setCustomOptions,
   setShowStripeModal,
   setShowPaymentCompletionModal,
   setCard,
@@ -45,6 +47,7 @@ const PaymentForm = ({
             token,
             _id,
             amount,
+            customOptions,
             res.data.subscriptionId
           )
             .then((res) => {
@@ -64,6 +67,12 @@ const PaymentForm = ({
               });
               setShowStripeModal(false);
               setShowPaymentCompletionModal(true);
+              setCustomOptions({
+                dallEVersion: 'Select',
+                gptVersion: 'Select',
+                customerSupport: 'Select',
+                numCreAItions: null,
+              });
             })
             .catch((err) => console.error(err));
         })

@@ -9,7 +9,7 @@ import LoaderBlack from '../components/LoaderBlack';
 import Navbar from '../components/Navbar';
 import Modal from '../components/Modal';
 import Keywords from '../components/Keywords';
-import StaggeredDropDown from '../components/StaggeredDropdown';
+import StaggeredDropdown from '../components/StaggeredDropdown';
 import {
   createPrompt,
   createImage,
@@ -42,12 +42,13 @@ const Create = () => {
   const [expanded, setExpanded] = useState(false);
 
   const { token, _id, subscription } = useSelector((state) => state.user) || {};
-  const { plan, imagesRemaining } = subscription || {};
+  const { plan, imagesRemaining, dalleVersion, gptVersion } =
+    subscription || {};
   const dispatch = useDispatch();
 
   useEffect(() => {
     setForm({ ...form, createdBy: _id });
-    if (plan === 'free') setImageSize('256x256');
+    if (dalleVersion === 'Dall-E-2') setImageSize('256x256');
     else setImageSize('1024x1024');
   }, [_id]);
 
@@ -66,7 +67,7 @@ const Create = () => {
         _id,
         form.prompt,
         imageSize,
-        plan,
+        dalleVersion,
         imagesRemaining
       );
       if (res.data.photo) {
@@ -93,7 +94,7 @@ const Create = () => {
       }
 
       if (captionRequired) {
-        const captionRes = await createCaption(token, form.prompt, plan);
+        const captionRes = await createCaption(token, form.prompt, gptVersion);
         setForm((prevForm) => ({
           ...prevForm,
           caption: captionRes.data.caption,
@@ -101,7 +102,11 @@ const Create = () => {
       }
 
       if (keywordsRequired) {
-        const keywordsRes = await createKeywords(token, form.prompt, plan);
+        const keywordsRes = await createKeywords(
+          token,
+          form.prompt,
+          gptVersion
+        );
         setForm((prevForm) => ({
           ...prevForm,
           keywords: keywordsRes.data.keywords,
@@ -133,7 +138,7 @@ const Create = () => {
           _id,
           form.prompt,
           imageSize,
-          plan,
+          dalleVersion,
           imagesRemaining
         );
         if (res.data.photo) {
@@ -161,7 +166,7 @@ const Create = () => {
       }
 
       if (regenCaptionRequired) {
-        const captionRes = await createCaption(token, form.prompt, plan);
+        const captionRes = await createCaption(token, form.prompt, gptVersion);
         setForm((prevForm) => ({
           ...prevForm,
           caption: captionRes.data.caption,
@@ -169,7 +174,11 @@ const Create = () => {
       }
 
       if (regenKeywordsRequired) {
-        const keywordsRes = await createKeywords(token, form.prompt, plan);
+        const keywordsRes = await createKeywords(
+          token,
+          form.prompt,
+          gptVersion
+        );
         setForm((prevForm) => ({
           ...prevForm,
           keywords: keywordsRes.data.keywords,
@@ -187,7 +196,7 @@ const Create = () => {
     if (form.prompt && form.photo) {
       setIsLoading(true);
       try {
-        await saveCreation(token, form, shareCreation, imageSize, plan)
+        await saveCreation(token, form, shareCreation, imageSize, dalleVersion)
           .then((res) => {
             console.log('res => ', res.data);
           })
@@ -211,7 +220,7 @@ const Create = () => {
 
   const handleSurpriseMe = async () => {
     setGeneratingPrompt(true);
-    const promptRes = await createPrompt(plan);
+    const promptRes = await createPrompt(gptVersion);
     setForm((prevForm) => ({
       ...prevForm,
       prompt: promptRes.data.prompt,
@@ -277,10 +286,11 @@ const Create = () => {
                 </label>
               </div>
               <div className='flex items-center'>
-                <StaggeredDropDown
-                  imageSize={imageSize}
-                  setImageSize={setImageSize}
-                  plan={plan}
+                <StaggeredDropdown
+                  header='Select image size'
+                  option={imageSize}
+                  setOption={setImageSize}
+                  dalleVersion={dalleVersion}
                 />
               </div>
             </div>
@@ -416,9 +426,11 @@ const Create = () => {
               </label>
             </div>
             <div className='w-1/2 flex'>
-              <StaggeredDropDown
-                imageSize={imageSize}
-                setImageSize={setImageSize}
+              <StaggeredDropdown
+                header='Select image size'
+                option={imageSize}
+                setOption={setImageSize}
+                dalleVersion={dalleVersion}
               />
             </div>
           </div>
