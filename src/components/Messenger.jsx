@@ -8,8 +8,6 @@ const Messenger = ({
   _id,
   scrollRef,
 }) => {
-  console.log({ messages });
-
   return (
     <div className='messenger'>
       <div className='chatBox'>

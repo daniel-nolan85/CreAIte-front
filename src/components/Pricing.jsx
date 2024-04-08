@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import CustomCard from './CustomCard';
 import DeluxeCard from './DeluxeCard';
@@ -15,6 +15,16 @@ const Pricing = () => {
   const [customerSupport, setCustomerSupport] = useState('Standard');
   const [numCreAItions, setNumCreAItions] = useState(null);
   const [quote, setQuote] = useState(null);
+
+  useEffect(() => {
+    if (!showPersonalizeModal) {
+      setDallEVersion('');
+      setGptVersion('');
+      setCustomerSupport('');
+      setNumCreAItions(null);
+      setQuote(null);
+    }
+  }, [showPersonalizeModal]);
 
   const calculateCustomAmount = async (e) => {
     e.preventDefault();

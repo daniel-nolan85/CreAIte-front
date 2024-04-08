@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
-import { MdDashboard, MdOutlineMessage, MdLogout } from 'react-icons/md';
+import { useState, useEffect } from 'react';
+import { MdDashboard, MdOutlineMessage } from 'react-icons/md';
 import { SiSimpleanalytics } from 'react-icons/si';
-import { LiaToolsSolid } from 'react-icons/lia';
-import { IoSettingsSharp } from 'react-icons/io5';
-import { FaArrowRight, FaArrowLeft } from 'react-icons/fa';
+import { IoMdImages } from 'react-icons/io';
+import { FaUsers, FaArrowRight, FaArrowLeft } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
 const variants = {
@@ -15,27 +14,31 @@ const navItems = [
   {
     name: 'Dashboard',
     icon: MdDashboard,
+    state: 'showDashboard',
   },
   {
     name: 'Analytics',
     icon: SiSimpleanalytics,
+    state: 'showAnalytics',
   },
   {
-    name: 'Message',
+    name: 'Messages',
     icon: MdOutlineMessage,
+    state: 'showMessages',
   },
   {
-    name: 'Tools',
-    icon: LiaToolsSolid,
+    name: 'Users',
+    icon: FaUsers,
+    state: 'showUsers',
   },
   {
-    name: 'Settings',
-    icon: IoSettingsSharp,
+    name: 'CreAItions',
+    icon: IoMdImages,
+    state: 'showCreAItions',
   },
 ];
 
-const Sidebar = () => {
-  const [activeNavIndex, setActiveNavIndex] = useState(0);
+const Sidebar = ({ activeNavItem, setActiveNavItem }) => {
   const [isExpanded, setIsExpanded] = useState(true);
 
   useEffect(() => {
@@ -55,11 +58,15 @@ const Sidebar = () => {
     };
   }, []);
 
+  const handleNavItemClick = (state) => {
+    setActiveNavItem(state);
+  };
+
   return (
     <motion.section
       animate={isExpanded ? 'expanded' : 'nonExpanded'}
       variants={variants}
-      className='w-1/5 bg-[#000300] h-screen flex flex-col items-center relative px-6'
+      className='admin-sidebar w-1/5 bg-[#000300] flex flex-col items-center relative px-6'
     >
       <div className='flex flex-col justify-center items-center gap-8'>
         <div
@@ -72,12 +79,12 @@ const Sidebar = () => {
               id='link-box'
               className={
                 'flex justify-start items-center gap-4 w-full cursor-pointer rounded-xl ' +
-                (activeNavIndex === index
+                (activeNavItem === item.state
                   ? 'bg-main text-black '
                   : 'text-white ') +
                 (isExpanded ? 'px-6 py-2' : 'p-2')
               }
-              onClick={() => setActiveNavIndex(index)}
+              onClick={() => handleNavItemClick(item.state)}
             >
               <div className='bg-main text-black p-2 rounded-full'>
                 <item.icon className='md:w-6 w-4 h-4 md:h-6' />
