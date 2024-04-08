@@ -24,6 +24,10 @@ export const options = {
     legend: {
       position: 'top',
     },
+    title: {
+      display: true,
+      text: `${new Date().getFullYear()}`,
+    },
   },
 };
 

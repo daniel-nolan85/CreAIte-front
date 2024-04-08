@@ -74,6 +74,10 @@ export const saveCreation = async (
   );
 };
 
+export const fetchAllCreations = async () => {
+  return await axios.get(`${import.meta.env.VITE_API_URL}/fetch-all-creations`);
+};
+
 export const fetchSharedCreations = async () => {
   return await axios.get(
     `${import.meta.env.VITE_API_URL}/fetch-shared-creations`
@@ -89,6 +93,12 @@ export const fetchUserCreations = async (authtoken, _id) => {
         authtoken,
       },
     }
+  );
+};
+
+export const fetchRandomCreations = async () => {
+  return await axios.get(
+    `${import.meta.env.VITE_API_URL}/fetch-random-creations`
   );
 };
 

@@ -12,9 +12,9 @@ const Admin = () => {
 
   return (
     <>
-      <main className='w-full h-screen '>
+      <main className='w-full h-screen'>
         <Navbar />
-        <div className='flex justify-between items-start'>
+        <div className='flex justify-between items-start bg-[#000300]'>
           <Sidebar
             activeNavItem={activeNavItem}
             setActiveNavItem={setActiveNavItem}

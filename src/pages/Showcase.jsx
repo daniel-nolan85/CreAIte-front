@@ -31,13 +31,22 @@ const Showcase = () => {
     setIsLoading(true);
     await fetchSharedCreations()
       .then((res) => {
-        setSharedCreations(res.data.reverse());
+        const shuffledCreations = shuffleArray(res.data);
+        setSharedCreations(shuffledCreations);
         setIsLoading(false);
       })
       .catch((error) => {
         alert(error);
         setIsLoading(false);
       });
+  };
+
+  const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
   };
 
   const handleSearchChange = (e) => {

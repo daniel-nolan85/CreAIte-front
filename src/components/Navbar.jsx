@@ -107,7 +107,7 @@ const Navbar = () => {
             <>
               <FlyoutLink href='/create'>
                 <li className='font-medium bg-main hover:bg-mainDark text-black px-4 py-2 mt-2 rounded-md cursor-pointer'>
-                  Create
+                  Creaite
                 </li>
               </FlyoutLink>
               <div className='ml-4 pt-1'>
@@ -137,6 +137,11 @@ const Navbar = () => {
           </h1>
 
           <ul className='uppercase p-4'>
+            <Link to='/showcase'>
+              <li className='p-4 cursor-pointer border-b border-gray-600'>
+                Showcase
+              </li>
+            </Link>
             <Link to='/about'>
               <li className='p-4 cursor-pointer border-b border-gray-600'>
                 About
@@ -147,14 +152,35 @@ const Navbar = () => {
                 Contact
               </li>
             </Link>
-            <Link to='/login'>
-              <li className='p-4 cursor-pointer border-b border-gray-600'>
-                Login
-              </li>
-            </Link>
-            <Link to='/signup'>
-              <li className='p-4 cursor-pointer'>Signup</li>
-            </Link>
+            {!_id ? (
+              <>
+                <Link to='/login'>
+                  <li className='p-4 cursor-pointer border-b border-gray-600'>
+                    Login
+                  </li>
+                </Link>
+                <Link to='/signup'>
+                  <li className='p-4 cursor-pointer'>Signup</li>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link to='/create'>
+                  <li className='font-medium bg-main hover:bg-mainDark text-black px-4 py-2 mt-4 rounded-md cursor-pointer'>
+                    Creaite
+                  </li>
+                </Link>
+                <div className='ml-4 pt-4'>
+                  <FlyoutLink href='#' FlyoutContent={profileContent}>
+                    <img
+                      src={profileImage ? profileImage.url : defaultProfile}
+                      alt={`${name}'s profile picture`}
+                      className='w-12 rounded-full'
+                    />
+                  </FlyoutLink>
+                </div>
+              </>
+            )}
           </ul>
         </div>
       </div>

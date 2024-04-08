@@ -1,6 +1,6 @@
 const Users = () => {
   return (
-    <section className='w-full p-4'>
+    <section className='w-full p-4 bg-white'>
       <div>
         <h1 className='font-extrabold text-[32px]'>Users</h1>
         <p className='mt-2 text-[#666e75] text-[16px]'>

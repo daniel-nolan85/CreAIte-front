@@ -35,7 +35,6 @@ const App = () => {
 
   const scrollRef = useRef(null);
   const socket = useRef();
-  console.log({ socket });
 
   const { token, _id, role, name, profileImage } =
     useSelector((state) => state.user) || {};
@@ -78,7 +77,6 @@ const App = () => {
       { secure: true }
     );
     socket.current.on('getMessage', (data) => {
-      console.log({ data });
       setArrivalMessage({
         sender: data.sender,
         content: data.message,

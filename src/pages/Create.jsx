@@ -233,7 +233,7 @@ const Create = () => {
       <Navbar />
       <section className='max-w-7xl mx-auto p-4'>
         <div>
-          <h1 className='font-extrabold text-[32px]'>Create</h1>
+          <h1 className='font-extrabold text-[32px]'>CreAIte</h1>
           <p className='mt-2 text-[#666e75] text-[16px]'>
             Unleash your imagination and generate stunning visuals with our
             AI-powered image creation tool, turning your ideas into reality at

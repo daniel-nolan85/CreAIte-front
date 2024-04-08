@@ -18,8 +18,6 @@ const Messages = () => {
   const scrollRef = useRef(null);
   const socket = useRef();
 
-  console.log({ socket });
-
   useEffect(() => {
     socket.current = io(
       import.meta.env.VITE_SOCKET_IO,
@@ -28,7 +26,6 @@ const Messages = () => {
       { secure: true }
     );
     socket.current.on('getMessage', (data) => {
-      console.log({ data });
       setArrivalMessage({
         sender: data.sender,
         content: data.message,
@@ -108,7 +105,7 @@ const Messages = () => {
     }
   };
   return (
-    <section className='w-full p-4'>
+    <section className='w-full p-4 bg-white'>
       <AdminMessenger
         conversations={conversations}
         currentChat={currentChat}

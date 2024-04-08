@@ -68,7 +68,7 @@ const Sidebar = ({ activeNavItem, setActiveNavItem }) => {
       variants={variants}
       className='admin-sidebar w-1/5 bg-[#000300] flex flex-col items-center relative px-6'
     >
-      <div className='flex flex-col justify-center items-center gap-8'>
+      <div className='flex flex-col justify-center items-center gap-8 fixed'>
         <div
           id='navlinks-box'
           className='flex flex-col justify-center items-start gap-5 w-full '

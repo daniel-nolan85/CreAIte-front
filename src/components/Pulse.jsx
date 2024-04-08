@@ -2,7 +2,7 @@ import { MdOutlineMessage } from 'react-icons/md';
 
 const Pulse = ({ setShowChatModal }) => {
   return (
-    <div className='pulse-container fixed bottom-10 right-10'>
+    <div className='pulse-container fixed bottom-10 right-10 z-50'>
       <button
         className='bg-main hover:bg-mainDark w-12 h-12 rounded-full relative flex items-center justify-center'
         onClick={() => setShowChatModal(true)}
