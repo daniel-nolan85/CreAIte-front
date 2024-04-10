@@ -143,7 +143,7 @@ const UserProfile = () => {
               ) : (
                 <RenderCards
                   data={userCreations}
-                  title='No creations found'
+                  title='No CreAItions found'
                   getUserCreations={getUserCreations}
                 />
               )}

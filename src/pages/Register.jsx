@@ -95,6 +95,8 @@ const Register = () => {
               profileImage: res.data.profileImage,
               coverImage: res.data.coverImage,
               subscription: res.data.subscription,
+              likes: res.data.likes,
+              downloads: res.data.downloads,
             },
           });
           navigate('/showcase');

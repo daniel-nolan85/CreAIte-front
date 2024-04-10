@@ -169,6 +169,8 @@ const Profile = () => {
             profileImage: res.data.profileImage,
             coverImage: res.data.coverImage,
             subscription: res.data.subscription,
+            likes: res.data.likes,
+            downloads: res.data.downloads,
           },
         });
         setIsLoading(false);
@@ -210,6 +212,8 @@ const Profile = () => {
             profileImage: res.data.profileImage,
             coverImage: res.data.coverImage,
             subscription: res.data.subscription,
+            likes: res.data.likes,
+            downloads: res.data.downloads,
           },
         });
         setShowModal(false);
@@ -374,7 +378,7 @@ const Profile = () => {
                       ? privateCreations
                       : likedCreations
                   }
-                  title='No creations found'
+                  title='No CreAItions found'
                   getUserCreations={getUserCreations}
                 />
               )}

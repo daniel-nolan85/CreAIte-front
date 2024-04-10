@@ -102,10 +102,11 @@ export const fetchRandomCreations = async () => {
   );
 };
 
-export const handleDownloadCreation = async (_id, photo) => {
+export const handleDownloadCreation = async (_id, photo, userId) => {
   FileSaver.saveAs(photo, `download-${_id}.jpg`);
   return await axios.put(`${import.meta.env.VITE_API_URL}/download-creation`, {
     _id,
+    userId,
   });
 };
 

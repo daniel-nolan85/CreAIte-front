@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import FormField from '../FormField';
 import Card from '../Card';
+import Loader from '../Loader';
 import { fetchAllCreations } from '../../requests/creation';
 
 const tabs = ['All', 'Shared', 'Private'];
@@ -58,6 +59,7 @@ const CreAItions = () => {
   const [searchText, setSearchText] = useState('');
   const [searchedResults, setSearchedResults] = useState(null);
   const [searchTimeout, setSearchTimeout] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { token, _id } = useSelector((state) => state.user) || {};
 
@@ -94,9 +96,10 @@ const CreAItions = () => {
           res.data.filter((creation) => creation.sharing === false)
         );
       })
-      .catch((error) => {
-        alert(error);
-      });
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(setIsLoading(false));
   };
 
   const handleSearchChange = (e) => {
@@ -124,72 +127,78 @@ const CreAItions = () => {
 
   return (
     <section className='w-full p-4 bg-white'>
-      <div>
-        <div className='px-4 flex items-center flex-wrap gap-2'>
-          {tabs.map((tab) => (
-            <Chip
-              text={tab}
-              selected={selected === tab}
-              setSelected={setSelected}
-              setSearchText={setSearchText}
-              key={tab}
+      {isLoading ? (
+        <div className='h-screen flex justify-center items-center'>
+          <Loader />
+        </div>
+      ) : (
+        <div>
+          <div className='px-4 flex items-center flex-wrap gap-2'>
+            {tabs.map((tab) => (
+              <Chip
+                text={tab}
+                selected={selected === tab}
+                setSelected={setSelected}
+                setSearchText={setSearchText}
+                key={tab}
+              />
+            ))}
+          </div>
+
+          <div className='container w-full py-4 mt-8'>
+            <FormField
+              labelName={`${
+                showAll
+                  ? 'Search all CreAItions'
+                  : showShared
+                  ? 'Search all shared CreAItions'
+                  : showPrivate && 'Search all private CreAItions'
+              }`}
+              type='text'
+              name='text'
+              placeholder={`${
+                showAll
+                  ? 'Search all CreAItions'
+                  : showShared
+                  ? 'Search all shared CreAItions'
+                  : showPrivate && 'Search all private CreAItions'
+              }`}
+              value={searchText}
+              handleChange={handleSearchChange}
             />
-          ))}
-        </div>
-
-        <div className='container w-full py-4 mt-8'>
-          <FormField
-            labelName={`${
-              showAll
-                ? 'Search all CreAItions'
-                : showShared
-                ? 'Search all shared CreAItions'
-                : showPrivate && 'Search all private CreAItions'
-            }`}
-            type='text'
-            name='text'
-            placeholder={`${
-              showAll
-                ? 'Search all CreAItions'
-                : showShared
-                ? 'Search all shared CreAItions'
-                : showPrivate && 'Search all private CreAItions'
-            }`}
-            value={searchText}
-            handleChange={handleSearchChange}
-          />
-        </div>
-        <div className='container w-full py-4'>
-          {searchText && (
-            <h2 className='font-medium text-[#666e75] text-xl mb-3'>
-              Showing results for{' '}
-              <span className='text-[#222328]'>{searchText}</span>
-            </h2>
-          )}
-
-          <div className='columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-3'>
-            {searchText ? (
-              <RenderCards
-                data={searchedResults}
-                title='No search results found'
-                getAllCreations={getAllCreations}
-              />
-            ) : (
-              <RenderCards
-                data={
-                  showAll
-                    ? allCreations
-                    : showShared
-                    ? sharedCreations
-                    : showPrivate && privateCreations
-                }
-                title='No creations found'
-                getAllCreations={getAllCreations}
-              />
+          </div>
+          <div className='container w-full py-4'>
+            {searchText && (
+              <h2 className='font-medium text-[#666e75] text-xl mb-3'>
+                Showing results for{' '}
+                <span className='text-[#222328]'>{searchText}</span>
+              </h2>
             )}
+
+            <div className='columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-3'>
+              {searchText ? (
+                <RenderCards
+                  data={searchedResults}
+                  title='No search results found'
+                  getAllCreations={getAllCreations}
+                />
+              ) : (
+                <RenderCards
+                  data={
+                    showAll
+                      ? allCreations
+                      : showShared
+                      ? sharedCreations
+                      : showPrivate && privateCreations
+                  }
+                  title='No creations found'
+                  getAllCreations={getAllCreations}
+                />
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </section>
   );
 };

@@ -112,7 +112,7 @@ const Showcase = () => {
                 ) : (
                   <RenderCards
                     data={sharedCreations}
-                    title='No creations found'
+                    title='No CreAItions found'
                     getSharedCreations={getSharedCreations}
                   />
                 )}

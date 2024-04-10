@@ -83,6 +83,8 @@ const Create = () => {
             profileImage: res.data.user.profileImage,
             coverImage: res.data.user.coverImage,
             subscription: res.data.user.subscription,
+            likes: res.data.likes,
+            downloads: res.data.downloads,
           },
         });
         setForm((prevForm) => ({
@@ -154,6 +156,8 @@ const Create = () => {
               profileImage: res.data.user.profileImage,
               coverImage: res.data.user.coverImage,
               subscription: res.data.user.subscription,
+              likes: res.data.likes,
+              downloads: res.data.downloads,
             },
           });
           setForm((prevForm) => ({

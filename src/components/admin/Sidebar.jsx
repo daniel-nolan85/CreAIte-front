@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
 import { MdDashboard, MdOutlineMessage } from 'react-icons/md';
-import { SiSimpleanalytics } from 'react-icons/si';
 import { IoMdImages } from 'react-icons/io';
-import { FaUsers, FaArrowRight, FaArrowLeft } from 'react-icons/fa';
+import {
+  FaUsers,
+  FaMoneyBillWave,
+  FaArrowRight,
+  FaArrowLeft,
+} from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
 const variants = {
@@ -15,11 +19,6 @@ const navItems = [
     name: 'Dashboard',
     icon: MdDashboard,
     state: 'showDashboard',
-  },
-  {
-    name: 'Analytics',
-    icon: SiSimpleanalytics,
-    state: 'showAnalytics',
   },
   {
     name: 'Messages',
@@ -35,6 +34,11 @@ const navItems = [
     name: 'CreAItions',
     icon: IoMdImages,
     state: 'showCreAItions',
+  },
+  {
+    name: 'Payments',
+    icon: FaMoneyBillWave,
+    state: 'showPayments',
   },
 ];
 

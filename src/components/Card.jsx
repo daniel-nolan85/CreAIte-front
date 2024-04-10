@@ -38,8 +38,8 @@ const Card = ({ creation, personalProfile, fetchCreations }) => {
     name,
   } = useSelector((state) => state.user) || {};
 
-  const downloadCreation = async (creationId, photo) => {
-    await handleDownloadCreation(creationId, photo).then((res) => {
+  const downloadCreation = async (creationId, photo, userId) => {
+    await handleDownloadCreation(creationId, photo, userId).then((res) => {
       fetchCreations();
     });
   };
@@ -77,7 +77,7 @@ const Card = ({ creation, personalProfile, fetchCreations }) => {
           {(personalProfile || sharing) && (
             <button
               type='button'
-              onClick={() => downloadCreation(_id, photo)}
+              onClick={() => downloadCreation(_id, photo, userId)}
               className='outline-none bg-transparent '
             >
               <img

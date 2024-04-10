@@ -72,6 +72,8 @@ const Subscription = () => {
             profileImage: res.data.profileImage,
             coverImage: res.data.coverImage,
             subscription: res.data.subscription,
+            likes: res.data.likes,
+            downloads: res.data.downloads,
           },
         });
         setShowCancelSubscriptionModal(false);
