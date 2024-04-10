@@ -17,6 +17,7 @@ import {
   createKeywords,
   saveCreation,
 } from '../requests/creation';
+import FacebookUploader from '../components/FacebookUploader';
 
 const Create = () => {
   const [form, setForm] = useState({
@@ -395,6 +396,9 @@ const Create = () => {
             opening them up for others to see and download. Your CreAItions will
             be showcased to help inspire other members.
           </p>
+
+          {/* <FacebookUploader /> */}
+
           <div className='mt-10'>
             <button
               type='submit'
