@@ -48,7 +48,7 @@ const FacebookUploader = ({ onPost }) => {
         }
       },
       {
-        scope: 'public_profile,pages_read_engagement',
+        scope: 'public_profile',
       }
     );
   };

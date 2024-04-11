@@ -14,9 +14,10 @@ import Modal from '../components/Modal';
 import PaymentForm from '../components/PaymentForm';
 import CreditCard from '../components/CreditCard';
 import LoaderBlack from '../components/LoaderBlack';
-import StaggeredDropdown from '../components/StaggeredDropdown';
-import FormField from '../components/FormField';
 import { cancelStripeSubscription } from '../requests/stripe';
+import DeluxeCardMini from '../components/DeluxeCardMini';
+import PremiumCardMini from '../components/PremiumCardMini';
+import CustomOptions from '../components/CustomOptions';
 
 const Subscription = () => {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
@@ -29,7 +30,6 @@ const Subscription = () => {
   const [amount, setAmount] = useState();
   const [stripePromise, setStripePromise] = useState(null);
   const [card, setCard] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
   const [customOptions, setCustomOptions] = useState({
     dallEVersion: 'Select',
@@ -168,7 +168,7 @@ const Subscription = () => {
           )}
           {subscription && plan === 'deluxe' && (
             <DeluxeCard
-              text='Upgrade'
+              text='Manage'
               imagesNum={
                 imagesRemaining === 1
                   ? `${imagesRemaining} image generation`
@@ -219,37 +219,63 @@ const Subscription = () => {
           onClose={() => setShowUpgradeModal(false)}
         >
           <div className='p-6 lg:px-8 text-left'>
-            <h1 className='font-extrabold text-[32px]'>
-              Upgrade your subscription
-            </h1>
-            <p className='mt-2 text-[#666e75] text-[16px] flex items-center'>
-              To upgrade your plan, please select one from the options below. If
-              you require a custom plan tailored to your needs, feel free to
-              contact us and we'll be happy to assist you further.
-            </p>
             {plan === 'free' && (
-              <div className='grid md:grid-cols-2 gap-8 mt-8'>
-                <DeluxeCard
-                  text='Select'
-                  imagesNum='100 image generations'
-                  emphasize={false}
-                  action={() => upgradeMembership(1999)}
+              <>
+                <h1 className='font-extrabold text-[32px]'>
+                  Upgrade your subscription
+                </h1>
+                <p className='mt-2 text-[#666e75] text-[16px] flex items-center'>
+                  To upgrade your plan, please select one from the options
+                  below.
+                </p>
+
+                <div className='grid md:grid-cols-2 gap-8 mt-8'>
+                  <DeluxeCardMini action={() => upgradeMembership(1999)} />
+                  <PremiumCardMini action={() => upgradeMembership(4499)} />
+                </div>
+                <p className=' text-[#666e75] text-[16px] flex items-center'>
+                  If you require a custom plan tailored to your needs, please
+                  select your requirements from the options below.
+                </p>
+                <CustomOptions
+                  calculateCustomAmount={calculateCustomAmount}
+                  customOptions={customOptions}
+                  setCustomOptions={setCustomOptions}
                 />
-                <PremiumCard
-                  text='Select'
-                  imagesNum='200 image generations'
-                  action={() => upgradeMembership(4499)}
-                />
-              </div>
+              </>
             )}
             {plan === 'deluxe' && (
-              <div className='mt-8'>
-                <PremiumCard
-                  text='Select'
-                  imagesNum='200 image generations'
-                  action={() => upgradeMembership(4499)}
+              // <div className='mt-8'>
+              //   <PremiumCardMini action={() => upgradeMembership(4499)} />
+              //   <CustomOptions
+              //     calculateCustomAmount={calculateCustomAmount}
+              //     customOptions={customOptions}
+              //     setCustomOptions={setCustomOptions}
+              //   />
+              // </div>
+              <>
+                <h1 className='font-extrabold text-[32px]'>
+                  Manage your subscription
+                </h1>
+                <p className='mt-2 text-[#666e75] text-[16px] flex items-center'>
+                  To upgrade your plan to a Premium subscription, please select
+                  below.
+                </p>
+
+                <div className='mt-8'>
+                  <PremiumCardMini action={() => upgradeMembership(4499)} />
+                </div>
+
+                <p className='pt-8 text-[#666e75] text-[16px] flex items-center'>
+                  If you require a custom plan tailored to your needs, please
+                  select your requirements from the options below.
+                </p>
+                <CustomOptions
+                  calculateCustomAmount={calculateCustomAmount}
+                  customOptions={customOptions}
+                  setCustomOptions={setCustomOptions}
                 />
-              </div>
+              </>
             )}
           </div>
         </Modal>
@@ -264,62 +290,11 @@ const Subscription = () => {
             <p className='mt-2 text-[#666e75] text-[16px] flex items-center'>
               Please select from the options below to customize your plan.
             </p>
-            <form className='mt-8' onSubmit={calculateCustomAmount}>
-              <div className='flex justify-between items-center mb-4'>
-                <StaggeredDropdown
-                  header='Choose Dall-E version'
-                  option={customOptions.dallEVersion}
-                  setOption={(value) =>
-                    setCustomOptions((prevState) => ({
-                      ...prevState,
-                      dallEVersion: value,
-                    }))
-                  }
-                  options='dalle'
-                />
-                <StaggeredDropdown
-                  header='Choose GPT version'
-                  option={customOptions.gptVersion}
-                  setOption={(value) =>
-                    setCustomOptions((prevState) => ({
-                      ...prevState,
-                      gptVersion: value,
-                    }))
-                  }
-                  options='gpt'
-                />
-                <StaggeredDropdown
-                  header='Choose customer support level'
-                  option={customOptions.customerSupport}
-                  setOption={(value) =>
-                    setCustomOptions((prevState) => ({
-                      ...prevState,
-                      customerSupport: value,
-                    }))
-                  }
-                  options='support'
-                />
-              </div>
-              <FormField
-                labelName='Number of CreAItions'
-                type='number'
-                name='numCreAItions'
-                placeholder='Enter the number of CreAItions needed per month'
-                value={customOptions.numCreAItions}
-                handleChange={(e) => {
-                  setCustomOptions({
-                    ...customOptions,
-                    [e.target.name]: e.target.value,
-                  });
-                }}
-              />
-              <button
-                type='submit'
-                className='w-40 mt-4 text-black bg-main hover:bg-mainDark font-medium rounded-md text-sm px-5 py-2.5 text-center'
-              >
-                {isLoading ? <LoaderBlack /> : 'Submit'}
-              </button>
-            </form>
+            <CustomOptions
+              calculateCustomAmount={calculateCustomAmount}
+              customOptions={customOptions}
+              setCustomOptions={setCustomOptions}
+            />
           </div>
         </Modal>
         <Modal

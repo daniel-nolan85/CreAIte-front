@@ -182,7 +182,7 @@ const Login = () => {
               onClick={handleLogin}
               className='w-full text-black my-2 font-semibold bg-main rounded-md p-4 text-center flex items-center justify-center'
             >
-              {isLoading ? <LoaderBlack /> : 'Log in'}
+              {isLoading ? <LoaderBlack /> : 'Log In'}
             </button>
           </div>
 

@@ -397,7 +397,7 @@ const Create = () => {
             be showcased to help inspire other members.
           </p>
 
-          {/* <FacebookUploader /> */}
+          <FacebookUploader />
 
           <div className='mt-10'>
             <button

@@ -65,3 +65,12 @@ export const updateUserSubscription = async (
     }
   );
 };
+
+export const captureUserEmail = async (email) => {
+  return await axios.post(
+    `${import.meta.env.VITE_API_URL}/capture-user-email`,
+    {
+      email,
+    }
+  );
+};

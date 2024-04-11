@@ -25,6 +25,9 @@ import Admin from './pages/Admin';
 import Pulse from './components/Pulse';
 import Modal from './components/Modal';
 import Messenger from './components/Messenger';
+import Terms from './pages/Terms';
+import Privacy from './pages/Privacy';
+import Cookies from './pages/Cookies';
 
 const App = () => {
   const [showChatModal, setShowChatModal] = useState(false);
@@ -179,6 +182,9 @@ const App = () => {
         <Route path='/account/:userId' element={<Account />} />
         <Route path='/subscription/:userId' element={<Subscription />} />
         <Route path='/admin' element={<Admin />} />
+        <Route path='/terms' element={<Terms />} />
+        <Route path='/privacy' element={<Privacy />} />
+        <Route path='/cookies' element={<Cookies />} />
       </Routes>
       <Modal isVisible={showChatModal} onClose={() => setShowChatModal(false)}>
         <div className='p-6 lg:px-8 text-left'>

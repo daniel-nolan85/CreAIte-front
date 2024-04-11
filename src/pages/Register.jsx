@@ -174,14 +174,25 @@ const Register = () => {
             <div className='w-full flex items-center'>
               <input type='checkbox' className='w-4 h-4 mr-2' />
               <p className='text-sm text-black'>
-                I agree to{' '}
-                <span className='font-bold text-main cursor-pointer'>
-                  Terms
-                </span>{' '}
-                and{' '}
-                <span className='font-bold text-main cursor-pointer'>
-                  Privacy Policy
-                </span>
+                I agree to the{' '}
+                <Link to='/terms'>
+                  <span className='font-bold text-main cursor-pointer'>
+                    Terms
+                  </span>
+                </Link>
+                ,{' '}
+                <Link to='/privacy'>
+                  <span className='font-bold text-main cursor-pointer'>
+                    Privacy
+                  </span>
+                </Link>
+                , and{' '}
+                <Link to='/cookies'>
+                  <span className='font-bold text-main cursor-pointer'>
+                    Cookies{' '}
+                  </span>
+                </Link>
+                policies
               </p>
             </div>
           </div>
@@ -190,7 +201,7 @@ const Register = () => {
               onClick={handleRegistration}
               className='w-full text-black my-2 font-semibold bg-main rounded-md p-4 text-center flex items-center justify-center'
             >
-              {isLoading ? <LoaderBlack /> : 'Sign up'}
+              {isLoading ? <LoaderBlack /> : 'Sign Up'}
             </button>
           </div>
 
