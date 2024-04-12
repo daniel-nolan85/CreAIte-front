@@ -10,6 +10,9 @@ import { currentUser } from './requests/auth';
 import { createOrFetchConversation } from './requests/conversations';
 import { fetchMessages, sendMessage } from './requests/messages';
 
+import AdminRoute from './routes/AdminRoute';
+import UserRoute from './routes/UserRoute';
+
 import Landing from './pages/Landing';
 import About from './pages/About';
 import Contact from './pages/Contact';
@@ -176,15 +179,50 @@ const App = () => {
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Register />} />
         <Route path='/showcase' element={<Showcase />} />
-        <Route path='/create' element={<Create />} />
-        <Route path='/profile/:userId' element={<Profile />} />
         <Route path='/user-profile/:userId' element={<UserProfile />} />
-        <Route path='/account/:userId' element={<Account />} />
-        <Route path='/subscription/:userId' element={<Subscription />} />
-        <Route path='/admin' element={<Admin />} />
         <Route path='/terms' element={<Terms />} />
         <Route path='/privacy' element={<Privacy />} />
         <Route path='/cookies' element={<Cookies />} />
+        <Route
+          path='/admin'
+          element={
+            <AdminRoute>
+              <Admin />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/creaite'
+          element={
+            <UserRoute>
+              <Create />
+            </UserRoute>
+          }
+        />
+        <Route
+          path='/profile/:userId'
+          element={
+            <UserRoute>
+              <Profile />
+            </UserRoute>
+          }
+        />
+        <Route
+          path='/account/:userId'
+          element={
+            <UserRoute>
+              <Account />
+            </UserRoute>
+          }
+        />
+        <Route
+          path='/subscription/:userId'
+          element={
+            <UserRoute>
+              <Subscription />
+            </UserRoute>
+          }
+        />
       </Routes>
       <Modal isVisible={showChatModal} onClose={() => setShowChatModal(false)}>
         <div className='p-6 lg:px-8 text-left'>

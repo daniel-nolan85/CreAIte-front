@@ -1,6 +1,10 @@
 import Laptop from '../assets/laptop.jpg';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Info = () => {
+  const { token } = useSelector((state) => state.user) || {};
+
   return (
     <div id='info' className='w-full bg-[#f3fcfd] py-16 px-4'>
       <div className='max-w-[1240px] mx-auto grid md:grid-cols-2'>
@@ -24,7 +28,13 @@ const Info = () => {
             partner in turning imagination into reality, one pixel at a time.
           </p>
           <button className='bg-black hover:bg-[#1a1a1a] text-main w-[200px] rounded-md font-medium my-6 mx-auto md:mx-0 py-3'>
-            Get Started
+            {token ? (
+              <Link to='/creaite'>Get Started</Link>
+            ) : (
+              <Link to={'/login'} state={{ to: '/creaite' }}>
+                Get Started
+              </Link>
+            )}
           </button>
         </div>
       </div>

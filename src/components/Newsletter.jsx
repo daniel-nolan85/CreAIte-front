@@ -12,7 +12,7 @@ const Newsletter = () => {
     const emailRegex = /^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(email)) {
       setIsLoading(false);
-      toast.error('Please enter a vaild email');
+      toast.error('Please enter a valid email');
       return;
     }
 

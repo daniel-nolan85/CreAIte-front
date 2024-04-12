@@ -39,7 +39,7 @@ const Register = () => {
     const emailRegex = /^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(email)) {
       setIsLoading(false);
-      toast.error('Please enter a vaild email');
+      toast.error('Please enter a valid email');
       return;
     }
     if (
@@ -64,7 +64,7 @@ const Register = () => {
             setPassword('');
             setIsLoading(false);
             const idToken = userCredential.user.accessToken;
-            createUser(name, email);
+            createUser(idToken, name, email);
           })
           .catch((err) => {
             console.error({ err });
@@ -81,7 +81,7 @@ const Register = () => {
     await signInWithPopup(auth, provider).then((userCredential) => {
       const user = userCredential.user;
       const idToken = user.accessToken;
-      googleUser(user.displayName, user.email)
+      googleUser(idToken, user.displayName, user.email)
         .then((res) => {
           dispatch({
             type: 'LOGGED_IN_USER',

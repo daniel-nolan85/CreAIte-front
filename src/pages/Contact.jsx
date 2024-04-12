@@ -25,7 +25,7 @@ const Contact = () => {
     e.preventDefault();
     const emailRegex = /^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(form.email)) {
-      toast.error('Please enter a vaild email');
+      toast.error('Please enter a valid email');
       return;
     } else if (!form.name) {
       toast.error('Please enter your name');

@@ -1,6 +1,10 @@
 import { ReactTyped } from 'react-typed';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Hero = () => {
+  const { token } = useSelector((state) => state.user) || {};
+
   return (
     <div className='bg-[#000300] text-white'>
       <div className='max-w-[800px] mt-[-96px] w-full h-screen mx-auto text-center flex flex-col justify-center'>
@@ -33,7 +37,13 @@ const Hero = () => {
           Let&apos;s turn your words into magic
         </p>
         <button className='bg-main hover:bg-mainDark w-[200px] rounded-md font-medium my-6 mx-auto py-3 text-black'>
-          Get Started
+          {token ? (
+            <Link to='/creaite'>Get Started</Link>
+          ) : (
+            <Link to={'/login'} state={{ to: '/creaite' }}>
+              Get Started
+            </Link>
+          )}
         </button>
       </div>
     </div>

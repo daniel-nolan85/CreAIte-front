@@ -105,7 +105,7 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <FlyoutLink href='/create'>
+              <FlyoutLink href='/creaite'>
                 <li className='font-medium bg-main hover:bg-mainDark text-black px-4 py-2 mt-2 rounded-md cursor-pointer'>
                   Creaite
                 </li>
@@ -165,7 +165,7 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <Link to='/create'>
+                <Link to='/creaite'>
                   <li className='font-medium bg-main hover:bg-mainDark text-black px-4 py-2 mt-4 rounded-md cursor-pointer'>
                     Creaite
                   </li>

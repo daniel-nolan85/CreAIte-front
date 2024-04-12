@@ -26,7 +26,7 @@ const Cookies = () => {
           <span className='font-extrabold text-black'>
             Redux and Context API:
           </span>{' '}
-          We utilize the Redux state management and React Context API within the
+          We utilize Redux state management and the React Context API within the
           App to store and manage application state. This includes user
           preferences, session data, and other relevant information required for
           the proper functioning of the App.

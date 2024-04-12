@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import {
@@ -23,6 +23,8 @@ const Login = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
+  const intended = location.state;
 
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
@@ -36,7 +38,7 @@ const Login = () => {
     const emailRegex = /^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(email)) {
       setIsLoading(false);
-      toast.error('Please enter a vaild email');
+      toast.error('Please enter a valid email');
       return;
     }
     if (
@@ -56,7 +58,7 @@ const Login = () => {
         const user = userCredential.user;
         if (user.emailVerified) {
           const idToken = user.accessToken;
-          loginUser(email)
+          loginUser(idToken, email)
             .then((res) => {
               dispatch({
                 type: 'LOGGED_IN_USER',
@@ -74,7 +76,7 @@ const Login = () => {
                   downloads: res.data.downloads,
                 },
               });
-              navigate('/showcase');
+              roleBasedRedirect(res);
             })
             .catch((err) => console.error({ err }));
         } else {
@@ -91,7 +93,7 @@ const Login = () => {
     await signInWithPopup(auth, provider).then((userCredential) => {
       const user = userCredential.user;
       const idToken = user.accessToken;
-      googleUser(user.displayName, user.email)
+      googleUser(idToken, user.displayName, user.email)
         .then((res) => {
           dispatch({
             type: 'LOGGED_IN_USER',
@@ -109,10 +111,22 @@ const Login = () => {
               downloads: res.data.downloads,
             },
           });
-          navigate('/showcase');
+          roleBasedRedirect(res);
         })
         .catch((err) => console.error({ err }));
     });
+  };
+
+  const roleBasedRedirect = (res) => {
+    if (intended) {
+      navigate(intended.to);
+    } else {
+      if (res.data.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/showcase');
+      }
+    }
   };
 
   return (

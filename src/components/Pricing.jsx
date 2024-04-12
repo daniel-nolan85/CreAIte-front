@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 import CustomCard from './CustomCard';
 import DeluxeCard from './DeluxeCard';
 import FreeCard from './FreeCard';
@@ -15,6 +17,10 @@ const Pricing = () => {
   const [customerSupport, setCustomerSupport] = useState('Standard');
   const [numCreAItions, setNumCreAItions] = useState(null);
   const [quote, setQuote] = useState(null);
+
+  const { token, _id } = useSelector((state) => state.user) || {};
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!showPersonalizeModal) {
@@ -51,16 +57,41 @@ const Pricing = () => {
     setQuote(fee);
   };
 
+  const navigateToCreAIte = () => {
+    if (token) {
+      navigate('/creaite');
+    } else {
+      navigate('/login', { state: { to: '/creaite' } });
+    }
+  };
+
+  const navigateToSubscription = () => {
+    if (token) {
+      navigate(`/subscription/${_id}`);
+    } else {
+      navigate('/login', { state: { to: `/subscription/${_id}` } });
+    }
+  };
+
   return (
     <div id='pricing' className='w-full py-[10rem] px-4 bg-white'>
       <div className='max-w-[1240px] mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-8'>
-        <FreeCard text='Get Started' imagesNum='5 image generations' />
+        <FreeCard
+          text='Get Started'
+          imagesNum='5 image generations'
+          action={navigateToCreAIte}
+        />
         <DeluxeCard
           text='Get Started'
           imagesNum='100 image generations'
           emphasize={true}
+          action={navigateToSubscription}
         />
-        <PremiumCard text='Get Started' imagesNum='200 image generations' />
+        <PremiumCard
+          text='Get Started'
+          imagesNum='200 image generations'
+          action={navigateToSubscription}
+        />
         <CustomCard
           text='Get a Quote'
           imagesNum='Custom image generation'
