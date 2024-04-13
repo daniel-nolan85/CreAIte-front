@@ -18,7 +18,6 @@ const Newsletter = () => {
 
     await captureUserEmail(email)
       .then((res) => {
-        console.log(res.data);
         if (res.data.message) {
           toast.warning(
             'Thank you for your interest! You are already subscribed to receive our emails.'

@@ -4,17 +4,18 @@ import { useSelector } from 'react-redux';
 import moment from 'moment';
 import Modal from './Modal';
 import Keywords from './Keywords';
-import like from '../assets/like.svg';
-import liked from '../assets/liked.svg';
+import likeOutline from '../assets/like-outline.svg';
+import likeFill from '../assets/like-fill.svg';
 import download from '../assets/download.svg';
-import {
-  handleDownloadCreation,
-  handleLikeCreation,
-  handleUnlikeCreation,
-} from '../requests/creation';
 import defaultProfile from '../assets/profile.svg';
 
-const Card = ({ creation, personalProfile, fetchCreations }) => {
+const Card = ({
+  creation,
+  personalProfile,
+  handleDownload,
+  handleLike,
+  handleDislike,
+}) => {
   const [showCardInfoModal, setShowCardInfoModal] = useState(false);
 
   const {
@@ -24,37 +25,16 @@ const Card = ({ creation, personalProfile, fetchCreations }) => {
     photo,
     createdAt,
     likes,
+    liked,
     downloads,
+    downloaded,
     sharing,
     caption,
     keywords,
     imageSize,
     model,
   } = creation;
-  const {
-    token,
-    _id: userId,
-    profileImage,
-    name,
-  } = useSelector((state) => state.user) || {};
-
-  const downloadCreation = async (creationId, photo, userId) => {
-    await handleDownloadCreation(creationId, photo, userId).then((res) => {
-      fetchCreations();
-    });
-  };
-
-  const likeCreation = async (token, userId, creationId) => {
-    await handleLikeCreation(token, userId, creationId).then((res) => {
-      fetchCreations();
-    });
-  };
-
-  const unlikeCreation = async (token, userId, creationId) => {
-    await handleUnlikeCreation(token, userId, creationId).then((res) => {
-      fetchCreations();
-    });
-  };
+  const { token, _id: userId } = useSelector((state) => state.user) || {};
 
   return (
     <div className='rounded-xl group relative shadow-card hover:shadow-cardhover card mb-3'>
@@ -77,7 +57,7 @@ const Card = ({ creation, personalProfile, fetchCreations }) => {
           {(personalProfile || sharing) && (
             <button
               type='button'
-              onClick={() => downloadCreation(_id, photo, userId)}
+              onClick={() => handleDownload(_id, photo, userId)}
               className='outline-none bg-transparent '
             >
               <img
@@ -87,25 +67,27 @@ const Card = ({ creation, personalProfile, fetchCreations }) => {
               />
             </button>
           )}
-          {userId && (
+          {userId && !personalProfile && (
             <button
               type='button'
               onClick={() => {
-                likes.some((like) => like === userId)
-                  ? unlikeCreation(token, userId, _id)
-                  : likeCreation(token, userId, _id);
+                liked === false
+                  ? handleLike(token, userId, _id)
+                  : liked || likes.some((like) => like === userId)
+                  ? handleDislike(token, userId, _id)
+                  : handleLike(token, userId, _id);
               }}
               className='outline-none bg-transparent'
             >
               <img
                 src={
-                  likes &&
-                  likes.length > 0 &&
-                  likes.some((like) => like === userId)
-                    ? liked
-                    : like
+                  liked === false
+                    ? likeOutline
+                    : liked || likes.some((like) => like === userId)
+                    ? likeFill
+                    : likeOutline
                 }
-                alt='download'
+                alt='like or dislike'
                 className='w-6 h-6 object-contain hover:bg-opacity-50'
               />
             </button>
@@ -116,7 +98,7 @@ const Card = ({ creation, personalProfile, fetchCreations }) => {
         isVisible={showCardInfoModal}
         onClose={() => setShowCardInfoModal(false)}
       >
-        <div className='p-6 flex flex-col mt-6'>
+        <div className='p-6 flex flex-col mt-6 overflow-auto'>
           <img
             src={photo}
             alt={prompt}
@@ -154,8 +136,12 @@ const Card = ({ creation, personalProfile, fetchCreations }) => {
                 className='flex items-center mt-2'
               >
                 <img
-                  src={profileImage ? profileImage.url : defaultProfile}
-                  alt={`${name}'s profile picture`}
+                  src={
+                    createdBy.profileImage
+                      ? createdBy.profileImage.url
+                      : defaultProfile
+                  }
+                  alt={`${createdBy.name}'s profile picture`}
                   className='w-12 rounded-full'
                 />
                 <p className='text-md font-medium text-gray-400 ml-2'>
@@ -185,13 +171,13 @@ const Card = ({ creation, personalProfile, fetchCreations }) => {
               <div className='w-1/2'>
                 <p className='text-sm font-medium text-gray-900'>Likes</p>
                 <h3 className='text-md font-medium text-gray-400 mb-4'>
-                  {likes.length}
+                  {liked ? likes.length + 1 : likes.length}
                 </h3>
               </div>
               <div className='w-1/2'>
                 <p className='text-sm font-medium text-gray-900'>Downloads</p>
                 <h3 className='text-md font-medium text-gray-400 mb-4'>
-                  {downloads}
+                  {downloaded ? downloads + 1 : downloads}
                 </h3>
               </div>
             </div>

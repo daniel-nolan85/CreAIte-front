@@ -1,18 +1,37 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import Navbar from '../components/Navbar';
 import PageLoader from '../components/PageLoader';
 import FormField from '../components/FormField';
 import Card from '../components/Card';
+import Loader from '../components/Loader';
 import defaultProfile from '../assets/profile.svg';
-import { fetchUserCreations } from '../requests/creation';
+import {
+  fetchUserCreations,
+  handleDownloadCreation,
+  handleLikeCreation,
+  handleUnlikeCreation,
+} from '../requests/creation';
 import { fetchUser } from '../requests/user';
 
-const RenderCards = ({ data, title, getUserCreations }) => {
+const RenderCards = ({
+  data,
+  title,
+  handleDownload,
+  handleLike,
+  handleDislike,
+}) => {
   if (data?.length > 0) {
     return data.map((creation) => (
-      <Card creation={creation} fetchCreations={getUserCreations} />
+      <Card
+        creation={creation}
+        key={creation._id}
+        handleDownload={handleDownload}
+        handleLike={handleLike}
+        handleDislike={handleDislike}
+      />
     ));
   }
   return (
@@ -21,11 +40,15 @@ const RenderCards = ({ data, title, getUserCreations }) => {
 };
 
 const UserProfile = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [thisUser, setThisUser] = useState({});
-  const [userCreations, setUserCreations] = useState(null);
+  const [userCreations, setUserCreations] = useState([]);
+  const [totalUserCreations, setTotalUserCreations] = useState(0);
   const [searchText, setSearchText] = useState('');
-  const [searchedResults, setSearchedResults] = useState(null);
+  const [searchedResults, setSearchedResults] = useState([]);
   const [searchTimeout, setSearchTimeout] = useState(null);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
   const { token } = useSelector((state) => state.user) || {};
 
@@ -33,27 +56,40 @@ const UserProfile = () => {
 
   useEffect(() => {
     getUser();
-    getUserCreations();
   }, [token]);
 
+  useEffect(() => {
+    getUserCreations();
+  }, [page]);
+
   const getUser = async () => {
-    await fetchUser(token, userId)
+    await fetchUser(userId)
       .then((res) => {
         setThisUser(res.data);
       })
       .catch((error) => {
-        alert(error);
+        console.error('Error fetching user:', error);
       });
   };
 
   const getUserCreations = async () => {
-    await fetchUserCreations(token, userId)
-      .then((res) => {
-        setUserCreations(res.data.creations);
-      })
-      .catch((error) => {
-        alert(error);
-      });
+    try {
+      const res = await fetchUserCreations(userId, page);
+      setTotalUserCreations(res.data.totalCount);
+      setUserCreations([...userCreations, ...res.data.creations]);
+      if (userCreations.length === res.data.totalCount) {
+        setHasMore(false);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchData = () => {
+    const newPage = page + 1;
+    setPage(newPage);
   };
 
   const handleSearchChange = (e) => {
@@ -67,6 +103,45 @@ const UserProfile = () => {
         setSearchedResults(searchResults);
       }, 500)
     );
+  };
+
+  const handleDownload = async (creationId, photo, userId) => {
+    await handleDownloadCreation(creationId, photo, userId).then((res) => {
+      setUserCreations((prevCreations) => {
+        return prevCreations.map((creation) => {
+          if (creation._id === creationId) {
+            return { ...creation, downloaded: true };
+          }
+          return creation;
+        });
+      });
+    });
+  };
+
+  const handleLike = async (token, userId, creationId) => {
+    await handleLikeCreation(token, userId, creationId).then((res) => {
+      setUserCreations((prevCreations) => {
+        return prevCreations.map((creation) => {
+          if (creation._id === creationId) {
+            return { ...creation, liked: true };
+          }
+          return creation;
+        });
+      });
+    });
+  };
+
+  const handleDislike = async (token, userId, creationId) => {
+    await handleUnlikeCreation(token, userId, creationId).then((res) => {
+      setUserCreations((prevCreations) => {
+        return prevCreations.map((creation) => {
+          if (creation._id === creationId) {
+            return { ...creation, liked: false };
+          }
+          return creation;
+        });
+      });
+    });
   };
 
   if (!thisUser || !userCreations) {
@@ -112,7 +187,7 @@ const UserProfile = () => {
             <div className='bg-gray-400 my-2 mx-4' style={{ height: 1 }}></div>
             <div className='p-4'>
               <p className='text-gray-800'>
-                <b>{userCreations.length}</b> CreAItions
+                <b>{totalUserCreations}</b> CreAItions
               </p>
             </div>
           </div>
@@ -133,21 +208,41 @@ const UserProfile = () => {
                 <span className='text-[#222328]'>{searchText}</span>
               </h2>
             )}
-            <div className='columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-3'>
-              {searchText ? (
-                <RenderCards
-                  data={searchedResults}
-                  title='No search results found'
-                  getUserCreations={getUserCreations}
-                />
-              ) : (
-                <RenderCards
-                  data={userCreations}
-                  title='No CreAItions found'
-                  getUserCreations={getUserCreations}
-                />
-              )}
-            </div>
+            <InfiniteScroll
+              dataLength={userCreations.length}
+              next={fetchData}
+              hasMore={hasMore}
+              loader={
+                <div className='text-center py-8'>
+                  <Loader />
+                </div>
+              }
+              endMessage={
+                <h4 className='text-center font-bold text-main text-2xl py-8'>
+                  That's all for now! Check back later for new CreAItions.
+                </h4>
+              }
+            >
+              <div className='columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-3'>
+                {searchText ? (
+                  <RenderCards
+                    data={searchedResults}
+                    title='No search results found'
+                    handleDownload={handleDownload}
+                    handleLike={handleLike}
+                    handleDislike={handleDislike}
+                  />
+                ) : (
+                  <RenderCards
+                    data={userCreations}
+                    title='No CreAItions found'
+                    handleDownload={handleDownload}
+                    handleLike={handleLike}
+                    handleDislike={handleDislike}
+                  />
+                )}
+              </div>
+            </InfiniteScroll>
           </div>
         </div>
       </section>

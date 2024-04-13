@@ -78,16 +78,30 @@ export const fetchAllCreations = async () => {
   return await axios.get(`${import.meta.env.VITE_API_URL}/fetch-all-creations`);
 };
 
-export const fetchSharedCreations = async () => {
-  return await axios.get(
-    `${import.meta.env.VITE_API_URL}/fetch-shared-creations`
+export const fetchSharedCreations = async (page) => {
+  return await axios.post(
+    `${import.meta.env.VITE_API_URL}/fetch-shared-creations`,
+    { page }
   );
 };
 
-export const fetchUserCreations = async (authtoken, _id) => {
+export const fetchUserCreations = async (_id, page) => {
   return await axios.post(
     `${import.meta.env.VITE_API_URL}/fetch-user-creations`,
-    { _id },
+    { _id, page }
+  );
+};
+
+export const fetchRandomCreations = async () => {
+  return await axios.get(
+    `${import.meta.env.VITE_API_URL}/fetch-random-creations`
+  );
+};
+
+export const fetchUserSharedCreations = async (authtoken, _id, page) => {
+  return await axios.post(
+    `${import.meta.env.VITE_API_URL}/fetch-user-shared-creations`,
+    { _id, page },
     {
       headers: {
         authtoken,
@@ -96,9 +110,27 @@ export const fetchUserCreations = async (authtoken, _id) => {
   );
 };
 
-export const fetchRandomCreations = async () => {
-  return await axios.get(
-    `${import.meta.env.VITE_API_URL}/fetch-random-creations`
+export const fetchUserPrivateCreations = async (authtoken, _id, page) => {
+  return await axios.post(
+    `${import.meta.env.VITE_API_URL}/fetch-user-private-creations`,
+    { _id, page },
+    {
+      headers: {
+        authtoken,
+      },
+    }
+  );
+};
+
+export const fetchUserLikedCreations = async (authtoken, _id, page) => {
+  return await axios.post(
+    `${import.meta.env.VITE_API_URL}/fetch-user-liked-creations`,
+    { _id, page },
+    {
+      headers: {
+        authtoken,
+      },
+    }
   );
 };
 

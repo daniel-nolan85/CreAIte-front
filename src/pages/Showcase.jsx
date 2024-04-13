@@ -1,14 +1,32 @@
 import { useState, useEffect } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import Navbar from '../components/Navbar';
 import FormField from '../components/FormField';
 import Loader from '../components/Loader';
 import Card from '../components/Card';
-import { fetchSharedCreations } from '../requests/creation';
+import {
+  fetchSharedCreations,
+  handleDownloadCreation,
+  handleLikeCreation,
+  handleUnlikeCreation,
+} from '../requests/creation';
 
-const RenderCards = ({ data, title, getSharedCreations }) => {
+const RenderCards = ({
+  data,
+  title,
+  handleDownload,
+  handleLike,
+  handleDislike,
+}) => {
   if (data?.length > 0) {
     return data.map((creation) => (
-      <Card creation={creation} fetchCreations={getSharedCreations} />
+      <Card
+        creation={creation}
+        key={creation._id}
+        handleDownload={handleDownload}
+        handleLike={handleLike}
+        handleDislike={handleDislike}
+      />
     ));
   }
   return (
@@ -17,36 +35,36 @@ const RenderCards = ({ data, title, getSharedCreations }) => {
 };
 
 const Showcase = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [sharedCreations, setSharedCreations] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [sharedCreations, setSharedCreations] = useState([]);
   const [searchText, setSearchText] = useState('');
-  const [searchedResults, setSearchedResults] = useState(null);
+  const [searchedResults, setSearchedResults] = useState([]);
   const [searchTimeout, setSearchTimeout] = useState(null);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
     getSharedCreations();
-  }, []);
+  }, [page]);
 
   const getSharedCreations = async () => {
-    setIsLoading(true);
-    await fetchSharedCreations()
-      .then((res) => {
-        const shuffledCreations = shuffleArray(res.data);
-        setSharedCreations(shuffledCreations);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        alert(error);
-        setIsLoading(false);
-      });
+    try {
+      const res = await fetchSharedCreations(page);
+
+      setSharedCreations([...sharedCreations, ...res.data.creations]);
+      if (sharedCreations.length === res.data.totalCount) {
+        setHasMore(false);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const shuffleArray = (array) => {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
+  const fetchData = () => {
+    const newPage = page + 1;
+    setPage(newPage);
   };
 
   const handleSearchChange = (e) => {
@@ -64,6 +82,45 @@ const Showcase = () => {
         setSearchedResults(searchResults);
       }, 500)
     );
+  };
+
+  const handleDownload = async (creationId, photo, userId) => {
+    await handleDownloadCreation(creationId, photo, userId).then((res) => {
+      setSharedCreations((prevCreations) => {
+        return prevCreations.map((creation) => {
+          if (creation._id === creationId) {
+            return { ...creation, downloaded: true };
+          }
+          return creation;
+        });
+      });
+    });
+  };
+
+  const handleLike = async (token, userId, creationId) => {
+    await handleLikeCreation(token, userId, creationId).then((res) => {
+      setSharedCreations((prevCreations) => {
+        return prevCreations.map((creation) => {
+          if (creation._id === creationId) {
+            return { ...creation, liked: true };
+          }
+          return creation;
+        });
+      });
+    });
+  };
+
+  const handleDislike = async (token, userId, creationId) => {
+    await handleUnlikeCreation(token, userId, creationId).then((res) => {
+      setSharedCreations((prevCreations) => {
+        return prevCreations.map((creation) => {
+          if (creation._id === creationId) {
+            return { ...creation, liked: false };
+          }
+          return creation;
+        });
+      });
+    });
   };
 
   return (
@@ -102,21 +159,41 @@ const Showcase = () => {
                   <span className='text-[#222328]'>{searchText}</span>
                 </h2>
               )}
-              <div className='columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-3'>
-                {searchText ? (
-                  <RenderCards
-                    data={searchedResults}
-                    title='No search results found'
-                    getSharedCreations={getSharedCreations}
-                  />
-                ) : (
-                  <RenderCards
-                    data={sharedCreations}
-                    title='No CreAItions found'
-                    getSharedCreations={getSharedCreations}
-                  />
-                )}
-              </div>
+              <InfiniteScroll
+                dataLength={sharedCreations.length}
+                next={fetchData}
+                hasMore={hasMore}
+                loader={
+                  <div className='text-center py-8'>
+                    <Loader />
+                  </div>
+                }
+                endMessage={
+                  <h4 className='text-center font-bold text-main text-2xl py-8'>
+                    That's all for now! Check back later for new CreAItions.
+                  </h4>
+                }
+              >
+                <div className='columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-3'>
+                  {searchText ? (
+                    <RenderCards
+                      data={searchedResults}
+                      title='No search results found'
+                      handleDownload={handleDownload}
+                      handleLike={handleLike}
+                      handleDislike={handleDislike}
+                    />
+                  ) : (
+                    <RenderCards
+                      data={sharedCreations}
+                      title='No CreAItions found'
+                      handleDownload={handleDownload}
+                      handleLike={handleLike}
+                      handleDislike={handleDislike}
+                    />
+                  )}
+                </div>
+              </InfiniteScroll>
             </>
           )}
         </div>

@@ -1,15 +1,9 @@
 import axios from 'axios';
 
-export const fetchUser = async (authtoken, _id) => {
-  return await axios.post(
-    `${import.meta.env.VITE_API_URL}/fetch-user`,
-    { _id },
-    {
-      headers: {
-        authtoken,
-      },
-    }
-  );
+export const fetchUser = async (_id) => {
+  return await axios.post(`${import.meta.env.VITE_API_URL}/fetch-user`, {
+    _id,
+  });
 };
 
 export const updateUserProfile = async (authtoken, _id, name, bio) => {

@@ -6,7 +6,6 @@ const Payments = ({ paymentData }) => {
   for (const month in paymentDataFor2024) {
     flatPaymentDataFor2024.push(...paymentDataFor2024[month]);
   }
-  console.log({ flatPaymentDataFor2024 });
   return (
     <section className='w-full p-4 bg-white'>
       <div>

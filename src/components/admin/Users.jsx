@@ -32,7 +32,6 @@ const Users = () => {
   const getAllUsers = async () => {
     await fetchAllUsers(token, _id)
       .then((res) => {
-        console.log(res.data);
         setUsers(res.data);
       })
       .catch((err) => {

@@ -43,8 +43,7 @@ const Create = () => {
   const [expanded, setExpanded] = useState(false);
 
   const { token, _id, subscription } = useSelector((state) => state.user) || {};
-  const { plan, imagesRemaining, dalleVersion, gptVersion } =
-    subscription || {};
+  const { imagesRemaining, dalleVersion, gptVersion } = subscription || {};
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -225,7 +224,7 @@ const Create = () => {
 
   const handleSurpriseMe = async () => {
     setGeneratingPrompt(true);
-    const promptRes = await createPrompt(gptVersion);
+    const promptRes = await createPrompt(token, gptVersion);
     setForm((prevForm) => ({
       ...prevForm,
       prompt: promptRes.data.prompt,
@@ -397,7 +396,7 @@ const Create = () => {
             be showcased to help inspire other members.
           </p>
 
-          <FacebookUploader />
+          {/* <FacebookUploader /> */}
 
           <div className='mt-10'>
             <button

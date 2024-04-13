@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import Navbar from '../components/Navbar';
 import PageLoader from '../components/PageLoader';
+import Loader from '../components/Loader';
 import LoaderBlack from '../components/LoaderBlack';
 import FormField from '../components/FormField';
 import Card from '../components/Card';
@@ -11,7 +13,12 @@ import ImageCropper from '../components/ImageCropper';
 import defaultProfile from '../assets/profile.svg';
 import edit from '../assets/edit.svg';
 import editGrey from '../assets/edit-grey.svg';
-import { fetchUserCreations } from '../requests/creation';
+import {
+  fetchUserSharedCreations,
+  fetchUserPrivateCreations,
+  fetchUserLikedCreations,
+  handleDownloadCreation,
+} from '../requests/creation';
 import {
   updateUserProfile,
   updateUserProfileImage,
@@ -24,13 +31,14 @@ import {
 
 const tabs = ['Shared', 'Private', 'Liked'];
 
-const RenderCards = ({ data, title, getUserCreations }) => {
+const RenderCards = ({ data, title, handleDownload }) => {
   if (data?.length > 0) {
     return data.map((creation) => (
       <Card
         creation={creation}
         personalProfile
-        fetchCreations={getUserCreations}
+        key={creation._id}
+        handleDownload={handleDownload}
       />
     ));
   }
@@ -65,11 +73,12 @@ const Chip = ({ text, selected, setSelected, setSearchText }) => {
 };
 
 const Profile = () => {
-  const [sharedCreations, setSharedCreations] = useState(null);
-  const [privateCreations, setPrivateCreations] = useState(null);
-  const [likedCreations, setLikedCreations] = useState(null);
+  const [sharedCreations, setSharedCreations] = useState([]);
+  const [privateCreations, setPrivateCreations] = useState([]);
+  const [likedCreations, setLikedCreations] = useState([]);
+  const [totalUserCreations, setTotalUserCreations] = useState(0);
   const [searchText, setSearchText] = useState('');
-  const [searchedResults, setSearchedResults] = useState(null);
+  const [searchedResults, setSearchedResults] = useState([]);
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [showUpdateProfileModal, setShowUpdateProfileModal] = useState(false);
   const [showUpdateProfileImageModal, setShowUpdateProfileImageModal] =
@@ -84,6 +93,12 @@ const Profile = () => {
   const [showPrivate, setShowPrivate] = useState(true);
   const [showLiked, setShowLiked] = useState(true);
   const [selected, setSelected] = useState(tabs[0]);
+  const [sharedPage, setSharedPage] = useState(1);
+  const [privatePage, setPrivatePage] = useState(1);
+  const [likedPage, setLikedPage] = useState(1);
+  const [hasMoreShared, setHasMoreShared] = useState(true);
+  const [hasMorePrivate, setHasMorePrivate] = useState(true);
+  const [hasMoreLiked, setHasMoreLiked] = useState(true);
 
   const { token, _id, name, bio, coverImage, profileImage } =
     useSelector((state) => state.user) || {};
@@ -91,7 +106,6 @@ const Profile = () => {
 
   useEffect(() => {
     if (_id) {
-      getUserCreations();
       setNewName(name);
       setNewBio(bio || '');
     }
@@ -113,20 +127,75 @@ const Profile = () => {
     }
   }, [selected]);
 
-  const getUserCreations = async () => {
-    await fetchUserCreations(token, _id)
-      .then((res) => {
-        setSharedCreations(
-          res.data.creations.filter((creation) => creation.sharing === true)
-        );
-        setPrivateCreations(
-          res.data.creations.filter((creation) => creation.sharing === false)
-        );
-        setLikedCreations(res.data.likedCreations);
-      })
-      .catch((error) => {
-        alert(error);
-      });
+  useEffect(() => {
+    getUserSharedCreations();
+  }, [sharedPage]);
+
+  useEffect(() => {
+    getUserPrivateCreations();
+  }, [privatePage]);
+
+  useEffect(() => {
+    getUserLikedCreations();
+  }, [likedPage]);
+
+  const getUserSharedCreations = async () => {
+    try {
+      const res = await fetchUserSharedCreations(token, _id, sharedPage);
+      console.log(res.data);
+      setTotalUserCreations(res.data.totalCount);
+      setSharedCreations([...sharedCreations, ...res.data.creations]);
+      if (sharedCreations.length === res.data.totalShared) {
+        setHasMoreShared(false);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchSharedData = () => {
+    const newPage = sharedPage + 1;
+    setSharedPage(newPage);
+  };
+
+  const getUserPrivateCreations = async () => {
+    try {
+      const res = await fetchUserPrivateCreations(token, _id, privatePage);
+      setPrivateCreations([...privateCreations, ...res.data.creations]);
+      if (privateCreations.length === res.data.totalPrivate) {
+        setHasMorePrivate(false);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchPrivateData = () => {
+    const newPage = privatePage + 1;
+    setPrivatePage(newPage);
+  };
+
+  const getUserLikedCreations = async () => {
+    try {
+      const res = await fetchUserLikedCreations(token, _id, likedPage);
+      setLikedCreations([...likedCreations, ...res.data.creations]);
+      if (likedCreations.length === res.data.totalLiked) {
+        setHasMoreLiked(false);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchLikedData = () => {
+    const newPage = likedPage + 1;
+    setLikedPage(newPage);
   };
 
   const handleSearchChange = (e) => {
@@ -150,6 +219,35 @@ const Profile = () => {
         setSearchedResults(searchResults);
       }, 500)
     );
+  };
+
+  const handleDownload = async (creationId, photo, userId) => {
+    await handleDownloadCreation(creationId, photo, userId).then((res) => {
+      setSharedCreations((prevCreations) => {
+        return prevCreations.map((creation) => {
+          if (creation._id === creationId) {
+            return { ...creation, downloaded: true };
+          }
+          return creation;
+        });
+      });
+      setPrivateCreations((prevCreations) => {
+        return prevCreations.map((creation) => {
+          if (creation._id === creationId) {
+            return { ...creation, downloaded: true };
+          }
+          return creation;
+        });
+      });
+      setLikedCreations((prevCreations) => {
+        return prevCreations.map((creation) => {
+          if (creation._id === creationId) {
+            return { ...creation, downloaded: true };
+          }
+          return creation;
+        });
+      });
+    });
   };
 
   const updateProfile = async (e) => {
@@ -314,8 +412,7 @@ const Profile = () => {
             <div className='bg-gray-400 my-2 mx-4' style={{ height: 1 }}></div>
             <div className='p-4'>
               <p className='text-gray-800'>
-                <b>{sharedCreations.length + privateCreations.length}</b>{' '}
-                CreAItions
+                <b>{totalUserCreations}</b> CreAItions
               </p>
             </div>
           </div>
@@ -362,27 +459,84 @@ const Profile = () => {
               </h2>
             )}
 
-            <div className='columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-3'>
-              {searchText ? (
-                <RenderCards
-                  data={searchedResults}
-                  title='No search results found'
-                  getUserCreations={getUserCreations}
-                />
-              ) : (
-                <RenderCards
-                  data={
-                    showShared
-                      ? sharedCreations
-                      : showPrivate
-                      ? privateCreations
-                      : likedCreations
-                  }
-                  title='No CreAItions found'
-                  getUserCreations={getUserCreations}
-                />
-              )}
-            </div>
+            <InfiniteScroll
+              dataLength={
+                selected === 'Shared'
+                  ? sharedCreations.length
+                  : selected === 'Private'
+                  ? privateCreations.length
+                  : likedCreations.length
+              }
+              next={
+                selected === 'Shared'
+                  ? fetchSharedData
+                  : selected === 'Private'
+                  ? fetchPrivateData
+                  : fetchLikedData
+              }
+              hasMore={
+                selected === 'Shared'
+                  ? hasMoreShared
+                  : selected === 'Private'
+                  ? hasMorePrivate
+                  : hasMoreLiked
+              }
+              loader={
+                <div className='text-center py-8'>
+                  <Loader />
+                </div>
+              }
+              endMessage={
+                <h4 className='text-center font-bold text-main text-2xl py-8'>
+                  That's all for now! Check back later for new CreAItions.
+                </h4>
+              }
+            >
+              <div className='columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-3'>
+                {selected === 'Shared' &&
+                  (searchText ? (
+                    <RenderCards
+                      data={searchedResults}
+                      title='No search results found'
+                      handleDownload={handleDownload}
+                    />
+                  ) : (
+                    <RenderCards
+                      data={sharedCreations}
+                      title='No shared CreAItions found'
+                      handleDownload={handleDownload}
+                    />
+                  ))}
+                {selected === 'Private' &&
+                  (searchText ? (
+                    <RenderCards
+                      data={searchedResults}
+                      title='No search results found'
+                      handleDownload={handleDownload}
+                    />
+                  ) : (
+                    <RenderCards
+                      data={privateCreations}
+                      title='No private CreAItions found'
+                      handleDownload={handleDownload}
+                    />
+                  ))}
+                {selected === 'Liked' &&
+                  (searchText ? (
+                    <RenderCards
+                      data={searchedResults}
+                      title='No search results found'
+                      handleDownload={handleDownload}
+                    />
+                  ) : (
+                    <RenderCards
+                      data={privateCreations}
+                      title='No private CreAItions found'
+                      handleDownload={handleDownload}
+                    />
+                  ))}
+              </div>
+            </InfiniteScroll>
           </div>
         </div>
         <Modal

@@ -26,7 +26,7 @@ const Modal = ({ isVisible, onClose, children }) => {
       id='wrapper'
       className='fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center z-50 overflow-y-auto'
     >
-      <div className='md:w-[600px] w-[90%] mx-auto flex flex-col'>
+      <div className='md:w-[600px] w-[90%] mx-auto flex flex-col h-full mb-22'>
         <button onClick={onClose} className='text-white text-xl place-self-end'>
           <IoIosCloseCircleOutline className='h-12 w-12 text-main relative right-2 top-14' />
         </button>
