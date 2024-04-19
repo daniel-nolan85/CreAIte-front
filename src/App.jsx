@@ -8,7 +8,12 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { app } from '../firebase';
 import { currentUser } from './requests/auth';
 import { createOrFetchConversation } from './requests/conversations';
-import { fetchMessages, sendMessage } from './requests/messages';
+import {
+  fetchMessages,
+  sendMessage,
+  incrementNewMessages,
+  clearNewMessages,
+} from './requests/messages';
 
 import AdminRoute from './routes/AdminRoute';
 import UserRoute from './routes/UserRoute';
@@ -41,6 +46,7 @@ const App = () => {
 
   const scrollRef = useRef(null);
   const socket = useRef();
+  const isChatModalOpen = useRef(showChatModal);
 
   const { token, _id, role, name, profileImage } =
     useSelector((state) => state.user) || {};
@@ -68,6 +74,7 @@ const App = () => {
                 subscription: res.data.subscription,
                 likes: res.data.likes,
                 downloads: res.data.downloads,
+                newMessages: res.data.newMessages,
               },
             });
           })
@@ -90,8 +97,11 @@ const App = () => {
         content: data.message,
         createdAt: Date.now(),
       });
+      if (!isChatModalOpen.current) {
+        incNewMessages(data.receiverId);
+      }
     });
-  }, []);
+  }, [showChatModal]);
 
   useEffect(() => {
     socket.current.emit('addUser', _id);
@@ -166,11 +176,66 @@ const App = () => {
     }
   };
 
+  const incNewMessages = async (receiverId) => {
+    await incrementNewMessages(receiverId)
+      .then((res) => {
+        dispatch({
+          type: 'LOGGED_IN_USER',
+          payload: {
+            token,
+            _id: res.data._id,
+            role: res.data.role,
+            email: res.data.email,
+            name: res.data.name,
+            bio: res.data.bio,
+            profileImage: res.data.profileImage,
+            coverImage: res.data.coverImage,
+            subscription: res.data.subscription,
+            likes: res.data.likes,
+            downloads: res.data.downloads,
+            newMessages: res.data.newMessages,
+          },
+        });
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const handleOpenChatModal = async () => {
+    setShowChatModal(true);
+    isChatModalOpen.current = true;
+    await clearNewMessages(_id)
+      .then((res) => {
+        dispatch({
+          type: 'LOGGED_IN_USER',
+          payload: {
+            token,
+            _id: res.data._id,
+            role: res.data.role,
+            email: res.data.email,
+            name: res.data.name,
+            bio: res.data.bio,
+            profileImage: res.data.profileImage,
+            coverImage: res.data.coverImage,
+            subscription: res.data.subscription,
+            likes: res.data.likes,
+            downloads: res.data.downloads,
+            newMessages: res.data.newMessages,
+          },
+        });
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const handleCloseChatModal = () => {
+    setShowChatModal(false);
+    isChatModalOpen.current = false;
+  };
+
   return (
     <BrowserRouter>
       <ToastContainer position='top-center' />
       {role && role === 'subscriber' && (
-        <Pulse setShowChatModal={setShowChatModal} />
+        <Pulse handleOpenChatModal={handleOpenChatModal} />
       )}
       <Routes>
         <Route path='/' element={<Landing />} />
@@ -224,7 +289,7 @@ const App = () => {
           }
         />
       </Routes>
-      <Modal isVisible={showChatModal} onClose={() => setShowChatModal(false)}>
+      <Modal isVisible={showChatModal} onClose={handleCloseChatModal}>
         <div className='p-6 lg:px-8 text-left'>
           <h3 className='font-extrabold text-[32px]'>Chat Support</h3>
           <p className='mt-2 text-[#666e75] text-[16px]'>

@@ -24,3 +24,18 @@ export const sendMessage = async (authtoken, message) => {
     }
   );
 };
+
+export const incrementNewMessages = async (receiverId) => {
+  return await axios.post(
+    `${import.meta.env.VITE_API_URL}/increment-new-messages`,
+    {
+      receiverId,
+    }
+  );
+};
+
+export const clearNewMessages = async (_id) => {
+  return await axios.put(`${import.meta.env.VITE_API_URL}/clear-new-messages`, {
+    _id,
+  });
+};

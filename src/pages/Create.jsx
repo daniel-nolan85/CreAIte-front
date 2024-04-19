@@ -85,6 +85,7 @@ const Create = () => {
             subscription: res.data.user.subscription,
             likes: res.data.likes,
             downloads: res.data.downloads,
+            newMessages: res.data.newMessages,
           },
         });
         setForm((prevForm) => ({
@@ -158,6 +159,7 @@ const Create = () => {
               subscription: res.data.user.subscription,
               likes: res.data.likes,
               downloads: res.data.downloads,
+              newMessages: res.data.newMessages,
             },
           });
           setForm((prevForm) => ({

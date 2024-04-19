@@ -65,6 +65,7 @@ const PaymentForm = ({
                   subscription: res.data.subscription,
                   likes: res.data.likes,
                   downloads: res.data.downloads,
+                  newMessages: res.data.newMessages,
                 },
               });
               setShowStripeModal(false);
