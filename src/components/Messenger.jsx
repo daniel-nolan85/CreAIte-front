@@ -28,7 +28,7 @@ const Messenger = ({
               value={newMessage}
             ></textarea>
             <button
-              className="w-30 mt-3 bg-main hover:bg-mainDark rounded-md px-5 py-2.5 flex justify-center items-center"
+              className="w-30 mt-3 ml-3 bg-main hover:bg-mainDark rounded-md px-5 py-2.5 flex justify-center items-center"
               onClick={handleSubmit}
             >
               <img src={send} height={25} width={25} />
