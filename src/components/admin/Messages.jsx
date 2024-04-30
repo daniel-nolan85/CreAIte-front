@@ -91,7 +91,7 @@ const Messages = () => {
       conversationId: currentChat._id,
     };
     try {
-      const res = await sendMessage(token, message);
+      const res = await sendMessage(message);
       setMessages([...messages, res.data]);
       setNewMessage('');
       const receiver = currentChat.members.find((member) => member._id !== _id);
@@ -105,7 +105,7 @@ const Messages = () => {
     }
   };
   return (
-    <section className='w-full p-4 bg-white'>
+    <section className="w-full p-4 bg-white">
       <AdminMessenger
         conversations={conversations}
         currentChat={currentChat}

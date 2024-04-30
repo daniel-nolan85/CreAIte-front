@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -12,14 +12,17 @@ import { app } from '../../firebase';
 import CoverImage from '../assets/cover-image.jpg';
 import GoogleIcon from '../assets/google-icon.svg';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
-import { loginUser, googleUser } from '../requests/auth';
+import { loginUser, checkUserExists, googleUser } from '../requests/auth';
 import LoaderBlack from '../components/LoaderBlack';
+import Modal from '../components/Modal';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showUserNotFoundModal, setShowUserNotFoundModal] = useState(false);
+  const [agreed, setAgreed] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -28,6 +31,15 @@ const Login = () => {
 
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
+
+  useEffect(() => {
+    const loginIfAgreed = async () => {
+      if (agreed) {
+        await googleLogin();
+      }
+    };
+    loginIfAgreed();
+  }, [agreed]);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -75,6 +87,7 @@ const Login = () => {
                   likes: res.data.likes,
                   downloads: res.data.downloads,
                   newMessages: res.data.newMessages,
+                  monthlyAllocation: res.data.monthlyAllocation,
                 },
               });
               roleBasedRedirect(res);
@@ -87,35 +100,55 @@ const Login = () => {
       .catch((err) => {
         setIsLoading(false);
         const errorCode = err.code;
+        console.log({ errorCode });
+        if (errorCode === 'auth/invalid-credential') {
+          toast.warning(
+            "Oops! It seems there's an issue with your credentials. Please double-check and try again."
+          );
+        }
       });
   };
 
   const googleLogin = async () => {
-    await signInWithPopup(auth, provider).then((userCredential) => {
+    await signInWithPopup(auth, provider).then(async (userCredential) => {
       const user = userCredential.user;
       const idToken = user.accessToken;
-      googleUser(idToken, user.displayName, user.email)
-        .then((res) => {
-          dispatch({
-            type: 'LOGGED_IN_USER',
-            payload: {
-              token: idToken,
-              _id: res.data._id,
-              role: res.data.role,
-              email: res.data.email,
-              name: res.data.name,
-              bio: res.data.bio,
-              profileImage: res.data.profileImage,
-              coverImage: res.data.coverImage,
-              subscription: res.data.subscription,
-              likes: res.data.likes,
-              downloads: res.data.downloads,
-              newMessages: res.data.newMessages,
-            },
-          });
-          roleBasedRedirect(res);
-        })
-        .catch((err) => console.error({ err }));
+      let userExistsResult;
+      console.log({ user });
+      await checkUserExists(user.email).then((res) => {
+        console.log(res.data);
+        userExistsResult = res.data;
+        if (!res.data.success && !agreed) {
+          setShowUserNotFoundModal(true);
+          return;
+        }
+      });
+
+      if (userExistsResult.success || agreed) {
+        googleUser(idToken, user.displayName, user.email)
+          .then((res) => {
+            dispatch({
+              type: 'LOGGED_IN_USER',
+              payload: {
+                token: idToken,
+                _id: res.data._id,
+                role: res.data.role,
+                email: res.data.email,
+                name: res.data.name,
+                bio: res.data.bio,
+                profileImage: res.data.profileImage,
+                coverImage: res.data.coverImage,
+                subscription: res.data.subscription,
+                likes: res.data.likes,
+                downloads: res.data.downloads,
+                newMessages: res.data.newMessages,
+                monthlyAllocation: res.data.monthlyAllocation,
+              },
+            });
+            roleBasedRedirect(res);
+          })
+          .catch((err) => console.error({ err }));
+      }
     });
   };
 
@@ -227,6 +260,58 @@ const Login = () => {
           </p>
         </div>
       </div>
+      <Modal
+        isVisible={showUserNotFoundModal}
+        onClose={() => setShowUserNotFoundModal(false)}
+      >
+        <div className="p-6 lg:px-8 text-left">
+          <h3 className="text-xl font-medium text-gray-900 mb-4">
+            <p className="text-sm text-black">
+              Do you agree to the{' '}
+              <Link to="/terms">
+                <span className="font-bold text-main cursor-pointer">
+                  Terms
+                </span>
+              </Link>
+              ,{' '}
+              <Link to="/privacy">
+                <span className="font-bold text-main cursor-pointer">
+                  Privacy
+                </span>
+              </Link>
+              , and{' '}
+              <Link to="/cookies">
+                <span className="font-bold text-main cursor-pointer">
+                  Cookies{' '}
+                </span>
+              </Link>
+              policies?
+            </p>
+          </h3>
+          <div className="flex justify-between">
+            <button
+              onClick={() => {
+                setAgreed(true);
+                setShowUserNotFoundModal(false);
+              }}
+              className="bg-main hover:bg-mainDark w-[200px] rounded-md font-medium my-3 mx-auto py-3 text-black"
+            >
+              Yes
+            </button>
+            <button
+              onClick={() => {
+                setShowUserNotFoundModal(false);
+                toast.error(
+                  'You must agree to the terms and policies in order to sign up'
+                );
+              }}
+              className="bg-red hover:bg-redDark w-[200px] rounded-md font-medium my-3 mx-auto py-3 text-black"
+            >
+              No
+            </button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

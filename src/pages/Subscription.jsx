@@ -31,6 +31,7 @@ const Subscription = () => {
   const [stripePromise, setStripePromise] = useState(null);
   const [card, setCard] = useState({});
   const [isCancelling, setIsCancelling] = useState(false);
+  const [planType, setPlanType] = useState('');
   const [customOptions, setCustomOptions] = useState({
     dallEVersion: 'Select',
     gptVersion: 'Select',
@@ -46,8 +47,9 @@ const Subscription = () => {
     setStripePromise(loadStripe(`${import.meta.env.VITE_STRIPE_PUB_KEY}`));
   }, []);
 
-  const upgradeMembership = (amount) => {
+  const upgradeMembership = (amount, plan) => {
     setAmount(amount);
+    setPlanType(plan);
     setShowUpgradeModal(false);
     setShowStripeModal(true);
   };
@@ -75,6 +77,7 @@ const Subscription = () => {
             likes: res.data.likes,
             downloads: res.data.downloads,
             newMessages: res.data.newMessages,
+            monthlyAllocation: res.data.monthlyAllocation,
           },
         });
         setShowCancelSubscriptionModal(false);
@@ -107,7 +110,7 @@ const Subscription = () => {
       fee += 499;
     }
     setShowPersonalizeModal(false);
-    upgradeMembership(fee);
+    upgradeMembership(fee, 'custom');
   };
 
   const {
@@ -129,36 +132,36 @@ const Subscription = () => {
   return (
     <>
       <Navbar />
-      <section className='max-w-7xl mx-auto p-4'>
-        <h1 className='font-extrabold text-[32px]'>My Subscription</h1>
-        <p className='mt-2 text-[#666e75] text-[16px] flex items-center'>
+      <section className="max-w-7xl mx-auto p-4">
+        <h1 className="font-extrabold text-[32px]">My Subscription</h1>
+        <p className="mt-2 text-[#666e75] text-[16px] flex items-center">
           You are currently subscribed on a{' '}
-          <span className='font-bold text-main text-[24px] mx-1'>
+          <span className="font-bold text-main text-[24px] mx-1">
             {plan.toUpperCase()}
           </span>{' '}
           plan.
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px] flex items-center'>
+        <p className="mt-2 text-[#666e75] text-[16px] flex items-center">
           You are permitted to generate{' '}
-          <span className='font-bold text-main text-[24px] mx-1'>
+          <span className="font-bold text-main text-[24px] mx-1">
             {imagesRemaining}
           </span>{' '}
           more {imagesRemaining === 1 ? 'image ' : 'images '}
           {plan === 'free' ? 'until you upgrade' : 'this month'}.
         </p>
         {plan !== 'free' && (
-          <p className='mt-2 text-[#666e75] text-[16px] flex items-center'>
+          <p className="mt-2 text-[#666e75] text-[16px] flex items-center">
             Your current subscription is{' '}
             {cancelled ? 'coming to an end' : 'set to renew'} on{' '}
-            <span className='font-bold text-main text-[24px] mx-1'>
+            <span className="font-bold text-main text-[24px] mx-1">
               {moment(expiry).format('ddd, MMMM Do YYYY')}.
             </span>
           </p>
         )}
-        <div className='mt-12'>
+        <div className="mt-12">
           {subscription && plan === 'free' && (
             <FreeCard
-              text='Upgrade'
+              text="Upgrade"
               imagesNum={
                 imagesRemaining === 1
                   ? `${imagesRemaining} image generation`
@@ -169,7 +172,7 @@ const Subscription = () => {
           )}
           {subscription && plan === 'deluxe' && (
             <DeluxeCard
-              text='Manage'
+              text="Manage"
               imagesNum={
                 imagesRemaining === 1
                   ? `${imagesRemaining} image generation`
@@ -184,7 +187,7 @@ const Subscription = () => {
           )}
           {subscription && plan === 'premium' && (
             <PremiumCard
-              text='Personalize'
+              text="Personalize"
               imagesNum={
                 imagesRemaining === 1
                   ? `${imagesRemaining} image generation`
@@ -198,7 +201,7 @@ const Subscription = () => {
           )}
           {subscription && plan === 'custom' && (
             <CustomCard
-              text='Personalize'
+              text="Personalize"
               cost={cost}
               imagesNum={
                 imagesRemaining === 1
@@ -219,22 +222,26 @@ const Subscription = () => {
           isVisible={showUpgradeModal}
           onClose={() => setShowUpgradeModal(false)}
         >
-          <div className='p-6 lg:px-8 text-left'>
+          <div className="p-6 lg:px-8 text-left">
             {plan === 'free' && (
               <>
-                <h1 className='font-extrabold text-[32px]'>
+                <h1 className="font-extrabold text-[32px]">
                   Upgrade your subscription
                 </h1>
-                <p className='mt-2 text-[#666e75] text-[16px] flex items-center'>
+                <p className="mt-2 text-[#666e75] text-[16px] flex items-center">
                   To upgrade your plan, please select one from the options
                   below.
                 </p>
 
-                <div className='grid md:grid-cols-2 gap-8 mt-8'>
-                  <DeluxeCardMini action={() => upgradeMembership(1999)} />
-                  <PremiumCardMini action={() => upgradeMembership(4499)} />
+                <div className="grid md:grid-cols-2 gap-8 mt-8">
+                  <DeluxeCardMini
+                    action={() => upgradeMembership(1999, 'deluxe')}
+                  />
+                  <PremiumCardMini
+                    action={() => upgradeMembership(4499, 'premium')}
+                  />
                 </div>
-                <p className=' text-[#666e75] text-[16px] flex items-center'>
+                <p className=" text-[#666e75] text-[16px] flex items-center">
                   If you require a custom plan tailored to your needs, please
                   select your requirements from the options below.
                 </p>
@@ -246,28 +253,22 @@ const Subscription = () => {
               </>
             )}
             {plan === 'deluxe' && (
-              // <div className='mt-8'>
-              //   <PremiumCardMini action={() => upgradeMembership(4499)} />
-              //   <CustomOptions
-              //     calculateCustomAmount={calculateCustomAmount}
-              //     customOptions={customOptions}
-              //     setCustomOptions={setCustomOptions}
-              //   />
-              // </div>
               <>
-                <h1 className='font-extrabold text-[32px]'>
+                <h1 className="font-extrabold text-[32px]">
                   Manage your subscription
                 </h1>
-                <p className='mt-2 text-[#666e75] text-[16px] flex items-center'>
+                <p className="mt-2 text-[#666e75] text-[16px] flex items-center">
                   To upgrade your plan to a Premium subscription, please select
                   below.
                 </p>
 
-                <div className='mt-8'>
-                  <PremiumCardMini action={() => upgradeMembership(4499)} />
+                <div className="mt-8">
+                  <PremiumCardMini
+                    action={() => upgradeMembership(4499, 'premium')}
+                  />
                 </div>
 
-                <p className='pt-8 text-[#666e75] text-[16px] flex items-center'>
+                <p className="pt-8 text-[#666e75] text-[16px] flex items-center">
                   If you require a custom plan tailored to your needs, please
                   select your requirements from the options below.
                 </p>
@@ -284,11 +285,11 @@ const Subscription = () => {
           isVisible={showPersonalizeModal}
           onClose={() => setShowPersonalizeModal(false)}
         >
-          <div className='p-6 lg:px-8 text-left'>
-            <h1 className='font-extrabold text-[32px]'>
+          <div className="p-6 lg:px-8 text-left">
+            <h1 className="font-extrabold text-[32px]">
               Let's tailor your plan
             </h1>
-            <p className='mt-2 text-[#666e75] text-[16px] flex items-center'>
+            <p className="mt-2 text-[#666e75] text-[16px] flex items-center">
               Please select from the options below to customize your plan.
             </p>
             <CustomOptions
@@ -302,13 +303,13 @@ const Subscription = () => {
           isVisible={showStripeModal}
           onClose={() => setShowStripeModal(false)}
         >
-          <div className='p-6 lg:px-8 text-left'>
-            <h1 className='font-extrabold text-[32px]'>
+          <div className="p-6 lg:px-8 text-left">
+            <h1 className="font-extrabold text-[32px]">
               Enter Payment Details
             </h1>
-            <p className='mt-2 text-[#666e75] text-[16px] flex items-center mb-4'>
+            <p className="mt-2 text-[#666e75] text-[16px] flex items-center mb-4">
               You are about to make a recurring payment of{' '}
-              <span className='font-bold text-main text-[24px] mx-1'>
+              <span className="font-bold text-main text-[24px] mx-1">
                 ${(amount / 100).toFixed(2)} / month
               </span>{' '}
             </p>
@@ -316,6 +317,7 @@ const Subscription = () => {
               <Elements stripe={stripePromise}>
                 <PaymentForm
                   amount={amount}
+                  planType={planType}
                   customOptions={customOptions}
                   setCustomOptions={setCustomOptions}
                   setShowStripeModal={setShowStripeModal}
@@ -330,17 +332,17 @@ const Subscription = () => {
           isVisible={showPaymentCompletionModal}
           onClose={() => setShowPaymentCompletionModal(false)}
         >
-          <div className='p-6 lg:px-8 text-left'>
-            <h1 className='font-extrabold text-[32px]'>Payment successful!</h1>
-            <p className='mt-2 text-[#666e75] text-[16px] flex items-center'>
+          <div className="p-6 lg:px-8 text-left">
+            <h1 className="font-extrabold text-[32px]">Payment successful!</h1>
+            <p className="mt-2 text-[#666e75] text-[16px] flex items-center">
               Thank you for your purchase. Your subscription is now active, and
               this month's payment has been processed successfully.
             </p>
           </div>
-          <div className='m-8'>
+          <div className="m-8">
             <CreditCard card={card} name={name} />
           </div>
-          <p className='p-6 lg:px-8 mt-2 text-[#666e75] text-[16px] flex items-center'>
+          <p className="p-6 lg:px-8 mt-2 text-[#666e75] text-[16px] flex items-center">
             We've sent the full details of your subscription to your email
             address. If you have any questions or need further assistance, feel
             free to contact our support team. Thank you for choosing our
@@ -351,21 +353,21 @@ const Subscription = () => {
           isVisible={showCancelSubscriptionModal}
           onClose={() => setShowCancelSubscriptionModal(false)}
         >
-          <div className='p-6 lg:px-8 text-left'>
-            <h1 className='font-extrabold text-[32px]'>
+          <div className="p-6 lg:px-8 text-left">
+            <h1 className="font-extrabold text-[32px]">
               Are you sure you want to cancel your subscription?
             </h1>
-            <p className='mt-2 text-[#666e75] text-[16px] flex items-center'>
+            <p className="mt-2 text-[#666e75] text-[16px] flex items-center">
               You will continue to have access to {plan} features until{' '}
               {moment(expiry).format('ddd, MMMM Do YYYY')}. After that, your
               account will automatically revert to the free plan, and you will
               lose access to {plan} features.
             </p>
           </div>
-          <div className='text-center mb-4'>
+          <div className="text-center mb-4">
             <button
               onClick={cancelSubscription}
-              className='bg-red hover:bg-redDark w-[200px] rounded-md font-medium my-3 mx-auto py-3 text-black'
+              className="bg-red hover:bg-redDark w-[200px] rounded-md font-medium my-3 mx-auto py-3 text-black"
             >
               {isCancelling ? <LoaderBlack /> : 'Yes, cancel'}
             </button>

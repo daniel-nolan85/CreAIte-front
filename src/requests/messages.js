@@ -11,18 +11,10 @@ export const fetchMessages = async (authtoken, conversationId) => {
   );
 };
 
-export const sendMessage = async (authtoken, message) => {
-  return await axios.post(
-    `${import.meta.env.VITE_API_URL}/send-message`,
-    {
-      message,
-    },
-    {
-      headers: {
-        authtoken,
-      },
-    }
-  );
+export const sendMessage = async (message) => {
+  return await axios.post(`${import.meta.env.VITE_API_URL}/send-message`, {
+    message,
+  });
 };
 
 export const incrementNewMessages = async (receiverId) => {

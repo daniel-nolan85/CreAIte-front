@@ -43,7 +43,7 @@ const RenderCards = ({ data, title, handleDownload }) => {
     ));
   }
   return (
-    <h2 className='mt-5 font-bold text-main text-xl uppercase'>{title}</h2>
+    <h2 className="mt-5 font-bold text-main text-xl uppercase">{title}</h2>
   );
 };
 
@@ -60,12 +60,12 @@ const Chip = ({ text, selected, setSelected, setSearchText }) => {
           : 'text-slate-300 hover:text-slate-200 hover:bg-slate-700'
       } font-medium px-4 py-2 rounded-md relative`}
     >
-      <span className='relative z-10'>{text}</span>
+      <span className="relative z-10">{text}</span>
       {selected && (
         <motion.span
-          layoutId='pill-tab'
+          layoutId="pill-tab"
           transition={{ type: 'spring', duration: 0.5 }}
-          className='absolute inset-0 z-0 bg-main rounded-md'
+          className="absolute inset-0 z-0 bg-main rounded-md"
         ></motion.span>
       )}
     </button>
@@ -270,6 +270,7 @@ const Profile = () => {
             likes: res.data.likes,
             downloads: res.data.downloads,
             newMessages: res.data.newMessages,
+            monthlyAllocation: res.data.monthlyAllocation,
           },
         });
         setIsLoading(false);
@@ -314,6 +315,7 @@ const Profile = () => {
             likes: res.data.likes,
             downloads: res.data.downloads,
             newMessages: res.data.newMessages,
+            monthlyAllocation: res.data.monthlyAllocation,
           },
         });
         setShowModal(false);
@@ -353,73 +355,73 @@ const Profile = () => {
   return (
     <>
       <Navbar />
-      <section className='max-w-7xl mx-auto p-4'>
-        <div className='flex flex-col items-center justify-center py-4'>
+      <section className="max-w-7xl mx-auto p-4">
+        <div className="flex flex-col items-center justify-center py-4">
           <div
-            className='container rounded shadow-lg bg-white'
+            className="container rounded shadow-lg bg-white"
             style={{ overflow: 'hidden' }}
           >
             {coverImage ? (
-              <div className='relative'>
+              <div className="relative">
                 <img
                   src={coverImage.url}
                   alt={`${name}'s cover image`}
-                  className='w-full md:h-64 lg:h-96 xl:h-128 rounded rounded-b-none'
+                  className="w-full md:h-64 lg:h-96 xl:h-128 rounded rounded-b-none"
                 />
                 <img
                   onClick={() => setShowUpdateCoverImageModal(true)}
                   src={editGrey}
-                  alt='edit icon'
-                  className='absolute top-2 right-2 w-12 rounded-full cursor-pointer'
+                  alt="edit icon"
+                  className="absolute top-2 right-2 w-12 rounded-full cursor-pointer"
                 />
               </div>
             ) : (
-              <div className='relative'>
-                <div className='w-full h-32 md:h-64 lg:h-96 xl:h-128 rounded rounded-b-none bg-main' />
+              <div className="relative">
+                <div className="w-full h-32 md:h-64 lg:h-96 xl:h-128 rounded rounded-b-none bg-main" />
                 <img
                   onClick={() => setShowUpdateCoverImageModal(true)}
                   src={editGrey}
-                  alt='edit icon'
-                  className='absolute top-2 right-2 w-12 rounded-full cursor-pointer'
+                  alt="edit icon"
+                  className="absolute top-2 right-2 w-12 rounded-full cursor-pointer"
                 />
               </div>
             )}
-            <div className='flex justify-between'>
-              <div className='p-4'>
-                <div className='relative w-32'>
+            <div className="flex justify-between">
+              <div className="p-4">
+                <div className="relative w-32">
                   <img
                     src={profileImage ? profileImage.url : defaultProfile}
                     alt={`${name}'s profile picture`}
-                    className='w-32 h-32 rounded-full border-4 border-white mr-8 -mt-16 mb-2 bg-white'
+                    className="w-32 h-32 rounded-full border-4 border-white mr-8 -mt-16 mb-2 bg-white"
                   />
                   <img
                     onClick={() => setShowUpdateProfileImageModal(true)}
                     src={editGrey}
-                    alt='edit icon'
-                    className='absolute bottom-[-10px] left-12 w-8 rounded-full cursor-pointer'
+                    alt="edit icon"
+                    className="absolute bottom-[-10px] left-12 w-8 rounded-full cursor-pointer"
                   />
                 </div>
                 <div>
-                  <h1 className='text-xl font-bold text-gray-800'>{name}</h1>
-                  <p className='text-gray-500'>{bio}</p>
+                  <h1 className="text-xl font-bold text-gray-800">{name}</h1>
+                  <p className="text-gray-500">{bio}</p>
                 </div>
               </div>
               <img
                 onClick={() => setShowUpdateProfileModal(true)}
                 src={edit}
-                alt='edit icon'
-                className='h-16 w-16 cursor-pointer'
+                alt="edit icon"
+                className="h-16 w-16 cursor-pointer"
               />
             </div>
-            <div className='bg-gray-400 my-2 mx-4' style={{ height: 1 }}></div>
-            <div className='p-4'>
-              <p className='text-gray-800'>
+            <div className="bg-gray-400 my-2 mx-4" style={{ height: 1 }}></div>
+            <div className="p-4">
+              <p className="text-gray-800">
                 <b>{totalUserCreations}</b> CreAItions
               </p>
             </div>
           </div>
 
-          <div className='px-4 pt-14 flex items-center flex-wrap gap-2'>
+          <div className="px-4 pt-14 flex items-center flex-wrap gap-2">
             {tabs.map((tab) => (
               <Chip
                 text={tab}
@@ -431,7 +433,7 @@ const Profile = () => {
             ))}
           </div>
 
-          <div className='container w-full py-4 mt-8'>
+          <div className="container w-full py-4 mt-8">
             <FormField
               labelName={`${
                 showShared
@@ -440,8 +442,8 @@ const Profile = () => {
                   ? 'Search your private CreAItions'
                   : showLiked && 'Search your liked CreAItions'
               }`}
-              type='text'
-              name='text'
+              type="text"
+              name="text"
               placeholder={`${
                 showShared
                   ? 'Search your shared CreAItions'
@@ -453,11 +455,11 @@ const Profile = () => {
               handleChange={handleSearchChange}
             />
           </div>
-          <div className='container w-full py-4'>
+          <div className="container w-full py-4">
             {searchText && (
-              <h2 className='font-medium text-[#666e75] text-xl mb-3'>
+              <h2 className="font-medium text-[#666e75] text-xl mb-3">
                 Showing results for{' '}
-                <span className='text-[#222328]'>{searchText}</span>
+                <span className="text-[#222328]">{searchText}</span>
               </h2>
             )}
 
@@ -484,28 +486,28 @@ const Profile = () => {
                   : hasMoreLiked
               }
               loader={
-                <div className='text-center py-8'>
+                <div className="text-center py-8">
                   <Loader />
                 </div>
               }
               endMessage={
-                <h4 className='text-center font-bold text-main text-2xl py-8'>
+                <h4 className="text-center font-bold text-main text-2xl py-8">
                   That's all for now! Check back later for new CreAItions.
                 </h4>
               }
             >
-              <div className='columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-3'>
+              <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-3">
                 {selected === 'Shared' &&
                   (searchText ? (
                     <RenderCards
                       data={searchedResults}
-                      title='No search results found'
+                      title="No search results found"
                       handleDownload={handleDownload}
                     />
                   ) : (
                     <RenderCards
                       data={sharedCreations}
-                      title='No shared CreAItions found'
+                      title="No shared CreAItions found"
                       handleDownload={handleDownload}
                     />
                   ))}
@@ -513,13 +515,13 @@ const Profile = () => {
                   (searchText ? (
                     <RenderCards
                       data={searchedResults}
-                      title='No search results found'
+                      title="No search results found"
                       handleDownload={handleDownload}
                     />
                   ) : (
                     <RenderCards
                       data={privateCreations}
-                      title='No private CreAItions found'
+                      title="No private CreAItions found"
                       handleDownload={handleDownload}
                     />
                   ))}
@@ -527,13 +529,13 @@ const Profile = () => {
                   (searchText ? (
                     <RenderCards
                       data={searchedResults}
-                      title='No search results found'
+                      title="No search results found"
                       handleDownload={handleDownload}
                     />
                   ) : (
                     <RenderCards
                       data={privateCreations}
-                      title='No private CreAItions found'
+                      title="No private CreAItions found"
                       handleDownload={handleDownload}
                     />
                   ))}
@@ -545,33 +547,33 @@ const Profile = () => {
           isVisible={showUpdateProfileModal}
           onClose={() => setShowUpdateProfileModal(false)}
         >
-          <div className='p-6 lg:px-8 text-left'>
-            <h3 className='text-xl font-medium text-gray-900 mb-4'>
+          <div className="p-6 lg:px-8 text-left">
+            <h3 className="text-xl font-medium text-gray-900 mb-4">
               Update your profile
             </h3>
-            <form className='space-y-6' onSubmit={updateProfile}>
+            <form className="space-y-6" onSubmit={updateProfile}>
               <div>
                 <FormField
-                  labelName='Name'
-                  type='text'
-                  name='name'
-                  placeholder='Name'
+                  labelName="Name"
+                  type="text"
+                  name="name"
+                  placeholder="Name"
                   value={newName}
                   handleChange={(e) => setNewName(e.target.value)}
                 />
-                <div className='mb-2'></div>
+                <div className="mb-2"></div>
                 <FormField
-                  labelName='Bio'
-                  type='text'
-                  name='bio'
-                  placeholder='Bio'
+                  labelName="Bio"
+                  type="text"
+                  name="bio"
+                  placeholder="Bio"
                   value={newBio}
                   handleChange={(e) => setNewBio(e.target.value)}
                 />
               </div>
               <button
-                type='submit'
-                className='w-full mt-3 text-black bg-main hover:bg-mainDark font-medium rounded-md text-sm px-5 py-2.5 text-center'
+                type="submit"
+                className="w-full mt-3 text-black bg-main hover:bg-mainDark font-medium rounded-md text-sm px-5 py-2.5 text-center"
               >
                 {isLoading ? <LoaderBlack /> : 'Update'}
               </button>
@@ -582,8 +584,8 @@ const Profile = () => {
           isVisible={showUpdateProfileImageModal}
           onClose={() => setShowUpdateProfileImageModal(false)}
         >
-          <div className='p-6 lg:px-8 text-left'>
-            <h3 className='text-xl font-medium text-gray-900 mb-4'>
+          <div className="p-6 lg:px-8 text-left">
+            <h3 className="text-xl font-medium text-gray-900 mb-4">
               Update your profile image
             </h3>
             <ImageCropper
@@ -597,8 +599,8 @@ const Profile = () => {
           isVisible={showUpdateCoverImageModal}
           onClose={() => setShowUpdateCoverImageModal(false)}
         >
-          <div className='p-6 lg:px-8 text-left'>
-            <h3 className='text-xl font-medium text-gray-900 mb-4'>
+          <div className="p-6 lg:px-8 text-left">
+            <h3 className="text-xl font-medium text-gray-900 mb-4">
               Update your cover image
             </h3>
             <ImageCropper

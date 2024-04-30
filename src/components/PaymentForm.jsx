@@ -7,6 +7,7 @@ import { updateUserSubscription } from '../requests/user';
 
 const PaymentForm = ({
   amount,
+  planType,
   customOptions,
   setCustomOptions,
   setShowStripeModal,
@@ -14,11 +15,19 @@ const PaymentForm = ({
   setCard,
 }) => {
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isCardComplete, setIsCardComplete] = useState(false);
+
+  console.log({ isProcessing });
+  console.log({ isCardComplete });
 
   const { token, _id, name, email } = useSelector((state) => state.user) || {};
   const dispatch = useDispatch();
   const stripe = useStripe();
   const elements = useElements();
+
+  const handleCardChange = (event) => {
+    setIsCardComplete(event.complete);
+  };
 
   const createSubscription = async (e) => {
     e.preventDefault();
@@ -47,6 +56,7 @@ const PaymentForm = ({
             token,
             _id,
             amount,
+            planType,
             customOptions,
             res.data.subscriptionId
           )
@@ -66,6 +76,7 @@ const PaymentForm = ({
                   likes: res.data.likes,
                   downloads: res.data.downloads,
                   newMessages: res.data.newMessages,
+                  monthlyAllocation: res.data.monthlyAllocation,
                 },
               });
               setShowStripeModal(false);
@@ -90,11 +101,15 @@ const PaymentForm = ({
 
   return (
     <form>
-      <CardElement />
+      <CardElement onChange={handleCardChange} />
       <button
-        disabled={isProcessing}
+        disabled={isProcessing || !isCardComplete}
         onClick={createSubscription}
-        className='bg-main w-[200px] rounded-md font-medium my-6 mx-auto py-3 text-black'
+        className={`w-[200px] rounded-md font-medium my-6 mx-auto py-3 text-black ${
+          isProcessing || !isCardComplete
+            ? 'bg-gray-300 cursor-not-allowed'
+            : 'bg-main hover:bg-mainDark'
+        }`}
       >
         {isProcessing ? 'Subscribing...' : 'Subscribe'}
       </button>

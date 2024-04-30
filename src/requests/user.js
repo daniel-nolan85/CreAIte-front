@@ -46,12 +46,13 @@ export const updateUserSubscription = async (
   authtoken,
   _id,
   amount,
+  planType,
   customOptions,
   subscriptionId
 ) => {
   return await axios.put(
     `${import.meta.env.VITE_API_URL}/update-subscription`,
-    { _id, amount, customOptions, subscriptionId },
+    { _id, amount, planType, customOptions, subscriptionId },
     {
       headers: {
         authtoken,

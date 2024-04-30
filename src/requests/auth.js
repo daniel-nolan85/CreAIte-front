@@ -79,3 +79,9 @@ export const confirmUserEmail = async (authtoken, _id, email) => {
     }
   );
 };
+
+export const checkUserExists = async (email) => {
+  return await axios.post(`${import.meta.env.VITE_API_URL}/check-user-exists`, {
+    email,
+  });
+};

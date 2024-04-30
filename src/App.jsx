@@ -75,6 +75,7 @@ const App = () => {
                 likes: res.data.likes,
                 downloads: res.data.downloads,
                 newMessages: res.data.newMessages,
+                monthlyAllocation: res.data.monthlyAllocation,
               },
             });
           })
@@ -162,7 +163,7 @@ const App = () => {
       conversationId: currentChat._id,
     };
     try {
-      const res = await sendMessage(token, message);
+      const res = await sendMessage(message);
       setMessages([...messages, res.data]);
       setNewMessage('');
       const receiver = currentChat.members.find((member) => member._id !== _id);
@@ -194,6 +195,7 @@ const App = () => {
             likes: res.data.likes,
             downloads: res.data.downloads,
             newMessages: res.data.newMessages,
+            monthlyAllocation: res.data.monthlyAllocation,
           },
         });
       })
@@ -220,6 +222,7 @@ const App = () => {
             likes: res.data.likes,
             downloads: res.data.downloads,
             newMessages: res.data.newMessages,
+            monthlyAllocation: res.data.monthlyAllocation,
           },
         });
       })
@@ -233,23 +236,23 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <ToastContainer position='top-center' />
+      <ToastContainer position="top-center" />
       {role && role === 'subscriber' && (
         <Pulse handleOpenChatModal={handleOpenChatModal} />
       )}
       <Routes>
-        <Route path='/' element={<Landing />} />
-        <Route path='/about' element={<About />} />
-        <Route path='/contact' element={<Contact />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/signup' element={<Register />} />
-        <Route path='/showcase' element={<Showcase />} />
-        <Route path='/user-profile/:userId' element={<UserProfile />} />
-        <Route path='/terms' element={<Terms />} />
-        <Route path='/privacy' element={<Privacy />} />
-        <Route path='/cookies' element={<Cookies />} />
+        <Route path="/" element={<Landing />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Register />} />
+        <Route path="/showcase" element={<Showcase />} />
+        <Route path="/user-profile/:userId" element={<UserProfile />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/cookies" element={<Cookies />} />
         <Route
-          path='/admin'
+          path="/admin"
           element={
             <AdminRoute>
               <Admin />
@@ -257,7 +260,7 @@ const App = () => {
           }
         />
         <Route
-          path='/creaite'
+          path="/creaite"
           element={
             <UserRoute>
               <Create />
@@ -265,7 +268,7 @@ const App = () => {
           }
         />
         <Route
-          path='/profile/:userId'
+          path="/profile/:userId"
           element={
             <UserRoute>
               <Profile />
@@ -273,7 +276,7 @@ const App = () => {
           }
         />
         <Route
-          path='/account/:userId'
+          path="/account/:userId"
           element={
             <UserRoute>
               <Account />
@@ -281,7 +284,7 @@ const App = () => {
           }
         />
         <Route
-          path='/subscription/:userId'
+          path="/subscription/:userId"
           element={
             <UserRoute>
               <Subscription />
@@ -290,9 +293,9 @@ const App = () => {
         />
       </Routes>
       <Modal isVisible={showChatModal} onClose={handleCloseChatModal}>
-        <div className='p-6 lg:px-8 text-left'>
-          <h3 className='font-extrabold text-[32px]'>Chat Support</h3>
-          <p className='mt-2 text-[#666e75] text-[16px]'>
+        <div className="p-6 lg:px-8 text-left">
+          <h3 className="font-extrabold text-[32px]">Chat Support</h3>
+          <p className="mt-2 text-[#666e75] text-[16px]">
             Feel free to type your message below and one of our admin team will
             assist you shortly. We're here to help!
           </p>
