@@ -104,7 +104,7 @@ const Subscription = () => {
       fee += customOptions.numCreAItions * 15;
     }
     if (customOptions.gptVersion === 'GPT-4 Turbo') {
-      fee += 1000;
+      fee += 500;
     }
     if (customOptions.customerSupport === 'Priority') {
       fee += 499;
@@ -134,14 +134,14 @@ const Subscription = () => {
       <Navbar />
       <section className="max-w-7xl mx-auto p-4">
         <h1 className="font-extrabold text-[32px]">My Subscription</h1>
-        <p className="mt-2 text-[#666e75] text-[16px] flex items-center">
+        <p className="mt-2 text-[#666e75] text-[16px]">
           You are currently subscribed on a{' '}
           <span className="font-bold text-main text-[24px] mx-1">
             {plan.toUpperCase()}
           </span>{' '}
           plan.
         </p>
-        <p className="mt-2 text-[#666e75] text-[16px] flex items-center">
+        <p className="mt-2 text-[#666e75] text-[16px]">
           You are permitted to generate{' '}
           <span className="font-bold text-main text-[24px] mx-1">
             {imagesRemaining}
@@ -150,7 +150,7 @@ const Subscription = () => {
           {plan === 'free' ? 'until you upgrade' : 'this month'}.
         </p>
         {plan !== 'free' && (
-          <p className="mt-2 text-[#666e75] text-[16px] flex items-center">
+          <p className="mt-2 text-[#666e75] text-[16px]">
             Your current subscription is{' '}
             {cancelled ? 'coming to an end' : 'set to renew'} on{' '}
             <span className="font-bold text-main text-[24px] mx-1">

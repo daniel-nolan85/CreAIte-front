@@ -12,14 +12,14 @@ const StaggeredDropdown = ({
   const [open, setOpen] = useState(false);
 
   return (
-    <div className='relative flex items-center justify-center'>
-      <motion.div animate={open ? 'open' : 'closed'} className='relative'>
+    <div className="relative flex items-center justify-center">
+      <motion.div animate={open ? 'open' : 'closed'} className="relative">
         <button
-          type='button'
+          type="button"
           onClick={() => setOpen(!open)}
-          className='flex items-center gap-2 px-8 py-2 rounded-md text-black bg-main hover:bg-mainDark'
+          className="flex items-center gap-2 px-8 py-2 rounded-md text-black bg-main hover:bg-mainDark mb-4 lg:mb-0 w-full lg:w-auto"
         >
-          <span className='font-medium text-sm'>{option}</span>
+          <span className="font-medium text-sm">{option}</span>
           <motion.span variants={iconVariants}>
             <FiChevronDown />
           </motion.span>
@@ -29,9 +29,9 @@ const StaggeredDropdown = ({
           initial={wrapperVariants.closed}
           variants={wrapperVariants}
           style={{ originY: 'top', translateX: '-50%' }}
-          className='z-50 flex flex-col gap-2 p-2 rounded-lg bg-white shadow-xl absolute top-[120%] left-[50%] w-48 overflow-hidden'
+          className="z-50 flex flex-col gap-2 p-2 rounded-lg bg-white shadow-xl absolute top-[120%] left-[50%] w-48 overflow-hidden"
         >
-          <p className='pl-4 text-sm font-medium text-gray-900'>{header}</p>
+          <p className="pl-4 text-sm font-medium text-gray-900">{header}</p>
           {dalleVersion ? (
             <>
               <Option
@@ -52,16 +52,16 @@ const StaggeredDropdown = ({
             </>
           ) : options === 'dalle' ? (
             <>
-              <Option setOpen={setOpen} setOption={setOption} text='Dall-E-2' />
-              <Option setOpen={setOpen} setOption={setOption} text='Dall-E-3' />
+              <Option setOpen={setOpen} setOption={setOption} text="Dall-E-2" />
+              <Option setOpen={setOpen} setOption={setOption} text="Dall-E-3" />
             </>
           ) : options === 'gpt' ? (
             <>
-              <Option setOpen={setOpen} setOption={setOption} text='GPT-3.5' />
+              <Option setOpen={setOpen} setOption={setOption} text="GPT-3.5" />
               <Option
                 setOpen={setOpen}
                 setOption={setOption}
-                text='GPT-4 Turbo'
+                text="GPT-4 Turbo"
               />
             </>
           ) : (
@@ -70,12 +70,12 @@ const StaggeredDropdown = ({
                 <Option
                   setOpen={setOpen}
                   setOption={setOption}
-                  text='Standard'
+                  text="Standard"
                 />
                 <Option
                   setOpen={setOpen}
                   setOption={setOption}
-                  text='Priority'
+                  text="Priority"
                 />
               </>
             )
@@ -94,7 +94,7 @@ const Option = ({ text, setOpen, setOption }) => {
         setOption(text);
         setOpen(false);
       }}
-      className='flex items-center gap-2 w-full p-2 text-sm font-medium whitespace-nowrap rounded-md hover:bg-main text-black hover:text-black cursor-pointer'
+      className="flex items-center gap-2 w-full p-2 text-sm font-medium whitespace-nowrap rounded-md hover:bg-main text-black hover:text-black cursor-pointer"
     >
       <motion.span variants={actionIconVariants}></motion.span>
       <span>{text}</span>

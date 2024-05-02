@@ -7,12 +7,12 @@ const CustomOptions = ({
   setCustomOptions,
 }) => {
   return (
-    <div className='w-full shadow-xl flex flex-col p-4 rounded-lg hover:scale-105 duration-300 my-4'>
-      <h2 className='text-3xl font-bold text-center pt-4'>Custom</h2>
-      <form className='mt-8' onSubmit={calculateCustomAmount}>
-        <div className='flex justify-between items-center mb-4'>
+    <div className="w-full shadow-xl flex flex-col p-4 rounded-lg hover:scale-105 duration-300 my-4">
+      <h2 className="text-3xl font-bold text-center pt-4">Custom</h2>
+      <form className="mt-8" onSubmit={calculateCustomAmount}>
+        <div className="flex flex-col lg:flex-row justify-between items-center mb-4">
           <StaggeredDropdown
-            header='Choose Dall-E version'
+            header="Choose Dall-E version"
             option={customOptions.dallEVersion}
             setOption={(value) =>
               setCustomOptions((prevState) => ({
@@ -20,10 +20,10 @@ const CustomOptions = ({
                 dallEVersion: value,
               }))
             }
-            options='dalle'
+            options="dalle"
           />
           <StaggeredDropdown
-            header='Choose GPT version'
+            header="Choose GPT version"
             option={customOptions.gptVersion}
             setOption={(value) =>
               setCustomOptions((prevState) => ({
@@ -31,10 +31,10 @@ const CustomOptions = ({
                 gptVersion: value,
               }))
             }
-            options='gpt'
+            options="gpt"
           />
           <StaggeredDropdown
-            header='Choose customer support level'
+            header="Choose customer support level"
             option={customOptions.customerSupport}
             setOption={(value) =>
               setCustomOptions((prevState) => ({
@@ -42,14 +42,14 @@ const CustomOptions = ({
                 customerSupport: value,
               }))
             }
-            options='support'
+            options="support"
           />
         </div>
         <FormField
-          labelName='Number of CreAItions'
-          type='number'
-          name='numCreAItions'
-          placeholder='Enter the number of CreAItions needed per month'
+          labelName="Number of CreAItions"
+          type="number"
+          name="numCreAItions"
+          placeholder="Enter the number of CreAItions needed per month"
           value={customOptions.numCreAItions}
           handleChange={(e) => {
             setCustomOptions({
@@ -59,8 +59,8 @@ const CustomOptions = ({
           }}
         />
         <button
-          type='submit'
-          className='w-40 mt-4 text-black bg-main hover:bg-mainDark font-medium rounded-md text-sm px-5 py-2.5 text-center'
+          type="submit"
+          className="w-40 mt-4 text-black bg-main hover:bg-mainDark font-medium rounded-md text-sm px-5 py-2.5 text-center"
         >
           Submit
         </button>
