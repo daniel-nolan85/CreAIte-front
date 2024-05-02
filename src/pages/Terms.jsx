@@ -8,45 +8,45 @@ const Terms = () => {
     <>
       <Navbar />
       <ImageTrail
-        text='Terms & Conditions'
-        update='Last updated: April 10, 2024'
+        text="Terms & Conditions"
+        update="Last updated: May 1, 2024"
       />
-      <section className='max-w-7xl mx-auto p-4'>
-        <h1 className='mt-2 font-extrabold text-[26px]'>
+      <section className="max-w-7xl mx-auto p-4">
+        <h1 className="mt-2 font-extrabold text-[26px]">
           Agreement to our Legal Terms
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
+        <p className="mt-2 text-[#666e75] text-[16px]">
           We are Nolancode (
-          <span className='font-bold'>'Company', 'we, 'us',</span> or{' '}
-          <span className='font-bold'>'our'</span>).
+          <span className="font-bold">'Company', 'we, 'us',</span> or{' '}
+          <span className="font-bold">'our'</span>).
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
+        <p className="mt-2 text-[#666e75] text-[16px]">
           we operate the application CreAIte (the{' '}
-          <span className='font-bold'>'App'</span>), as well as any other
+          <span className="font-bold">'App'</span>), as well as any other
           related products and services that refer or link to these legal terms
-          (the <span className='font-bold'>'Legal Terms'</span>) (collectively,
-          the <span className='font-bold'>'Services'</span>)
+          (the <span className="font-bold">'Legal Terms'</span>) (collectively,
+          the <span className="font-bold">'Services'</span>)
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
+        <p className="mt-2 text-[#666e75] text-[16px]">
           You can contact us by email at{' '}
-          <span className='font-bold text-main'>info@nolancode.com</span> or by
-          completing the{' '}
-          <Link to='/contact'>
-            <span className='font-bold text-main'>Contact Form</span>
+          <span className="font-bold text-main">support@creaite.media</span> or
+          by completing the{' '}
+          <Link to="/contact">
+            <span className="font-bold text-main">Contact Form</span>
           </Link>
           .
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
+        <p className="mt-2 text-[#666e75] text-[16px]">
           The Legal terms constitute a legally binding agreement made between
           you, whether personally or on behalf of an entity (
-          <span className='font-bold'>'you'</span>), and Nolancode, concerning
+          <span className="font-bold">'you'</span>), and Nolancode, concerning
           your access to and use of the Services. You agree that by accessing
           the Services, you have read, understood, and agreed to be bound by all
           of these Legal Terms. IF YOU DO NOT AGREE WITH ALL OF THESE LEGAL
           TERMS, THEN YOU ARE EXPRESSLY PROHIBITED FROM USING THE SERVICES AND
           YOU MUST DISCONTINUE USE IMMEDIATELY.
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
+        <p className="mt-2 text-[#666e75] text-[16px]">
           Supplemental terms and conditions or documents that may be posted on
           the Services from time to time are hereby expressly incorporated
           herein by reference. We reserve the right, in our sole discretion, to
@@ -59,110 +59,110 @@ const Terms = () => {
           accepted, the changes in any revised Legal Terms by your continued use
           of the Services after the date such revised Legal Terms are posted.
         </p>
-        <p className='mt-2 mb-8 text-[#666e75] text-[16px]'>
+        <p className="mt-2 mb-8 text-[#666e75] text-[16px]">
           All users who are minors in the jurisdiction in which they reside
           (generally under the age of 18) must have the permission of their
           parent or guardian to use the Services. If you are a minor, you must
           have your parent or guardian read and agree to these Legal Terms prior
           to you using the Services.
         </p>
-        <h1 className='font-extrabold text-[26px]'>Table of Contents</h1>
-        <ol className='list-decimal list-inside ml-4 mb-8 text-main font-bold cursor-pointer uppercase'>
+        <h1 className="font-extrabold text-[26px]">Table of Contents</h1>
+        <ol className="list-decimal list-inside ml-4 mb-8 text-main font-bold cursor-pointer uppercase">
           <li>
-            <AnchorLink href='#section1'>Our services</AnchorLink>
+            <AnchorLink href="#section1">Our services</AnchorLink>
           </li>
           <li>
-            <AnchorLink href='#section2'>
+            <AnchorLink href="#section2">
               Intellectual Property Rights
             </AnchorLink>
           </li>
           <li>
-            <AnchorLink href='#section3'>User Representations</AnchorLink>
+            <AnchorLink href="#section3">User Representations</AnchorLink>
           </li>
           <li>
-            <AnchorLink href='#section4'>User Registration</AnchorLink>
+            <AnchorLink href="#section4">User Registration</AnchorLink>
           </li>
           <li>
-            <AnchorLink href='#section5'>Purchases and Payment</AnchorLink>
+            <AnchorLink href="#section5">Purchases and Payment</AnchorLink>
           </li>
           <li>
-            <AnchorLink href='#section6'>Subscriptions</AnchorLink>
+            <AnchorLink href="#section6">Subscriptions</AnchorLink>
           </li>
           <li>
-            <AnchorLink href='#section7'>Prohibited Activities</AnchorLink>
+            <AnchorLink href="#section7">Prohibited Activities</AnchorLink>
           </li>
           <li>
-            <AnchorLink href='#section8'>
+            <AnchorLink href="#section8">
               User Generated Contributions
             </AnchorLink>
           </li>
           <li>
-            <AnchorLink href='#section9'>Contribution Licence</AnchorLink>
+            <AnchorLink href="#section9">Contribution Licence</AnchorLink>
           </li>
           <li>
-            <AnchorLink href='#section10'>
+            <AnchorLink href="#section10">
               Mobile Application Licence
             </AnchorLink>
           </li>
           <li>
-            <AnchorLink href='#section11'>Social Media</AnchorLink>
+            <AnchorLink href="#section11">Social Media</AnchorLink>
           </li>
           <li>
-            <AnchorLink href='#section12'>Services Management</AnchorLink>
+            <AnchorLink href="#section12">Services Management</AnchorLink>
           </li>
           <li>
-            <AnchorLink href='#section13'>Privacy Policy</AnchorLink>
+            <AnchorLink href="#section13">Privacy Policy</AnchorLink>
           </li>
           <li>
-            <AnchorLink href='#section14'>Term and Termination</AnchorLink>
+            <AnchorLink href="#section14">Term and Termination</AnchorLink>
           </li>
           <li>
-            <AnchorLink href='#section15'>
+            <AnchorLink href="#section15">
               Modifications and Interruptions
             </AnchorLink>
           </li>
           <li>
-            <AnchorLink href='#section16'>Governing Law</AnchorLink>
+            <AnchorLink href="#section16">Governing Law</AnchorLink>
           </li>
           <li>
-            <AnchorLink href='#section17'>Dispute Resolution</AnchorLink>
+            <AnchorLink href="#section17">Dispute Resolution</AnchorLink>
           </li>
           <li>
-            <AnchorLink href='#section18'>Corrections</AnchorLink>
+            <AnchorLink href="#section18">Corrections</AnchorLink>
           </li>
           <li>
-            <AnchorLink href='#section19'>Disclaimer</AnchorLink>
+            <AnchorLink href="#section19">Disclaimer</AnchorLink>
           </li>
           <li>
-            <AnchorLink href='#section20'>Limitations of Liability</AnchorLink>
+            <AnchorLink href="#section20">Limitations of Liability</AnchorLink>
           </li>
           <li>
-            <AnchorLink href='#section21'>Indemnification</AnchorLink>
+            <AnchorLink href="#section21">Indemnification</AnchorLink>
           </li>
           <li>
-            <AnchorLink href='#section22'>User Data</AnchorLink>
+            <AnchorLink href="#section22">User Data</AnchorLink>
           </li>
           <li>
-            <AnchorLink href='#section23'>
+            <AnchorLink href="#section23">
               Electronic Communications, Transactions, and Signatures
             </AnchorLink>
           </li>
           <li>
-            <AnchorLink href='#section24'>
+            <AnchorLink href="#section24">
               California Users and residents
             </AnchorLink>
           </li>
           <li>
-            <AnchorLink href='#section25'>Miscellaneous</AnchorLink>
+            <AnchorLink href="#section25">Miscellaneous</AnchorLink>
           </li>
           <li>
-            <AnchorLink href='#section26'>Contact Us</AnchorLink>
+            <AnchorLink href="#section26">Contact Us</AnchorLink>
           </li>
         </ol>
-        <h1 id='section1' className='mt-2 font-extrabold text-[26px]'>
+        <h1 id="section1" className="mt-2 font-extrabold text-[26px]">
           1. Our Services
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
+        <p className="mt-2 text-[#666e75] text-[16px]">
           The information provided when using the Services is not intended for
           distribution to or use by any person or entity in any jurisdiction or
           country where such distribution or use would be contrary to law or
@@ -172,7 +172,7 @@ const Terms = () => {
           initiative and are solely responsible for compliance with local laws,
           if and to the extent local laws are applicable.
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-8'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-8">
           The Services are not tailored to comply with industry-specific
           regulations (Health Insurance Portability and Accountability Act
           (HIPAA), Federal Information Security Management Act (FISMA), etc.),
@@ -180,54 +180,54 @@ const Terms = () => {
           use the Services. You may not use the Services in a way that would
           violate the Gramm-Leach-Bliley Act (GLBA).
         </p>
-        <h1 id='section2' className='mt-2 font-extrabold text-[26px]'>
+        <h1 id="section2" className="mt-2 font-extrabold text-[26px]">
           2. Intellectual Property Rights
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
+        <p className="mt-2 text-[#666e75] text-[16px]">
           We are the owner or the licensee of all intellectual property rights
           in our Services, including all source code, databases, functionality,
           software, website designs, audio, video, text, photographs, and
           graphics in the Services (collectively, the{' '}
-          <span className='font-bold'>'Content'</span>), as well as the
+          <span className="font-bold">'Content'</span>), as well as the
           trademarks, service marks, and logos contained therein (the{' '}
-          <span className='font-bold'>'Marks'</span>).
+          <span className="font-bold">'Marks'</span>).
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
+        <p className="mt-2 text-[#666e75] text-[16px]">
           Our Content and Marks are protected by copyright and trademark laws
           (and various other intellectual property rights and unfair competition
           laws) and treaties in the United States and around the world.
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-4'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-4">
           The Content and Marks are provided in or through the Services 'AS IS'
           for your personal, non-commercial use or internal business purpose
           only.
         </p>
-        <h1 className='mt-2 font-extrabold text-[16px]'>
+        <h1 className="mt-2 font-extrabold text-[16px]">
           Your use of our services
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-4'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-4">
           Subject to your compliance with these Legal Terms, including the{' '}
           <AnchorLink
-            href='#section7'
-            className='text-main font-bold cursor-pointer uppercase'
+            href="#section7"
+            className="text-main font-bold cursor-pointer uppercase"
           >
             Prohibited Activities
           </AnchorLink>{' '}
           section below, we grant you a non-exclusive, non-transferable,
           revocable licence to:
         </p>
-        <ul className='list-disc list-inside ml-4 text-[#666e75]'>
+        <ul className="list-disc list-inside ml-4 text-[#666e75]">
           <li>access the Services; and</li>
           <li>
             copy any portion of the Content to which you have properly gained
             access.
           </li>
         </ul>
-        <p className='mt-4 text-[#666e75] text-[16px]'>
+        <p className="mt-4 text-[#666e75] text-[16px]">
           solely for your personal, non-commercial use or internal business
           purpose.
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
+        <p className="mt-2 text-[#666e75] text-[16px]">
           Except as set out in this section or elsewhere in our Legal Terms, no
           part of the Services and no Content or Marks may be copied,
           reproduced, aggregated, republished, uploaded, posted, publicly
@@ -235,34 +235,34 @@ const Terms = () => {
           licensed, or otherwise exploited for any commercial purpose
           whatsoever, without our express prior written permission.
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
+        <p className="mt-2 text-[#666e75] text-[16px]">
           If you wish to make any use of the Services, Content, or Marks other
           than that set out in this section or elsewhere in our Legal Terms,
           please address your request to:{' '}
-          <span className='font-bold text-main'>info@nolancode.com</span>. If we
-          ever grant you the permission to post, reproduce, or publicly display
-          any part of our Services or Content, you must identify us as the
-          owners or licensors of the Services, Content, or Marks and ensure that
-          any copyright or proprietary notice appears or is visible on posting,
-          reproducing, or displaying our Content.
+          <span className="font-bold text-main">support@creaite.media</span>. If
+          we ever grant you the permission to post, reproduce, or publicly
+          display any part of our Services or Content, you must identify us as
+          the owners or licensors of the Services, Content, or Marks and ensure
+          that any copyright or proprietary notice appears or is visible on
+          posting, reproducing, or displaying our Content.
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
+        <p className="mt-2 text-[#666e75] text-[16px]">
           We reserve all rights not expressly granted to you in and to the
           Services, Content, and Marks.
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-4'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-4">
           Any breach of these Intellectual Property Rights will constitute a
           material breach of our Legal Terms and your right to use our Services
           will terminate immediately.
         </p>
-        <h1 className='mt-2 font-extrabold text-[16px]'>
+        <h1 className="mt-2 font-extrabold text-[16px]">
           Your submissions and contributions
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
+        <p className="mt-2 text-[#666e75] text-[16px]">
           Please review this section and the{' '}
           <AnchorLink
-            href='#section7'
-            className='text-main font-bold cursor-pointer uppercase'
+            href="#section7"
+            className="text-main font-bold cursor-pointer uppercase"
           >
             Prohibited Activities
           </AnchorLink>{' '}
@@ -270,18 +270,18 @@ const Terms = () => {
           rights you give us and (b) obligations you have when you post or
           upload any content through the Services.
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
-          <span className='font-extrabold text-black'>Submissions:</span> By
+        <p className="mt-2 text-[#666e75] text-[16px]">
+          <span className="font-extrabold text-black">Submissions:</span> By
           directly sending us any question, comment, suggestion, idea, feedback,
           or other information about the Services (
-          <span className='font-bold'>'Submissions'</span>), you agree to assign
+          <span className="font-bold">'Submissions'</span>), you agree to assign
           to us all intellectual property rights in such Submission. You agree
           that we shall own this Submission and be entitled to its unrestricted
           use and dissemination for any lawful purpose, commercial or otherwise,
           without acknowledgement or compensation to you.
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
-          <span className='font-extrabold text-black'>Contributions:</span> The
+        <p className="mt-2 text-[#666e75] text-[16px]">
+          <span className="font-extrabold text-black">Contributions:</span> The
           Services may invite you to chat, contribute to, or participate in
           blogs, message boards, online forums, and other functionality during
           which you may create, submit, post, display, transmit, publish,
@@ -289,16 +289,16 @@ const Terms = () => {
           Services, including but not limited to text, writings, video, audio,
           photographs, music, graphics, comments, reviews, rating suggestions,
           personal information, or other material (
-          <span className='font-bold'>'Contributions'</span>
+          <span className="font-bold">'Contributions'</span>
           ). Any Submission that is publicly posted shall also be treated as a
           Contribution.
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
+        <p className="mt-2 text-[#666e75] text-[16px]">
           You understand that Contributions may be viewable by other users of
           the Services.
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
-          <span className='font-extrabold text-black'>
+        <p className="mt-2 text-[#666e75] text-[16px]">
+          <span className="font-extrabold text-black">
             When you post Contributions, you grant us a licence (including use
             of your name, trademarks, and logos):
           </span>{' '}
@@ -314,14 +314,14 @@ const Terms = () => {
           the licences granted in this section. Our use and distribution may
           occur in any media formats and through any media channels.
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
+        <p className="mt-2 text-[#666e75] text-[16px]">
           This licence includes our use of your name, company name, and
           franchise name, as applicable, and any of the trademarks, service
           marks, trade names, logos, and personal and commercial images you
           provide.
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-4'>
-          <span className='font-extrabold text-black'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-4">
+          <span className="font-extrabold text-black">
             You are responsible for what you post or upload:
           </span>{' '}
           By sending us Submissions and/or posting Contributions through any
@@ -329,12 +329,12 @@ const Terms = () => {
           Services by linking your account through the Services to any of your
           social networking accounts, you:
         </p>
-        <ul className='list-disc list-inside ml-4 text-[#666e75]'>
+        <ul className="list-disc list-inside ml-4 text-[#666e75]">
           <li>
             confirm that you have read and agree with our{' '}
             <AnchorLink
-              href='#section7'
-              className='text-main font-bold cursor-pointer uppercase'
+              href="#section7"
+              className="text-main font-bold cursor-pointer uppercase"
             >
               Prohibited Activities
             </AnchorLink>{' '}
@@ -360,14 +360,14 @@ const Terms = () => {
             not constitute confidential information.
           </li>
         </ul>
-        <p className='mt-4 text-[#666e75] text-[16px]'>
+        <p className="mt-4 text-[#666e75] text-[16px]">
           You are solely responsible for your Submissions and/or Contributions
           and you expressly agree to reimburse us for any and all losses that we
           may suffer because of your breach of (a) this section, (b) any third
           party's intellectual property rights, or (c) applicable law.
         </p>
-        <p className='mt-4 text-[#666e75] text-[16px] mb-4'>
-          <span className='font-extrabold text-black'>
+        <p className="mt-4 text-[#666e75] text-[16px] mb-4">
+          <span className="font-extrabold text-black">
             We may remove or edit your Content:
           </span>{' '}
           Although we have no obligation to monitor any Contributions, we shall
@@ -378,10 +378,10 @@ const Terms = () => {
           report you to the authorities.
         </p>
 
-        <h1 id='section3' className='mt-2 font-extrabold text-[26px]'>
+        <h1 id="section3" className="mt-2 font-extrabold text-[26px]">
           3. User Representations
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
+        <p className="mt-2 text-[#666e75] text-[16px]">
           By using the Services, you represent and warrant that: (1) all
           registration information you submit will be true, accurate, current,
           and complete; (2) you will maintain the accuracy of such information
@@ -395,17 +395,17 @@ const Terms = () => {
           unauthorized purpose; and (7) your use of the Services will not
           violate any applicable law or regulation.
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-8'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-8">
           If you provide any information that is untrue, inaccurate, not
           current, or incomplete, we have the right to suspend or terminate your
           account and refuse any and all current or future use of the Services
           (or any portion thereof).
         </p>
 
-        <h1 id='section4' className='mt-2 font-extrabold text-[26px]'>
+        <h1 id="section4" className="mt-2 font-extrabold text-[26px]">
           4. User Registration
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-8'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-8">
           You may be required to register to use the Services. You agree to keep
           your password confidential and will be responsible for all use of your
           account and password. We reserve the right to remove, reclaim, or
@@ -414,19 +414,19 @@ const Terms = () => {
           objectionable.
         </p>
 
-        <h1 id='section5' className='mt-2 font-extrabold text-[26px]'>
+        <h1 id="section5" className="mt-2 font-extrabold text-[26px]">
           5. Purchases and Payment
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-4'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-4">
           We accept the following forms of payment:
         </p>
-        <ul className='list-disc list-inside ml-4 text-[#666e75]'>
+        <ul className="list-disc list-inside ml-4 text-[#666e75]">
           <li>Visa</li>
           <li>Mastercard</li>
           <li>American Express</li>
           <li>Discover</li>
         </ul>
-        <p className='mt-4 text-[#666e75] text-[16px]'>
+        <p className="mt-4 text-[#666e75] text-[16px]">
           You agree to provide current, complete, and accurate purchase and
           account information for all purchases made via the Services. You
           further agree to promptly update account and payment information,
@@ -436,14 +436,14 @@ const Terms = () => {
           required by us. We may change prices at any time. All payments shall
           be in US dollars.
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
+        <p className="mt-2 text-[#666e75] text-[16px]">
           You agree to pay all charges at the prices then in effect for your
           purchases and any applicable processing fees, and you authorize us to
           charge your chosen payment provider for any such amounts upon placing
           your order. We reserve the right to correct any errors or mistakes in
           pricing, even if we have already requested or received payment.
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-8'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-8">
           We reserve the right to refuse any order placed through the Services.
           We may, in our sole discretion, limit or cancel quantities purchased
           per person, per household, or per order. These restrictions may
@@ -453,19 +453,19 @@ const Terms = () => {
           judgement, appear to be placed by dealers, resellers, or distributors.
         </p>
 
-        <h1 id='section6' className='mt-2 font-extrabold text-[26px]'>
+        <h1 id="section6" className="mt-2 font-extrabold text-[26px]">
           6. Subscriptions
         </h1>
-        <h1 className='mt-2 font-extrabold text-[16px]'>Billing and Renewal</h1>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-4'>
+        <h1 className="mt-2 font-extrabold text-[16px]">Billing and Renewal</h1>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-4">
           Your Subscription will continue and automatically renew unless
           cancelled. Your consent to our charging your payment method on a
           recurring basis without requiring your prior approval for each
           recurring charge, until such time as you cancel the applicable order.
           The length of your billing cycle is monthly.
         </p>
-        <h1 className='mt-2 font-extrabold text-[16px]'>Free Trial</h1>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-4'>
+        <h1 className="mt-2 font-extrabold text-[16px]">Free Trial</h1>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-4">
           We hereby extend an offer of a complimentary trial duration comprising
           the generation of up to five images to newly registered users engaging
           with our Services. On the free plan, users are entitled to produce up
@@ -474,36 +474,36 @@ const Terms = () => {
           CreAItions until such time as they opt to transition to a paid
           subscription.
         </p>
-        <h1 className='mt-2 font-extrabold text-[16px]'>Cancellation</h1>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-4'>
+        <h1 className="mt-2 font-extrabold text-[16px]">Cancellation</h1>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-4">
           All purchases are non-refundable. Users may cancel their subscriptions
           by logging into their accounts, navigating to the Subscription section
           within the Billing Settings, and subsequently selecting the option to
           cancel situated beneath their subscription details. Your cancellation
           will take effect at the end of the current paid term. If you have any
           questions or are unsatisfied with our Services, please email us at{' '}
-          <span className='font-bold text-main'>info@nolancode.com</span>.
+          <span className="font-bold text-main">support@creaite.media</span>.
         </p>
-        <h1 className='mt-2 font-extrabold text-[16px]'>Fee Changes</h1>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-8'>
+        <h1 className="mt-2 font-extrabold text-[16px]">Fee Changes</h1>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-8">
           We may, from time to time, make changes to the subscription fee and
           will communicate any price changes to you in accordance with
           applicable law.
         </p>
 
-        <h1 id='section7' className='mt-2 font-extrabold text-[26px]'>
+        <h1 id="section7" className="mt-2 font-extrabold text-[26px]">
           7. Prohibited Activities
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
+        <p className="mt-2 text-[#666e75] text-[16px]">
           You may not access or use the Services for any purpose other than that
           for which we make the Services available. The Services may not be used
           in connection with any commercial endeavours except those that are
           specifically endorsed or approved by us.
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-4'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-4">
           As a user of the Services, you agree not to:
         </p>
-        <ul className='list-disc list-inside ml-4 text-[#666e75] mb-8'>
+        <ul className="list-disc list-inside ml-4 text-[#666e75] mb-8">
           <li>
             Systematically retrieve data or other content from the Services to
             create or compile, directly or indirectly, a collection,
@@ -610,10 +610,10 @@ const Terms = () => {
           <li>Sell or otherwise transfer your profile.</li>
         </ul>
 
-        <h1 id='section8' className='mt-2 font-extrabold text-[26px]'>
+        <h1 id="section8" className="mt-2 font-extrabold text-[26px]">
           8. User Generated Contributions
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-4'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-4">
           The Services may invite you to chat, contribute to, or participate in
           blogs, message boards, online forums, and other functionality, and may
           provide you with the opportunity to create, submit, post, display,
@@ -621,13 +621,13 @@ const Terms = () => {
           materials to us or on the Services, including but not limited to text,
           writings, video, audio, photographs, graphics, comments, suggestions,
           or personal information or other material (collectively,{' '}
-          <span className='font-bold'>'Contributions'</span>). Contributions may
+          <span className="font-bold">'Contributions'</span>). Contributions may
           be viewable by other users of the Services and through third-party
           websites. As such, any Contributions you transmit may be treated as
           non-confidential and non-proprietary. When you create or make
           available any Contributions, you thereby represent and warrant that:
         </p>
-        <ul className='list-disc list-inside ml-4 text-[#666e75] mb-8'>
+        <ul className="list-disc list-inside ml-4 text-[#666e75] mb-8">
           <li>
             The creation, distribution, transmission, public display, or
             performance, and the accessing, downloading, or copying of your
@@ -693,16 +693,16 @@ const Terms = () => {
             law or regulation.
           </li>
         </ul>
-        <p className='mt-4 text-[#666e75] text-[16px] mb-8'>
+        <p className="mt-4 text-[#666e75] text-[16px] mb-8">
           Any use of the Services in violation of the foregoing violates these
           Legal Terms and may result in, among other things, termination or
           suspension of your rights to use the Services.
         </p>
 
-        <h1 id='section9' className='mt-2 font-extrabold text-[26px]'>
+        <h1 id="section9" className="mt-2 font-extrabold text-[26px]">
           9. Contribution Licence
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
+        <p className="mt-2 text-[#666e75] text-[16px]">
           By posting your Contributions to any part of the Services, you
           automatically grant, and you represent and warrant that you have the
           right to grant, to us an unrestricted, unlimited, irrevocable,
@@ -717,7 +717,7 @@ const Terms = () => {
           authorize sublicences of the foregoing. The use and distribution may
           occur in any media formats and through any media channels.
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
+        <p className="mt-2 text-[#666e75] text-[16px]">
           This licence will apply to any form, media, or technology now known or
           hereafter developed, and includes our use of your name, company name,
           and franchise name, as applicable, and any of the trademarks, service
@@ -726,7 +726,7 @@ const Terms = () => {
           warrant that moral rights have not otherwise been asserted in your
           Contributions.
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
+        <p className="mt-2 text-[#666e75] text-[16px]">
           We do not assert any ownership over your Contributions. You retain
           full ownership of all your Contributions and any intellectual property
           rights or other proprietary rights associated with your Contributions.
@@ -736,7 +736,7 @@ const Terms = () => {
           expressly agree to exonerate us from any and all responsibility and to
           refrain from any legal action against us regarding your Contributions.
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-8'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-8">
           We have the right, in our sole and absolute discretion, (1) to edit,
           redact, or otherwise change any Contributions; (2) to re-categorise
           any Contributions to place them in more appropriate locations on the
@@ -745,11 +745,11 @@ const Terms = () => {
           monitor your Contributions.
         </p>
 
-        <h1 id='section10' className='mt-2 font-extrabold text-[26px]'>
+        <h1 id="section10" className="mt-2 font-extrabold text-[26px]">
           10. Mobile Application Licence
         </h1>
-        <h1 className='mt-2 font-extrabold text-[16px]'>Use Licence</h1>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-4'>
+        <h1 className="mt-2 font-extrabold text-[16px]">Use Licence</h1>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-4">
           If you access the Services via the App, then we grant you a revocable,
           non-exclusive, non-transferable, limited right to install and use the
           App on wireless electronic devices owned or controlled by you, and to
@@ -776,13 +776,13 @@ const Terms = () => {
           licensing, or distribution of any applications, accessories, or
           devices for use with the App.
         </p>
-        <h1 className='mt-2 font-extrabold text-[16px]'>
+        <h1 className="mt-2 font-extrabold text-[16px]">
           Apple and Android Devices
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-8'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-8">
           The following terms apply when you use the App obtained from either
           the Apple Store or Google Play (each an{' '}
-          <span className='font-bold'>'App Distributor'</span>) to access the
+          <span className="font-bold">'App Distributor'</span>) to access the
           Services: (1) the licence granted to you for our App is limited to a
           non-transferable licence to use the application on a device that
           utilizes the Apple iOS or Android operating systems, as applicable,
@@ -815,14 +815,14 @@ const Terms = () => {
           Legal Terms against you as a third-party beneficiary thereof.
         </p>
 
-        <h1 id='section11' className='mt-2 font-extrabold text-[26px]'>
+        <h1 id="section11" className="mt-2 font-extrabold text-[26px]">
           11. Social Media
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-8'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-8">
           As part of the functionality of the Services, you may link your
           account with online accounts you have with third-party service
           providers (each such account, a{' '}
-          <span className='font-bold'>'Third-Party Account'</span>) by either:
+          <span className="font-bold">'Third-Party Account'</span>) by either:
           (1) providing your Third-Party Account login information through the
           Services; or (2) allowing us to access your Third-Party Account, as is
           permitted under the applicable terms and conditions that govern your
@@ -836,7 +836,7 @@ const Terms = () => {
           us access to any Third-Party Accounts, you understand that (1) we may
           access, make available, and store (if applicable) any content that you
           have provided to and stored in your Third-Party Account (the{' '}
-          <span className='font-bold'>'Social Network Content'</span>) so that
+          <span className="font-bold">'Social Network Content'</span>) so that
           it is available on and through the Services via your account,
           including without limitation any friend lists and (2) we may submit to
           and receive from your Third-Party Account additional information to
@@ -870,10 +870,10 @@ const Terms = () => {
           account.
         </p>
 
-        <h1 id='section12' className='mt-2 font-extrabold text-[26px]'>
+        <h1 id="section12" className="mt-2 font-extrabold text-[26px]">
           12. Services Management
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-8'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-8">
           We reserve the right, but not the obligation, to: (1) monitor the
           Services for violations of these Legal Terms; (2) take appropriate
           legal action against anyone who, in our sole discretion, violates the
@@ -889,10 +889,10 @@ const Terms = () => {
           and to facilitate the proper functioning of the Services.
         </p>
 
-        <h1 id='section13' className='mt-2 font-extrabold text-[26px]'>
+        <h1 id="section13" className="mt-2 font-extrabold text-[26px]">
           13. Privacy Policy
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-8'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-8">
           We care about data privacy and security. By using the Services, you
           agree to be bound by our Privacy Policy posted on the Services, which
           is incorporated into these Legal Terms. Please be advised the Services
@@ -905,10 +905,10 @@ const Terms = () => {
           processed in the United States.
         </p>
 
-        <h1 id='section14' className='mt-2 font-extrabold text-[26px]'>
+        <h1 id="section14" className="mt-2 font-extrabold text-[26px]">
           14. Term and Termination
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
+        <p className="mt-2 text-[#666e75] text-[16px]">
           These Legal Terms shall remain in full force and effect while you use
           the Services. Without limiting any other provision of these Legal
           Terms, we reserve the right to, in our sole discretion and without
@@ -921,7 +921,7 @@ const Terms = () => {
           or information that you posted at any time, without warning, in our
           sole discretion.
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-8'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-8">
           If we terminate or suspend your account for any reason, you are
           prohibited from registering and creating a new account under your
           name, a fake or borrowed name, or the name of any third party, even if
@@ -931,10 +931,10 @@ const Terms = () => {
           criminal, and injunctive redress.
         </p>
 
-        <h1 id='section15' className='mt-2 font-extrabold text-[26px]'>
+        <h1 id="section15" className="mt-2 font-extrabold text-[26px]">
           15. Modifications and Interruptions
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
+        <p className="mt-2 text-[#666e75] text-[16px]">
           We reserve the right to change, modify, or remove the contents of the
           Services at any time or for any reason at our sole discretion without
           notice. However, we have no obligation to update any information on
@@ -942,7 +942,7 @@ const Terms = () => {
           modification, price change, suspension, or discontinuance of the
           Services.
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-8'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-8">
           We cannot guarantee the Services will be available at all times. We
           may experience hardware, software, or other problems or need to
           perform maintenance related to the Services, resulting in
@@ -957,37 +957,37 @@ const Terms = () => {
           connection therewith.
         </p>
 
-        <h1 id='section16' className='mt-2 font-extrabold text-[26px]'>
+        <h1 id="section16" className="mt-2 font-extrabold text-[26px]">
           16. Governing Law
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-8'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-8">
           These Legal Terms and your use of the Services are governed by and
           construed in accordance with the laws of the State of Nevada
           applicable to agreements made and to be entirely performed within the
           State of Nevada, without regard to its conflict of law principles.
         </p>
 
-        <h1 id='section17' className='mt-2 font-extrabold text-[26px]'>
+        <h1 id="section17" className="mt-2 font-extrabold text-[26px]">
           17. Dispute Resolution
         </h1>
-        <h1 className='mt-2 font-extrabold text-[16px]'>
+        <h1 className="mt-2 font-extrabold text-[16px]">
           Informal Negotiations
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-4'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-4">
           To expedite resolution and control the cost of any dispute,
           controversy, or claim related to these Legal Terms (each a{' '}
-          <span className='font-bold'>'Dispute'</span>
-          and collectively, the <span className='font-bold'>'Disputes'</span>)
+          <span className="font-bold">'Dispute'</span>
+          and collectively, the <span className="font-bold">'Disputes'</span>)
           brought by either you or us (individually, a{' '}
-          <span className='font-bold'>'Party'</span> and collectively, the{' '}
-          <span className='font-bold'>'Parties'</span>), the Parties agree to
+          <span className="font-bold">'Party'</span> and collectively, the{' '}
+          <span className="font-bold">'Parties'</span>), the Parties agree to
           first attempt to negotiate any Dispute (except those Disputes
           expressly provided below) informally for at least 28 days before
           initiating arbitration. Such informal negotiations commence upon
           written notice from one Party to the other Party.
         </p>
-        <h1 className='mt-2 font-extrabold text-[16px]'>Binding Arbitration</h1>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
+        <h1 className="mt-2 font-extrabold text-[16px]">Binding Arbitration</h1>
+        <p className="mt-2 text-[#666e75] text-[16px]">
           If the Parties are unable to resolve a Dispute through informal
           negotiations, the Dispute (except those Disputes expressly excluded
           below) will be finally and exclusively resolved by binding
@@ -998,10 +998,10 @@ const Terms = () => {
           appropriate, the AAA's Supplementary Procedures for Consumer related
           Disputes ('AAA Consumer Rules'), both of which are available at the{' '}
           <a
-            href='https://www.adr.org/'
-            className='font-bold text-main'
-            target='_blank'
-            rel='noopener noreferrer'
+            href="https://www.adr.org/"
+            className="font-bold text-main"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             American Arbitration Association (AAA) website
           </a>
@@ -1017,7 +1017,7 @@ const Terms = () => {
           pending arbitration, or to confirm, modify, vacate, or enter judgement
           on the award entered by the arbitrator.
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
+        <p className="mt-2 text-[#666e75] text-[16px]">
           If for any reason, a Dispute proceeds in court rather than
           arbitration, the Dispute shall be commenced or prosecuted in the state
           and federal courts, and the Parties hereby consent to, and waive all
@@ -1027,7 +1027,7 @@ const Terms = () => {
           international Sale of Goods and the Uniform Computer Information
           Transaction Act (UCITA) are excluded from these Legal Terms.
         </p>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-4'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-4">
           If this provision is found to be illegal or unenforceable, then
           neither Party will elect to arbitrate any Dispute falling within that
           portion of this provision found to be illegal or unenforceable and
@@ -1035,8 +1035,8 @@ const Terms = () => {
           and the Parties agree to submit to the personal jurisdiction of that
           court.
         </p>
-        <h1 className='mt-2 font-extrabold text-[16px]'>Restrictions</h1>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-4'>
+        <h1 className="mt-2 font-extrabold text-[16px]">Restrictions</h1>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-4">
           The Parties agree that any arbitration shall be limited to the Dispute
           between the Parties individually. To the full extent permitted by law,
           (a) no arbitration shall be joined with any other proceeding; (b)
@@ -1046,10 +1046,10 @@ const Terms = () => {
           purported representative capacity on behalf of the general public or
           any other persons.
         </p>
-        <h1 className='mt-2 font-extrabold text-[16px]'>
+        <h1 className="mt-2 font-extrabold text-[16px]">
           Exceptions to Informal Negotiations and Arbitration
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-8'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-8">
           The Parties agree that the following Disputes are not subject to the
           above provisions concerning informal negotiations binding arbitration:
           (a) any Disputes seeking to enforce or protect, or concerning the
@@ -1064,10 +1064,10 @@ const Terms = () => {
           personal jurisdiction of that court.
         </p>
 
-        <h1 id='section18' className='mt-2 font-extrabold text-[26px]'>
+        <h1 id="section18" className="mt-2 font-extrabold text-[26px]">
           18. Corrections
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-8'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-8">
           There may be information on the Services that contains typographical
           errors, inaccuracies, or omissions, including descriptions, pricing,
           availability, and various other information. We reserve the right to
@@ -1075,10 +1075,10 @@ const Terms = () => {
           the information on the Services at any time, without prior notice.
         </p>
 
-        <h1 id='section19' className='mt-2 font-extrabold text-[26px]'>
+        <h1 id="section19" className="mt-2 font-extrabold text-[26px]">
           19. Disclaimer
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-8'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-8">
           The Services are provided on an as-is and as-available basis. You
           agree that your use of the Services will be at your sole risk. To the
           fullest extent permitted by law, we disclaim all warranties, express
@@ -1111,10 +1111,10 @@ const Terms = () => {
           where appropriate.
         </p>
 
-        <h1 id='section20' className='mt-2 font-extrabold text-[26px]'>
+        <h1 id="section20" className="mt-2 font-extrabold text-[26px]">
           20. Limitations of Liability
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-8'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-8">
           In no event will we or our directors, employees, or agents be liable
           to you or any third party for any direct, indirect, consequential,
           exemplary, incidental, special, or punitive damages, including lost
@@ -1123,10 +1123,10 @@ const Terms = () => {
           of such damages.
         </p>
 
-        <h1 id='section21' className='mt-2 font-extrabold text-[26px]'>
+        <h1 id="section21" className="mt-2 font-extrabold text-[26px]">
           21. Indemnification
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-8'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-8">
           You agree to defend, indemnify, and hold us harmless, including our
           subsidiaries, affiliates, and all of our respective officers, agents,
           partners, and employees, from and against any loss, damage, liability,
@@ -1146,10 +1146,10 @@ const Terms = () => {
           upon becoming aware of it.
         </p>
 
-        <h1 id='section22' className='mt-2 font-extrabold text-[26px]'>
+        <h1 id="section22" className="mt-2 font-extrabold text-[26px]">
           22. User Data
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-8'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-8">
           We will maintain certain data that you transmit to the Services for
           the purpose of managing the performance of the Services, as well as
           data relating to your use of the Services. Although we perform regular
@@ -1161,10 +1161,10 @@ const Terms = () => {
           data.
         </p>
 
-        <h1 id='section23' className='mt-2 font-extrabold text-[26px]'>
+        <h1 id="section23" className="mt-2 font-extrabold text-[26px]">
           23. Electronic Communications, Transactions, and Signatures
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-8'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-8">
           Visiting the Services, sending us emails, and completing online forms
           constitute electronic communications. You consent to receive
           electronic communications, and you agree that all agreements, notices,
@@ -1181,10 +1181,10 @@ const Terms = () => {
           any means other than electronic means.
         </p>
 
-        <h1 id='section24' className='mt-2 font-extrabold text-[26px]'>
+        <h1 id="section24" className="mt-2 font-extrabold text-[26px]">
           24. California Users and Residents
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-8'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-8">
           If any complaint with us is not satisfactorily resolved, you can
           contact the Complaint Assistance Unit of the Division of Consumer
           Services of the California Department of Consumer Affairs in writing
@@ -1192,10 +1192,10 @@ const Terms = () => {
           or by telephone at (800) 952-5210 or (916) 445-1254.
         </p>
 
-        <h1 id='section25' className='mt-2 font-extrabold text-[26px]'>
+        <h1 id="section25" className="mt-2 font-extrabold text-[26px]">
           25. Miscellaneous
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-8'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-8">
           These Legal Terms and any policies or operating rules posted by us on
           the Services or in respect to the Services constitute the entire
           agreement and understanding between you and us. Our failure to
@@ -1218,17 +1218,17 @@ const Terms = () => {
           hereto to execute these Legal Terms.
         </p>
 
-        <h1 id='section26' className='mt-2 font-extrabold text-[26px]'>
+        <h1 id="section26" className="mt-2 font-extrabold text-[26px]">
           26. Contact Us
         </h1>
-        <p className='mt-2 text-[#666e75] text-[16px] mb-8'>
+        <p className="mt-2 text-[#666e75] text-[16px] mb-8">
           In order to resolve a complaint regarding the Services or to receive
           further information regarding use of the Services, please contact us
           by email at{' '}
-          <span className='font-bold text-main'>info@nolancode.com</span> or by
-          completing the{' '}
-          <Link to='/contact'>
-            <span className='font-bold text-main'>Contact Form</span>
+          <span className="font-bold text-main">support@creaite.media</span> or
+          by completing the{' '}
+          <Link to="/contact">
+            <span className="font-bold text-main">Contact Form</span>
           </Link>
           .
         </p>

@@ -83,6 +83,7 @@ body {
 .chatBoxWrapper {
   padding: 10px;
   height: 100%;
+  overflow-y: auto;
 }
 
 .conversation {
