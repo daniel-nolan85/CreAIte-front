@@ -63,7 +63,7 @@ const Contact = () => {
 
   const handleRecaptcha = async (token) => {
     setToken(token);
-    const secret = import.meta.env.VITE_RECAPTCHA_SECRET_KEY;
+    const secret = import.meta.env.VITE_RECAPTCHA_SECRET_KEY_LIVE;
 
     await checkRecaptcha(token, secret)
       .then((res) => {
@@ -81,58 +81,58 @@ const Contact = () => {
   return (
     <>
       <Navbar />
-      <section className='max-w-7xl mx-auto p-4'>
-        <h1 className='font-extrabold text-[32px]'>Contact Us</h1>
-        <p className='mt-2 text-[#666e75] text-[16px]'>
+      <section className="max-w-7xl mx-auto p-4">
+        <h1 className="font-extrabold text-[32px]">Contact Us</h1>
+        <p className="mt-2 text-[#666e75] text-[16px]">
           Thank you for reaching out to us! Your feedback, questions, and
           queries are important to us. Please feel free to use the form below to
           get in touch with our team. Whether you have inquiries about our
           services, need assistance, or simply want to share your thoughts,
           we're here to help.
         </p>
-        <form className='mt-8' onSubmit={handleSubmit}>
-          <div className='flex flex-col gap-5'>
+        <form className="mt-8" onSubmit={handleSubmit}>
+          <div className="flex flex-col gap-5">
             <FormField
-              labelName='Name'
-              type='text'
-              name='name'
-              placeholder='Please enter your name'
+              labelName="Name"
+              type="text"
+              name="name"
+              placeholder="Please enter your name"
               value={form.name}
               handleChange={handleChange}
             />
             <FormField
-              labelName='Email'
-              type='email'
-              name='email'
-              placeholder='Please enter your email'
+              labelName="Email"
+              type="email"
+              name="email"
+              placeholder="Please enter your email"
               value={form.email}
               handleChange={handleChange}
             />
             <FormField
-              labelName='Subject'
-              type='text'
-              name='subject'
-              placeholder='Please enter your subject'
+              labelName="Subject"
+              type="text"
+              name="subject"
+              placeholder="Please enter your subject"
               value={form.subject}
               handleChange={handleChange}
             />
             <MessageField
-              labelName='Message'
-              type='text'
-              name='message'
-              placeholder='Please enter your message'
+              labelName="Message"
+              type="text"
+              name="message"
+              placeholder="Please enter your message"
               value={form.message}
               handleChange={handleChange}
             />
             <ReCaptchaV2
-              sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+              sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY_LIVE}
               onChange={handleRecaptcha}
               onExpired={handleExpire}
             />
           </div>
           <button
-            type='submit'
-            className='w-40 mt-3 bg-main hover:bg-mainDark rounded-md px-5 py-2.5 flex justify-center items-center'
+            type="submit"
+            className="w-40 mt-3 bg-main hover:bg-mainDark rounded-md px-5 py-2.5 flex justify-center items-center"
           >
             {isLoading ? (
               <LoaderBlack />

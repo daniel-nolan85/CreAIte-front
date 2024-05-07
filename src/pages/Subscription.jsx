@@ -44,7 +44,7 @@ const Subscription = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setStripePromise(loadStripe(`${import.meta.env.VITE_STRIPE_PUB_KEY}`));
+    setStripePromise(loadStripe(`${import.meta.env.VITE_STRIPE_PUB_KEY_LIVE}`));
   }, []);
 
   const upgradeMembership = (amount, plan) => {
