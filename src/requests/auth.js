@@ -85,3 +85,15 @@ export const checkUserExists = async (email) => {
     email,
   });
 };
+
+export const deleteAccount = async (authtoken, _id) => {
+  return await axios.put(
+    `${import.meta.env.VITE_API_URL}/delete-user-account`,
+    { _id },
+    {
+      headers: {
+        authtoken,
+      },
+    }
+  );
+};

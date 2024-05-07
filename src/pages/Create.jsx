@@ -41,6 +41,7 @@ const Create = () => {
     useState(false);
   const [showUpgradePlanModal, setShowUpgradePlanModal] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   const { token, _id, subscription } = useSelector((state) => state.user) || {};
   const { imagesRemaining, dalleVersion, gptVersion } = subscription || {};
@@ -53,6 +54,22 @@ const Create = () => {
   }, [_id]);
 
   const navigate = useNavigate();
+
+  const resetForm = () => {
+    setForm({
+      createdBy: '',
+      prompt: '',
+      photo: '',
+      caption: '',
+      keywords: '',
+    });
+    setCaptionRequired(false);
+    setKeywordsRequired(false);
+    setShareCreation(true);
+    setSaved(false);
+    if (dalleVersion === 'Dall-E-2') setImageSize('256x256');
+    else setImageSize('1024x1024');
+  };
 
   const generateImg = async () => {
     if (!form.prompt) {
@@ -206,12 +223,12 @@ const Create = () => {
       try {
         await saveCreation(token, form, shareCreation, imageSize, dalleVersion)
           .then((res) => {
-            console.log('res => ', res.data);
+            toast.success('Your creation has been saved successfully!');
+            setSaved(true);
           })
           .catch((error) => {
             toast.error(error);
           });
-        navigate('/showcase');
       } catch (error) {
         toast.error(error);
       } finally {
@@ -379,6 +396,15 @@ const Create = () => {
                 : 'Regenerate'}
             </button>
           </div>
+          <div className="my-5 flex gap-5">
+            <button
+              type="button"
+              onClick={resetForm}
+              className="text-black bg-red hover:bg-redDark font-medium rounded-md text-sm w-64 px-5 py-2.5 text-center"
+            >
+              Reset
+            </button>
+          </div>
           <div className="mt-10 flex items-center">
             <p className="w-40 block h-7 text-sm font-medium text-gray-900">
               Share with community
@@ -406,11 +432,11 @@ const Create = () => {
             <button
               type="submit"
               className={`mt-3 text-black font-medium rounded-md text-sm w-64 px-5 py-2.5 text-center ${
-                !form.photo
+                !form.photo || saved
                   ? 'bg-gray-300 cursor-not-allowed'
                   : 'bg-main hover:bg-mainDark'
               }`}
-              disabled={!form.photo}
+              disabled={!form.photo || saved}
             >
               {isLoading ? <LoaderBlack /> : 'Save this CreAItion'}
             </button>

@@ -238,7 +238,7 @@ const Subscription = () => {
                     action={() => upgradeMembership(1999, 'deluxe')}
                   />
                   <PremiumCardMini
-                    action={() => upgradeMembership(4499, 'premium')}
+                    action={() => upgradeMembership(3999, 'premium')}
                   />
                 </div>
                 <p className=" text-[#666e75] text-[16px] flex items-center">
@@ -264,7 +264,7 @@ const Subscription = () => {
 
                 <div className="mt-8">
                   <PremiumCardMini
-                    action={() => upgradeMembership(4499, 'premium')}
+                    action={() => upgradeMembership(3999, 'premium')}
                   />
                 </div>
 
