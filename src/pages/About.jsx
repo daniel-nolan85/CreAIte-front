@@ -9,7 +9,7 @@ const About = () => {
   return (
     <>
       <Navbar />
-      <section className="w-full px-8 py-12 grid grid-cols-1 md:grid-cols-2 items-center gap-8 max-w-6xl mx-auto">
+      <section className="w-full px-4 py-12 grid grid-cols-1 md:grid-cols-2 items-center gap-8 max-w-7xl mx-auto">
         <div>
           <span className="block mb-4 text-xs md:text-sm text-main font-medium">
             Let's turn your words into magic

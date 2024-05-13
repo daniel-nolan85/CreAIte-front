@@ -11,6 +11,7 @@ import defaultProfile from '../assets/profile.svg';
 
 const Card = ({
   creation,
+  photo,
   personalProfile,
   handleDownload,
   handleLike,
@@ -22,7 +23,6 @@ const Card = ({
     _id,
     createdBy,
     prompt,
-    photo,
     createdAt,
     likes,
     liked,
@@ -35,8 +35,6 @@ const Card = ({
     model,
   } = creation;
   const { token, _id: userId } = useSelector((state) => state.user) || {};
-
-  console.log({ creation });
 
   return (
     <div className="rounded-xl group relative shadow-card hover:shadow-cardhover card mb-3">

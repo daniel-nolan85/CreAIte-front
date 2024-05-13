@@ -36,9 +36,7 @@ const Messages = () => {
 
   useEffect(() => {
     socket.current.emit('addUser', _id);
-    socket.current.on('getUsers', (users) => {
-      console.log({ users });
-    });
+    socket.current.on('getUsers', (users) => {});
   }, [currentChat]);
 
   useEffect(() => {

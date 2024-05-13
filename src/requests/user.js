@@ -69,3 +69,15 @@ export const captureUserEmail = async (email) => {
     }
   );
 };
+
+export const acknowledgeCreAItionInstructions = async (authtoken, _id) => {
+  return await axios.put(
+    `${import.meta.env.VITE_API_URL}/acknowledge-creAItion-instructions`,
+    { _id },
+    {
+      headers: {
+        authtoken,
+      },
+    }
+  );
+};

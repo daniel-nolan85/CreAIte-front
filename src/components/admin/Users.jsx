@@ -10,7 +10,7 @@ const RenderCards = ({ data, title }) => {
     return data.map((user) => <UserCard key={user._id} user={user} />);
   }
   return (
-    <h2 className='mt-5 font-bold text-main text-xl uppercase'>{title}</h2>
+    <h2 className="mt-5 font-bold text-main text-xl uppercase">{title}</h2>
   );
 };
 
@@ -54,39 +54,39 @@ const Users = () => {
   };
 
   return (
-    <section className='w-full p-4 bg-white'>
+    <section className="w-full p-4 bg-white">
       {isLoading ? (
-        <div className='h-screen flex justify-center items-center'>
+        <div className="h-screen flex justify-center items-center">
           <Loader />
         </div>
       ) : (
         <div>
-          <div className='container w-full pb-4 mt-8'>
+          <div className="container w-full pb-4 mt-8">
             <FormField
-              labelName='Search all Users'
-              type='text'
-              name='text'
-              placeholder='Search all Users'
+              labelName="Search all Users"
+              type="text"
+              name="text"
+              placeholder="Search all Users"
               value={searchText}
               handleChange={handleSearchChange}
             />
           </div>
-          <div className='container w-full py-4'>
+          <div className="container w-full py-4">
             {searchText && (
-              <h2 className='font-medium text-[#666e75] text-xl mb-3'>
+              <h2 className="font-medium text-[#666e75] text-xl mb-3">
                 Showing results for{' '}
-                <span className='text-[#222328]'>{searchText}</span>
+                <span className="text-[#222328]">{searchText}</span>
               </h2>
             )}
 
-            <div className='columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-3'>
+            <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-3">
               {searchText ? (
                 <RenderCards
                   data={searchedResults}
-                  title='No search results found'
+                  title="No search results found"
                 />
               ) : (
-                <RenderCards data={users} title='No users found' />
+                <RenderCards data={users} title="No users found" />
               )}
             </div>
           </div>

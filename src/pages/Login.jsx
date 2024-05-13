@@ -11,8 +11,9 @@ import {
 import { app } from '../../firebase';
 import CoverImage from '../assets/cover-image.jpg';
 import GoogleIcon from '../assets/google-icon.svg';
-import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
+import { FaRegEye, FaRegEyeSlash, FaLongArrowAltLeft } from 'react-icons/fa';
 import { loginUser, checkUserExists, googleUser } from '../requests/auth';
+import { fetchCoverImage } from '../requests/creation';
 import LoaderBlack from '../components/LoaderBlack';
 import Modal from '../components/Modal';
 
@@ -23,6 +24,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showUserNotFoundModal, setShowUserNotFoundModal] = useState(false);
   const [agreed, setAgreed] = useState(false);
+  const [coverImage, setCoverImage] = useState('');
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -31,6 +33,19 @@ const Login = () => {
 
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetchCoverImage();
+        setCoverImage(res.data[0].randomImage);
+      } catch (error) {
+        console.error(error);
+        setCoverImage(CoverImage);
+      }
+    };
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const loginIfAgreed = async () => {
@@ -88,6 +103,7 @@ const Login = () => {
                   downloads: res.data.downloads,
                   newMessages: res.data.newMessages,
                   monthlyAllocation: res.data.monthlyAllocation,
+                  showCreAitionInstructions: res.data.showCreAitionInstructions,
                 },
               });
               roleBasedRedirect(res);
@@ -100,7 +116,6 @@ const Login = () => {
       .catch((err) => {
         setIsLoading(false);
         const errorCode = err.code;
-        console.log({ errorCode });
         if (errorCode === 'auth/invalid-credential') {
           toast.warning(
             "Oops! It seems there's an issue with your credentials. Please double-check and try again."
@@ -114,9 +129,7 @@ const Login = () => {
       const user = userCredential.user;
       const idToken = user.accessToken;
       let userExistsResult;
-      console.log({ user });
       await checkUserExists(user.email).then((res) => {
-        console.log(res.data);
         userExistsResult = res.data;
         if (!res.data.success && !agreed) {
           setShowUserNotFoundModal(true);
@@ -143,6 +156,7 @@ const Login = () => {
                 downloads: res.data.downloads,
                 newMessages: res.data.newMessages,
                 monthlyAllocation: res.data.monthlyAllocation,
+                showCreAitionInstructions: res.data.showCreAitionInstructions,
               },
             });
             roleBasedRedirect(res);
@@ -174,7 +188,7 @@ const Login = () => {
           <p className="text-xl text-white font-normal">Get started for free</p>
         </div>
         <img
-          src={CoverImage}
+          src={coverImage}
           alt="cover image"
           className="w-full h-full object-cover"
         />
@@ -182,7 +196,9 @@ const Login = () => {
 
       <div className="w-full lg:w-1/2 h-full bg-white text-main flex flex-col p-20 justify-between items-center">
         <h1 className="w-full max-w-[500px] mx-auto text-3xl text-main font-semibold mr-auto">
-          <Link to="/"> CreAIte</Link>
+          <Link to="/" className="flex items-center">
+            <FaLongArrowAltLeft className="mr-2" /> CreAIte
+          </Link>
         </h1>
 
         <div className="w-full flex flex-col max-w-[500px]">

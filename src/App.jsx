@@ -76,6 +76,7 @@ const App = () => {
                 downloads: res.data.downloads,
                 newMessages: res.data.newMessages,
                 monthlyAllocation: res.data.monthlyAllocation,
+                showCreAitionInstructions: res.data.showCreAitionInstructions,
               },
             });
           })
@@ -106,9 +107,7 @@ const App = () => {
 
   useEffect(() => {
     socket.current.emit('addUser', _id);
-    socket.current.on('getUsers', (users) => {
-      console.log({ users });
-    });
+    socket.current.on('getUsers', (users) => {});
   }, [token]);
 
   useEffect(() => {
@@ -196,6 +195,7 @@ const App = () => {
             downloads: res.data.downloads,
             newMessages: res.data.newMessages,
             monthlyAllocation: res.data.monthlyAllocation,
+            showCreAitionInstructions: res.data.showCreAitionInstructions,
           },
         });
       })
@@ -223,6 +223,7 @@ const App = () => {
             downloads: res.data.downloads,
             newMessages: res.data.newMessages,
             monthlyAllocation: res.data.monthlyAllocation,
+            showCreAitionInstructions: res.data.showCreAitionInstructions,
           },
         });
       })

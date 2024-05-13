@@ -19,18 +19,21 @@ const RenderCards = ({
   handleDislike,
 }) => {
   if (data?.length > 0) {
-    return data.map((creation) => (
-      <Card
-        creation={creation}
-        key={creation._id}
-        handleDownload={handleDownload}
-        handleLike={handleLike}
-        handleDislike={handleDislike}
-      />
-    ));
+    return data.map((creation) =>
+      creation.photos.map((photo, index) => (
+        <Card
+          key={`${creation._id}_${index}`}
+          creation={creation}
+          photo={photo}
+          handleDownload={handleDownload}
+          handleLike={handleLike}
+          handleDislike={handleDislike}
+        />
+      ))
+    );
   }
   return (
-    <h2 className='mt-5 font-bold text-main text-xl uppercase'>{title}</h2>
+    <h2 className="mt-5 font-bold text-main text-xl uppercase">{title}</h2>
   );
 };
 
@@ -126,37 +129,37 @@ const Showcase = () => {
   return (
     <div>
       <Navbar />
-      <section className='max-w-7xl mx-auto p-4'>
+      <section className="max-w-7xl mx-auto p-4">
         <div>
-          <h1 className='font-extrabold text-[#222328] text-[32px]'>
+          <h1 className="font-extrabold text-[#222328] text-[32px]">
             The Community Showcase
           </h1>
-          <p className='mt-2 text-[#666e75] text-[16px]'>
+          <p className="mt-2 text-[#666e75] text-[16px]">
             Browse through a captivating collection of images crafted by users
             and AI, exploring the intersection of creativity and technology.
           </p>
         </div>
-        <div className='mt-16'>
+        <div className="mt-16">
           <FormField
-            labelName='Search CreAItions'
-            type='text'
-            name='text'
-            placeholder='Search CreAItions'
+            labelName="Search CreAItions"
+            type="text"
+            name="text"
+            placeholder="Search CreAItions"
             value={searchText}
             handleChange={handleSearchChange}
           />
         </div>
-        <div className='mt-10'>
+        <div className="mt-10">
           {isLoading ? (
-            <div className='flex justify-center items-center'>
+            <div className="flex justify-center items-center">
               <Loader />
             </div>
           ) : (
             <>
               {searchText && (
-                <h2 className='font-medium text-[#666e75] text-xl mb-3'>
+                <h2 className="font-medium text-[#666e75] text-xl mb-3">
                   Showing results for{' '}
-                  <span className='text-[#222328]'>{searchText}</span>
+                  <span className="text-[#222328]">{searchText}</span>
                 </h2>
               )}
               <InfiniteScroll
@@ -164,21 +167,21 @@ const Showcase = () => {
                 next={fetchData}
                 hasMore={hasMore}
                 loader={
-                  <div className='text-center py-8'>
+                  <div className="text-center py-8">
                     <Loader />
                   </div>
                 }
                 endMessage={
-                  <h4 className='text-center font-bold text-main text-2xl py-8'>
+                  <h4 className="text-center font-bold text-main text-2xl py-8">
                     That's all for now! Check back later for new CreAItions.
                   </h4>
                 }
               >
-                <div className='columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-3'>
+                <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-3">
                   {searchText ? (
                     <RenderCards
                       data={searchedResults}
-                      title='No search results found'
+                      title="No search results found"
                       handleDownload={handleDownload}
                       handleLike={handleLike}
                       handleDislike={handleDislike}
@@ -186,7 +189,7 @@ const Showcase = () => {
                   ) : (
                     <RenderCards
                       data={sharedCreations}
-                      title='No CreAItions found'
+                      title="No CreAItions found"
                       handleDownload={handleDownload}
                       handleLike={handleLike}
                       handleDislike={handleDislike}

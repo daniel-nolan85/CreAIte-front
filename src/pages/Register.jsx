@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -12,8 +12,9 @@ import {
 import { app } from '../../firebase';
 import CoverImage from '../assets/cover-image.jpg';
 import GoogleIcon from '../assets/google-icon.svg';
-import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
+import { FaRegEye, FaRegEyeSlash, FaLongArrowAltLeft } from 'react-icons/fa';
 import { createUser, googleUser } from '../requests/auth';
+import { fetchCoverImage } from '../requests/creation';
 import LoaderBlack from '../components/LoaderBlack';
 
 const Register = () => {
@@ -23,11 +24,25 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [agreed, setAgreed] = useState(false);
+  const [coverImage, setCoverImage] = useState('');
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetchCoverImage();
+        setCoverImage(res.data[0].randomImage);
+      } catch (error) {
+        console.error(error);
+        setCoverImage(CoverImage);
+      }
+    };
+    fetchData();
+  }, []);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -83,7 +98,6 @@ const Register = () => {
       .catch((err) => {
         setIsLoading(false);
         const errorCode = err.code;
-        console.log({ errorCode });
         if (errorCode === 'auth/email-already-in-use') {
           toast.warning(
             'The email address is already in use. Please try a different email.'
@@ -125,6 +139,7 @@ const Register = () => {
               downloads: res.data.downloads,
               newMessages: res.data.newMessages,
               monthlyAllocation: res.data.monthlyAllocation,
+              showCreAitionInstructions: res.data.showCreAitionInstructions,
             },
           });
           navigate('/showcase');
@@ -143,7 +158,7 @@ const Register = () => {
           <p className="text-xl text-white font-normal">Get started for free</p>
         </div>
         <img
-          src={CoverImage}
+          src={coverImage}
           alt="cover image"
           className="w-full h-full object-cover"
         />
@@ -151,7 +166,9 @@ const Register = () => {
 
       <div className="w-full lg:w-1/2 h-full bg-white text-main flex flex-col p-20 justify-between items-center">
         <h1 className="w-full max-w-[500px] mx-auto text-3xl text-main font-semibold mr-auto">
-          <Link to="/"> CreAIte</Link>
+          <Link to="/" className="flex items-center">
+            <FaLongArrowAltLeft className="mr-2" /> CreAIte
+          </Link>
         </h1>
 
         <div className="w-full flex flex-col max-w-[500px]">

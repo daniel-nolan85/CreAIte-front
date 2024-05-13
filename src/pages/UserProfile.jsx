@@ -24,18 +24,21 @@ const RenderCards = ({
   handleDislike,
 }) => {
   if (data?.length > 0) {
-    return data.map((creation) => (
-      <Card
-        creation={creation}
-        key={creation._id}
-        handleDownload={handleDownload}
-        handleLike={handleLike}
-        handleDislike={handleDislike}
-      />
-    ));
+    return data.map((creation) =>
+      creation.photos.map((photo, index) => (
+        <Card
+          key={`${creation._id}_${index}`}
+          creation={creation}
+          photo={photo}
+          handleDownload={handleDownload}
+          handleLike={handleLike}
+          handleDislike={handleDislike}
+        />
+      ))
+    );
   }
   return (
-    <h2 className='mt-5 font-bold text-main text-xl uppercase'>{title}</h2>
+    <h2 className="mt-5 font-bold text-main text-xl uppercase">{title}</h2>
   );
 };
 
@@ -151,20 +154,20 @@ const UserProfile = () => {
   return (
     <>
       <Navbar />
-      <section className='max-w-7xl mx-auto p-4'>
-        <div className='flex flex-col items-center justify-center py-4'>
-          <div className='container rounded shadow-lg bg-white'>
+      <section className="max-w-7xl mx-auto p-4">
+        <div className="flex flex-col items-center justify-center py-4">
+          <div className="container rounded shadow-lg bg-white">
             {thisUser.coverImage ? (
               <img
                 src={thisUser.coverImage.url}
                 alt={`${thisUser.name}'s cover image`}
-                className='w-full md:h-64 lg:h-96 xl:h-128 rounded rounded-b-none'
+                className="w-full md:h-64 lg:h-96 xl:h-128 rounded rounded-b-none"
               />
             ) : (
-              <div className='w-full h-32 md:h-64 lg:h-96 xl:h-128 rounded rounded-b-none bg-main' />
+              <div className="w-full h-32 md:h-64 lg:h-96 xl:h-128 rounded rounded-b-none bg-main" />
             )}
-            <div className='flex justify-between'>
-              <div className='p-4'>
+            <div className="flex justify-between">
+              <div className="p-4">
                 <img
                   src={
                     thisUser.profileImage
@@ -172,40 +175,40 @@ const UserProfile = () => {
                       : defaultProfile
                   }
                   alt={`${thisUser.name}'s profile picture`}
-                  className='w-32 h-32 rounded-full border-4 border-white mr-8 -mt-16 bg-white'
+                  className="w-32 h-32 rounded-full border-4 border-white mr-8 -mt-16 bg-white"
                 />
                 <div>
-                  <h1 className='text-xl font-bold text-gray-800'>
+                  <h1 className="text-xl font-bold text-gray-800">
                     {thisUser.name}
                   </h1>
-                  <p className='text-gray-500'>
+                  <p className="text-gray-500">
                     Software Engineer at Nolancode
                   </p>
                 </div>
               </div>
             </div>
-            <div className='bg-gray-400 my-2 mx-4' style={{ height: 1 }}></div>
-            <div className='p-4'>
-              <p className='text-gray-800'>
+            <div className="bg-gray-400 my-2 mx-4" style={{ height: 1 }}></div>
+            <div className="p-4">
+              <p className="text-gray-800">
                 <b>{totalUserCreations}</b> CreAItions
               </p>
             </div>
           </div>
-          <div className='container w-full py-4 mt-8'>
+          <div className="container w-full py-4 mt-8">
             <FormField
-              labelName='Search creations'
-              type='text'
-              name='text'
-              placeholder='Search creations'
+              labelName="Search creations"
+              type="text"
+              name="text"
+              placeholder="Search creations"
               value={searchText}
               handleChange={handleSearchChange}
             />
           </div>
-          <div className='container w-full py-4'>
+          <div className="container w-full py-4">
             {searchText && (
-              <h2 className='font-medium text-[#666e75] text-xl mb-3'>
+              <h2 className="font-medium text-[#666e75] text-xl mb-3">
                 Showing results for{' '}
-                <span className='text-[#222328]'>{searchText}</span>
+                <span className="text-[#222328]">{searchText}</span>
               </h2>
             )}
             <InfiniteScroll
@@ -213,21 +216,21 @@ const UserProfile = () => {
               next={fetchData}
               hasMore={hasMore}
               loader={
-                <div className='text-center py-8'>
+                <div className="text-center py-8">
                   <Loader />
                 </div>
               }
               endMessage={
-                <h4 className='text-center font-bold text-main text-2xl py-8'>
+                <h4 className="text-center font-bold text-main text-2xl py-8">
                   That's all for now! Check back later for new CreAItions.
                 </h4>
               }
             >
-              <div className='columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-3'>
+              <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-3">
                 {searchText ? (
                   <RenderCards
                     data={searchedResults}
-                    title='No search results found'
+                    title="No search results found"
                     handleDownload={handleDownload}
                     handleLike={handleLike}
                     handleDislike={handleDislike}
@@ -235,7 +238,7 @@ const UserProfile = () => {
                 ) : (
                   <RenderCards
                     data={userCreations}
-                    title='No CreAItions found'
+                    title="No CreAItions found"
                     handleDownload={handleDownload}
                     handleLike={handleLike}
                     handleDislike={handleDislike}

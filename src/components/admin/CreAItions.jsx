@@ -10,16 +10,20 @@ const tabs = ['All', 'Shared', 'Private'];
 
 const RenderCards = ({ data, title, getUserCreations }) => {
   if (data?.length > 0) {
-    return data.map((creation) => (
-      <Card
-        creation={creation}
-        personalProfile
-        fetchCreations={getUserCreations}
-      />
-    ));
+    return data.map((creation) =>
+      creation.photos.map((photo, index) => (
+        <Card
+          key={`${creation._id}_${index}`}
+          creation={creation}
+          photo={photo}
+          personalProfile
+          fetchCreations={getUserCreations}
+        />
+      ))
+    );
   }
   return (
-    <h2 className='mt-5 font-bold text-main text-xl uppercase'>{title}</h2>
+    <h2 className="mt-5 font-bold text-main text-xl uppercase">{title}</h2>
   );
 };
 
@@ -36,12 +40,12 @@ const Chip = ({ text, selected, setSelected, setSearchText }) => {
           : 'text-slate-300 hover:text-slate-200 hover:bg-slate-700'
       } font-medium px-4 py-2 rounded-md relative`}
     >
-      <span className='relative z-10'>{text}</span>
+      <span className="relative z-10">{text}</span>
       {selected && (
         <motion.span
-          layoutId='pill-tab'
+          layoutId="pill-tab"
           transition={{ type: 'spring', duration: 0.5 }}
-          className='absolute inset-0 z-0 bg-main rounded-md'
+          className="absolute inset-0 z-0 bg-main rounded-md"
         ></motion.span>
       )}
     </button>
@@ -126,14 +130,14 @@ const CreAItions = () => {
   };
 
   return (
-    <section className='w-full p-4 bg-white'>
+    <section className="w-full p-4 bg-white">
       {isLoading ? (
-        <div className='h-screen flex justify-center items-center'>
+        <div className="h-screen flex justify-center items-center">
           <Loader />
         </div>
       ) : (
         <div>
-          <div className='px-4 flex items-center flex-wrap gap-2'>
+          <div className="px-4 flex items-center flex-wrap gap-2">
             {tabs.map((tab) => (
               <Chip
                 text={tab}
@@ -145,7 +149,7 @@ const CreAItions = () => {
             ))}
           </div>
 
-          <div className='container w-full py-4 mt-8'>
+          <div className="container w-full py-4 mt-8">
             <FormField
               labelName={`${
                 showAll
@@ -154,8 +158,8 @@ const CreAItions = () => {
                   ? 'Search all shared CreAItions'
                   : showPrivate && 'Search all private CreAItions'
               }`}
-              type='text'
-              name='text'
+              type="text"
+              name="text"
               placeholder={`${
                 showAll
                   ? 'Search all CreAItions'
@@ -167,19 +171,19 @@ const CreAItions = () => {
               handleChange={handleSearchChange}
             />
           </div>
-          <div className='container w-full py-4'>
+          <div className="container w-full py-4">
             {searchText && (
-              <h2 className='font-medium text-[#666e75] text-xl mb-3'>
+              <h2 className="font-medium text-[#666e75] text-xl mb-3">
                 Showing results for{' '}
-                <span className='text-[#222328]'>{searchText}</span>
+                <span className="text-[#222328]">{searchText}</span>
               </h2>
             )}
 
-            <div className='columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-3'>
+            <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-3">
               {searchText ? (
                 <RenderCards
                   data={searchedResults}
-                  title='No search results found'
+                  title="No search results found"
                   getAllCreations={getAllCreations}
                 />
               ) : (
@@ -191,7 +195,7 @@ const CreAItions = () => {
                       ? sharedCreations
                       : showPrivate && privateCreations
                   }
-                  title='No creations found'
+                  title="No creations found"
                   getAllCreations={getAllCreations}
                 />
               )}

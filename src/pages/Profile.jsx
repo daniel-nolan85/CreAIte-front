@@ -33,14 +33,17 @@ const tabs = ['Shared', 'Private', 'Liked'];
 
 const RenderCards = ({ data, title, handleDownload }) => {
   if (data?.length > 0) {
-    return data.map((creation) => (
-      <Card
-        creation={creation}
-        personalProfile
-        key={creation._id}
-        handleDownload={handleDownload}
-      />
-    ));
+    return data.map((creation) =>
+      creation.photos.map((photo, index) => (
+        <Card
+          key={`${creation._id}_${index}`}
+          creation={creation}
+          photo={photo}
+          personalProfile
+          handleDownload={handleDownload}
+        />
+      ))
+    );
   }
   return (
     <h2 className="mt-5 font-bold text-main text-xl uppercase">{title}</h2>
@@ -142,7 +145,6 @@ const Profile = () => {
   const getUserSharedCreations = async () => {
     try {
       const res = await fetchUserSharedCreations(token, _id, sharedPage);
-      console.log(res.data);
       setTotalUserCreations(res.data.totalCount);
       setSharedCreations([...sharedCreations, ...res.data.creations]);
       if (sharedCreations.length === res.data.totalShared) {
@@ -271,6 +273,7 @@ const Profile = () => {
             downloads: res.data.downloads,
             newMessages: res.data.newMessages,
             monthlyAllocation: res.data.monthlyAllocation,
+            showCreAitionInstructions: res.data.showCreAitionInstructions,
           },
         });
         setIsLoading(false);
@@ -316,6 +319,7 @@ const Profile = () => {
             downloads: res.data.downloads,
             newMessages: res.data.newMessages,
             monthlyAllocation: res.data.monthlyAllocation,
+            showCreAitionInstructions: res.data.showCreAitionInstructions,
           },
         });
         setShowModal(false);

@@ -78,6 +78,7 @@ const Subscription = () => {
             downloads: res.data.downloads,
             newMessages: res.data.newMessages,
             monthlyAllocation: res.data.monthlyAllocation,
+            showCreAitionInstructions: res.data.showCreAitionInstructions,
           },
         });
         setShowCancelSubscriptionModal(false);

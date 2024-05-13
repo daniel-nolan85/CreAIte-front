@@ -17,9 +17,6 @@ const PaymentForm = ({
   const [isProcessing, setIsProcessing] = useState(false);
   const [isCardComplete, setIsCardComplete] = useState(false);
 
-  console.log({ isProcessing });
-  console.log({ isCardComplete });
-
   const { token, _id, name, email } = useSelector((state) => state.user) || {};
   const dispatch = useDispatch();
   const stripe = useStripe();
@@ -77,6 +74,7 @@ const PaymentForm = ({
                   downloads: res.data.downloads,
                   newMessages: res.data.newMessages,
                   monthlyAllocation: res.data.monthlyAllocation,
+                  showCreAitionInstructions: res.data.showCreAitionInstructions,
                 },
               });
               setShowStripeModal(false);

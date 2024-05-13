@@ -102,7 +102,6 @@ const Account = () => {
       const normalizedEmail = email2.toLowerCase();
       await confirmUserEmail(token, _id, normalizedEmail).then(async (res) => {
         if (res.data.success) {
-          console.log('res.data > ', res.data);
           await deleteAccount(token, _id)
             .then(async (res) => {
               toast.success(

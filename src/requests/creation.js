@@ -18,12 +18,12 @@ export const createImage = async (
   _id,
   prompt,
   imageSize,
-  dalleVersion,
-  imagesRemaining
+  imageQuantity,
+  dalleVersion
 ) => {
   return await axios.post(
     `${import.meta.env.VITE_API_URL}/create-image`,
-    { _id, prompt, imageSize, dalleVersion, imagesRemaining },
+    { _id, prompt, imageSize, imageQuantity, dalleVersion },
     {
       headers: {
         authtoken,
@@ -164,4 +164,8 @@ export const handleUnlikeCreation = async (authtoken, userId, _id) => {
       },
     }
   );
+};
+
+export const fetchCoverImage = async () => {
+  return await axios.get(`${import.meta.env.VITE_API_URL}/fetch-cover-image`);
 };

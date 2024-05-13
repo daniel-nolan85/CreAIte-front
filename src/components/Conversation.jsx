@@ -5,8 +5,6 @@ import defaultProfile from '../assets/profile.svg';
 const Conversation = ({ conversation, _id }) => {
   const [user, setUser] = useState(null);
 
-  console.log({ conversation });
-
   useEffect(() => {
     setUser(conversation.members.find((m) => m !== _id));
   }, [conversation]);
