@@ -18,7 +18,9 @@ const ShuffleGrid = () => {
   }, [squareData]);
 
   const getRandomImages = async () => {
-    await fetchRandomCreations().then((res) => setSquareData(res.data));
+    await fetchRandomCreations().then((res) => {
+      setSquareData(res.data[0].photos);
+    });
   };
 
   const shuffleSquares = () => {
@@ -47,12 +49,12 @@ const ShuffleGrid = () => {
   const generateSquares = () => {
     return shuffle(squareData).map((sq) => (
       <motion.div
-        key={sq.id}
+        key={sq}
         layout
         transition={{ duration: 1.5, type: 'spring' }}
-        className='w-full h-full'
+        className="w-full h-full"
         style={{
-          backgroundImage: `url(${sq.src})`,
+          backgroundImage: `url(${sq})`,
           backgroundSize: 'cover',
         }}
       ></motion.div>
@@ -60,7 +62,7 @@ const ShuffleGrid = () => {
   };
 
   return (
-    <div className='grid grid-cols-4 grid-rows-4 h-[450px] gap-1'>
+    <div className="grid grid-cols-4 grid-rows-4 h-[450px] gap-1">
       {squares.map((sq) => sq)}
     </div>
   );

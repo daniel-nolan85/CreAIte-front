@@ -9,15 +9,17 @@ export const ImageTrail = ({ text, update }) => {
   }, []);
 
   const getRandomImages = async () => {
-    await fetchRandomCreations().then((res) => setImages(res.data));
+    await fetchRandomCreations().then((res) => {
+      setImages(res.data[0].photos);
+    });
   };
 
   return (
     <MouseImageTrail renderImageBuffer={50} rotationRange={25} images={images}>
-      <section className='grid h-[400px] w-full place-content-center bg-black'>
-        <div className='flex flex-col items-center gap-2]'>
-          <h1 className='font-extrabold text-[32px] text-main'>{text}</h1>
-          <p className='mt-2 text-[16px] text-[#666e75]'>{update}</p>
+      <section className="grid h-[400px] w-full place-content-center bg-black">
+        <div className="flex flex-col items-center gap-2]">
+          <h1 className="font-extrabold text-[32px] text-main">{text}</h1>
+          <p className="mt-2 text-[16px] text-[#666e75]">{update}</p>
         </div>
       </section>
     </MouseImageTrail>
@@ -110,17 +112,17 @@ const MouseImageTrail = ({
   return (
     <div
       ref={scope}
-      className='relative overflow-hidden'
+      className="relative overflow-hidden"
       onMouseMove={handleMouseMove}
     >
       {children}
 
       {images.map((img, index) => (
         <img
-          className='pointer-events-none absolute left-0 top-0 h-48 w-auto rounded-xl border-2 border-black bg-neutral-900 object-cover opacity-0'
-          src={img.src}
+          className="pointer-events-none absolute left-0 top-0 h-48 w-auto rounded-xl border-2 border-black bg-neutral-900 object-cover opacity-0"
+          src={img}
           alt={`Mouse move image ${index}`}
-          key={img.id}
+          key={img}
           data-mouse-move-index={index}
         />
       ))}
