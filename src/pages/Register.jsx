@@ -48,6 +48,12 @@ const Register = () => {
     setShowPassword(!showPassword);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleRegistration();
+    }
+  };
+
   const handleRegistration = async () => {
     setIsLoading(true);
     if (!name) {
@@ -202,6 +208,7 @@ const Register = () => {
                 className="w-full text-black py-2 my-2 bg-transparent border-b border-black outline-none focus:outline-none"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                onKeyDown={handleKeyDown}
               />
               <div className="absolute top-[20px] right-[10px]">
                 <button onClick={togglePasswordVisibility}>

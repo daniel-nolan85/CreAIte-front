@@ -7,10 +7,14 @@ const Conversation = ({ conversation, _id }) => {
 
   useEffect(() => {
     setUser(conversation.members.find((m) => m !== _id));
-  }, [conversation]);
+  }, [conversation, _id]);
 
-  const { name, profileImage, subscription } = user || {};
-  const { customerSupport } = subscription;
+  if (!user) {
+    return null;
+  }
+
+  const { name, profileImage, subscription } = user;
+  const customerSupport = subscription?.customerSupport;
 
   return (
     <div className="conversation">

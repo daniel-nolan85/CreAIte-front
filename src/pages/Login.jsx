@@ -60,6 +60,12 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleLogin();
+    }
+  };
+
   const handleLogin = async () => {
     setIsLoading(true);
     const emailRegex = /^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/;
@@ -225,6 +231,7 @@ const Login = () => {
                 className="w-full text-black py-2 my-2 bg-transparent border-b border-black outline-none focus:outline-none"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                onKeyDown={handleKeyDown}
               />
               <div className="absolute top-[20px] right-[10px]">
                 <button onClick={togglePasswordVisibility}>

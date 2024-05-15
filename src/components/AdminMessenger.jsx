@@ -23,7 +23,7 @@ const AdminMessenger = ({
             className="chatMenuInput"
           />
           {conversations.map((c) => (
-            <div onClick={() => setCurrentChat(c)}>
+            <div key={c._id} onClick={() => setCurrentChat(c)}>
               <Conversation conversation={c} _id={_id} />
             </div>
           ))}

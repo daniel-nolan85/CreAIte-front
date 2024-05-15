@@ -11,7 +11,8 @@ const AdminRoute = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!token) {
+    const storedToken = localStorage.getItem('token');
+    if (!token && storedToken) {
       navigate('/login');
     } else {
       currentAdmin(token)

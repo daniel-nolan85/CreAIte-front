@@ -51,7 +51,7 @@ const Card = ({
       />
       <div className="group-hover:flex flex-col max-h-[94.5%] hidden absolute bottom-0 left-0 right-0 bg-[#10131f] m-2 p-4 rounded-md">
         <p className="text-white text-sm sm:text-md overflow-y-auto prompt">
-          {prompt}
+          {prompt.length > 75 ? prompt.slice(0, 75) + '...' : prompt}
         </p>
         <div className="mt-5 flex justify-between items-center gap-2">
           {(personalProfile || sharing) && (

@@ -4,14 +4,14 @@ import { useNavigate } from 'react-router-dom';
 
 const UserRoute = ({ children }) => {
   const { token } = useSelector((state) => state.user) || {};
-
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!token) {
+    const storedToken = localStorage.getItem('token');
+    if (!token && storedToken) {
       navigate('/login');
     }
-  }, [token]);
+  }, [token, navigate]);
 
   return token ? children : null;
 };
