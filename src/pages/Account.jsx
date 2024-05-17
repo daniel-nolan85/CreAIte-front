@@ -17,7 +17,8 @@ const Account = () => {
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
 
-  const { token, _id } = useSelector((state) => state.user) || {};
+  const { token, _id, subscription } = useSelector((state) => state.user) || {};
+  const { subscriptionId } = subscription;
 
   const auth = getAuth();
 
@@ -102,7 +103,7 @@ const Account = () => {
       const normalizedEmail = email2.toLowerCase();
       await confirmUserEmail(token, _id, normalizedEmail).then(async (res) => {
         if (res.data.success) {
-          await deleteAccount(token, _id)
+          await deleteAccount(token, _id, subscriptionId)
             .then(async (res) => {
               toast.success(
                 'Your account has been successfully deleted. Thank you for being a part of our community. we hope to see you again soon.'
@@ -183,8 +184,8 @@ const Account = () => {
         <p className="mt-2 text-[#666e75] text-[16px]">
           Here, you have the option to permanently delete your account. Please
           keep in mind that this action is irreversible. Additionally, all your
-          CreAItions will be shared with the public. We appreciate your
-          understanding.
+          CreAItions will be shared with the public, and any active
+          subscriptions will be cancelled. We appreciate your understanding.
         </p>
         <form className="mt-8" onSubmit={handleDelete}>
           <div className="flex flex-col gap-5">

@@ -33,9 +33,9 @@ const Subscription = () => {
   const [isCancelling, setIsCancelling] = useState(false);
   const [planType, setPlanType] = useState('');
   const [customOptions, setCustomOptions] = useState({
-    dallEVersion: 'Select',
-    gptVersion: 'Select',
-    customerSupport: 'Select',
+    dallEVersion: 'Dall-E-2',
+    gptVersion: 'GPT-3.5',
+    customerSupport: 'Standard',
     numCreAItions: null,
   });
 

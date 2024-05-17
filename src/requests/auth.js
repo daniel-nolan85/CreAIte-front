@@ -86,10 +86,10 @@ export const checkUserExists = async (email) => {
   });
 };
 
-export const deleteAccount = async (authtoken, _id) => {
+export const deleteAccount = async (authtoken, _id, subscriptionId) => {
   return await axios.put(
     `${import.meta.env.VITE_API_URL}/delete-user-account`,
-    { _id },
+    { _id, subscriptionId },
     {
       headers: {
         authtoken,

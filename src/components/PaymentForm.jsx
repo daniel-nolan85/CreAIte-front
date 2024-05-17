@@ -45,6 +45,7 @@ const PaymentForm = ({
         paymentMethodId
       )
         .then(async (res) => {
+          console.log({ res });
           const confirm = await stripe.confirmCardPayment(
             res.data.clientSecret
           );
