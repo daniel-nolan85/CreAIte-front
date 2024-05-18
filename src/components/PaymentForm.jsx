@@ -45,7 +45,6 @@ const PaymentForm = ({
         paymentMethodId
       )
         .then(async (res) => {
-          console.log({ res });
           const confirm = await stripe.confirmCardPayment(
             res.data.clientSecret
           );
@@ -81,10 +80,10 @@ const PaymentForm = ({
               setShowStripeModal(false);
               setShowPaymentCompletionModal(true);
               setCustomOptions({
-                dallEVersion: 'Select',
-                gptVersion: 'Select',
-                customerSupport: 'Select',
-                numCreAItions: null,
+                dallEVersion: 'Dall-E-2',
+                gptVersion: 'GPT-3.5',
+                customerSupport: 'Standard',
+                numCreAItions: 0,
               });
             })
             .catch((err) => console.error(err));

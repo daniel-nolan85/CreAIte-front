@@ -36,7 +36,7 @@ const Subscription = () => {
     dallEVersion: 'Dall-E-2',
     gptVersion: 'GPT-3.5',
     customerSupport: 'Standard',
-    numCreAItions: null,
+    numCreAItions: 0,
   });
 
   const { token, _id, name, email, subscription } =
@@ -110,8 +110,14 @@ const Subscription = () => {
     if (customOptions.customerSupport === 'Priority') {
       fee += 499;
     }
-    setShowPersonalizeModal(false);
-    upgradeMembership(fee, 'custom');
+    if (fee > 49) {
+      setShowPersonalizeModal(false);
+      upgradeMembership(fee, 'custom');
+    } else {
+      toast.error(
+        'Oops! The selected plan must be at least $0.50. Please adjust accordingly. Thank you!'
+      );
+    }
   };
 
   const {
