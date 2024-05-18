@@ -496,7 +496,7 @@ const Profile = () => {
               }
               endMessage={
                 <h4 className="text-center font-bold text-main text-2xl py-8">
-                  That's all for now! Check back later for new CreAItions.
+                  You're up to date 🎉
                 </h4>
               }
             >
